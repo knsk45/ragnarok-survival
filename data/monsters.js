@@ -1,13 +1,13 @@
 window.RS_MONSTERS = {
   poring: {
-    id: 1002, key: 'poring', name: 'Poring', source: 'https://db.irowiki.org/db/monster-info/1002/',
+    id: 1002, key: 'poring', name: 'Poring', source: 'https://db.irowiki.org/db/monster-info/1002/', sourceRefs: ['irowiki_monster_db', 'irowiki_monster_poring'],
     classification: { size: 'medium', race: 'plant', element: 'water', elementLevel: 1, modes: ['passive', 'looter'] },
     stats: { level: 1, def: 2, mdef: 5, agi: 1, vit: 1, int: 0, dex: 6, luk: 5, hit: 202, flee: 177 },
     combat: { hp: 60, atkMin: 8, atkMax: 9, range: 1, aspd: 106.4, moveMs: 400, speed: 40, damage: 8, baseExp: 27, jobExp: 20, exp: 27 },
     visual: { spriteKey: 'poring', color: '#ef73b3', shadow: '#9a3978', radius: 15 }
   },
   lunatic: {
-    id: 1063, key: 'lunatic', name: 'Lunatic', source: 'https://db.irowiki.org/db/monster-info/1063/',
+    id: 1063, key: 'lunatic', name: 'Lunatic', source: 'https://db.irowiki.org/db/monster-info/1063/', sourceRefs: ['irowiki_monster_db', 'irowiki_monster_lunatic'],
     classification: { size: 'small', race: 'brute', element: 'neutral', elementLevel: 3, modes: ['passive'] },
     stats: { level: 3, def: 18, mdef: 0, agi: 3, vit: 3, int: 0, dex: 8, luk: 5, hit: 206, flee: 181 },
     combat: { hp: 55, atkMin: 11, atkMax: 12, range: 1, aspd: 127.2, moveMs: 200, speed: 68, damage: 12, baseExp: 36, jobExp: 27, exp: 36 },
