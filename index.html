@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- 0.6.23: compact pause control panel and white Job EXP -->
+<!-- 0.6.24: stable mobile HUD, persistent quest skills and timed status icons -->
 <html lang="ru">
 <head>
 <meta charset="utf-8">
@@ -117,22 +117,60 @@ canvas{object-fit:fill;background:#467b49}
   .bottom .skill{flex-basis:78px;width:78px;height:40px}
 }
 </style>
-<script src="data/sources.js?v=0.6.23"></script>
-<script src="data/stats.js?v=0.6.23"></script>
-<script src="data/jobs.js?v=0.6.23"></script>
-<script src="data/characters.js?v=0.6.23"></script>
-<script src="data/progression.js?v=0.6.23"></script>
-<script src="data/builds.js?v=0.6.23"></script>
-<script src="data/skills.js?v=0.6.23"></script>
-<script src="data/monsters.js?v=0.6.23"></script>
-<script src="data/buffs.js?v=0.6.23"></script>
-<script src="data/items.js?v=0.6.23"></script>
-<script src="data/database.js?v=0.6.23"></script>
+<style>
+/* 0.6.24: the HUD is one predictable grid; legacy .right positioning cannot move its controls. */
+.top-hud{display:grid!important;grid-template-columns:minmax(0,1fr) 154px;align-items:start;gap:10px;width:min(540px,calc(100% - 24px));padding:10px;pointer-events:none}
+.top-hud .hud-main{min-width:0}
+.top-hud .hud-side{position:relative!important;inset:auto!important;align-self:start;width:auto!important;min-width:0;height:auto!important;min-height:118px;padding:8px;text-align:center;background:#101923ee;border:1px solid #ffffff2b;border-radius:9px;box-shadow:0 6px 18px #0006;pointer-events:auto;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;overflow:hidden}
+.top-hud .hud-side .legend{display:none}
+.hud-side .timer{line-height:1.05}
+.hud-side .muted{text-align:center}
+.hud-actions{margin-top:8px;display:flex;justify-content:center;align-items:center}
+.hud-actions .pause-btn{min-width:58px;min-height:42px;margin:0;font-size:23px}
+.hud-side .buffs{display:flex;flex-direction:column;gap:4px;margin:7px 0 0;max-height:62px;overflow-y:auto;overflow-x:hidden;text-align:left;color:#dff5ff;font-size:10px;line-height:1.05;scrollbar-width:thin}
+.hud-side .buff{display:grid;grid-template-columns:27px minmax(0,1fr);align-items:center;gap:5px;min-height:27px;white-space:normal}
+.buff-icon-wrap{position:relative;display:grid;place-items:center;width:25px;height:25px;border-radius:5px;background:#182431;border:1px solid #9be7ff55;overflow:hidden}
+.buff-fallback{font-size:15px;line-height:1}
+.buff-icon{position:absolute;inset:1px;width:23px;height:23px;image-rendering:pixelated;object-fit:contain}
+.buff-icon.is-missing{display:none}
+.buff-copy{display:flex;min-width:0;flex-direction:column;gap:2px}
+.buff-copy b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px;color:#dfe9f1}
+.buff-copy span{color:#8fdcff;font-size:10px}
+.bottom{max-width:min(420px,calc(100% - 24px));overflow:hidden}
+.bottom .skills{min-width:0}
+@media (orientation:portrait){
+  .top-hud{left:6px;right:6px;top:6px;width:auto;grid-template-columns:minmax(0,1fr) 142px;gap:6px;padding:6px;pointer-events:auto}
+  .top-hud .hud-side{min-height:126px;padding:7px}
+  .top-hud .hud-side .timer{font-size:22px}
+  .top-hud .hud-side .buffs{max-height:47px;margin-top:5px}
+  .top-hud .hud-side .buff{grid-template-columns:24px minmax(0,1fr);gap:4px;min-height:24px}
+  .top-hud .hud-side .buff-icon-wrap{width:22px;height:22px}
+  .top-hud .hud-side .buff-icon{width:20px;height:20px}
+  .top-hud .hud-side .buff-copy b{font-size:8px}
+  .top-hud .hud-side .buff-copy span{font-size:9px}
+  .bottom{left:8px;right:8px;bottom:max(8px,env(safe-area-inset-bottom));width:auto;max-width:none;height:84px;max-height:84px;padding:7px;overflow:hidden;pointer-events:auto}
+  .bottom .title{font-size:10px}
+  .bottom .skills{height:45px;margin:3px 0 0;padding:2px 1px 3px;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin}
+  .bottom .legend{display:none}
+  .bottom .skill{flex-basis:82px;width:82px;height:40px}
+}
+</style>
+<script src="data/sources.js?v=0.6.24"></script>
+<script src="data/stats.js?v=0.6.24"></script>
+<script src="data/jobs.js?v=0.6.24"></script>
+<script src="data/characters.js?v=0.6.24"></script>
+<script src="data/progression.js?v=0.6.24"></script>
+<script src="data/builds.js?v=0.6.24"></script>
+<script src="data/skills.js?v=0.6.24"></script>
+<script src="data/monsters.js?v=0.6.24"></script>
+<script src="data/buffs.js?v=0.6.24"></script>
+<script src="data/items.js?v=0.6.24"></script>
+<script src="data/database.js?v=0.6.24"></script>
 </head>
 <body>
 <main id="app">
 <canvas id="game" width="960" height="540"></canvas>
-<section class="panel left top-hud"><div class="hud-main"><div class="title">Ragnarok: Survival</div><div id="job" class="muted">Novice</div><div class="bar statusbar exp-bar"><div id="xp" class="fill exp"></div><span class="bar-label">Base Lv. <b id="level">1</b> | Exp <b id="xpText">0/30</b></span></div><div class="bar statusbar job-exp-bar"><div id="jobXp" class="fill job-exp"></div><span class="bar-label">Job Lv. <b id="jobLevel">1</b> | Exp <b id="jobXpText">0/30</b></span></div><div class="bar statusbar hp-bar"><div id="hp" class="fill hp"></div><span class="bar-label">HP <b id="hpText">100/100</b></span></div><div class="bar statusbar sp-bar"><div id="sp" class="fill sp"></div><span class="bar-label">SP <b id="spText">40/40</b></span></div><div class="crit-line">CRIT <b id="critText">2%</b></div><div class="stat-grid" id="statGrid"></div><div class="muted">Автопрокачка: <b id="statPoints">Hybrid</b></div></div><div class="right hud-side"><div id="time" class="timer">00:00</div><div class="muted">Убито: <b id="kills">0</b></div><div class="legend">Knight · Base 99 / Job 50</div><div id="buffs" class="buffs"></div><div class="hud-actions"><button id="pauseBtn" class="pause-btn" title="Пауза и навыки">⏸<span id="skillBadge" class="skill-badge hide">0</span></button></div></div></section>
+<section class="panel left top-hud"><div class="hud-main"><div class="title">Ragnarok: Survival</div><div id="job" class="muted">Novice</div><div class="bar statusbar exp-bar"><div id="xp" class="fill exp"></div><span class="bar-label">Base Lv. <b id="level">1</b> | Exp <b id="xpText">0/30</b></span></div><div class="bar statusbar job-exp-bar"><div id="jobXp" class="fill job-exp"></div><span class="bar-label">Job Lv. <b id="jobLevel">1</b> | Exp <b id="jobXpText">0/30</b></span></div><div class="bar statusbar hp-bar"><div id="hp" class="fill hp"></div><span class="bar-label">HP <b id="hpText">100/100</b></span></div><div class="bar statusbar sp-bar"><div id="sp" class="fill sp"></div><span class="bar-label">SP <b id="spText">40/40</b></span></div><div class="crit-line">CRIT <b id="critText">2%</b></div><div class="stat-grid" id="statGrid"></div><div class="muted">Автопрокачка: <b id="statPoints">Hybrid</b></div></div><div class="hud-side" aria-label="Игровая информация"><div id="time" class="timer">00:00</div><div class="muted">Убито: <b id="kills">0</b></div><div class="legend">Knight · Base 99 / Job 50</div><div class="hud-actions"><button id="pauseBtn" class="pause-btn" title="Пауза и навыки" aria-label="Пауза и навыки">⏸<span id="skillBadge" class="skill-badge hide">0</span></button></div><div id="buffs" class="buffs" aria-label="Активные бафы"></div></div></section>
 <section class="panel bottom"><div class="title">Навыки</div><div id="skills" class="skills"></div><div class="legend">Очки навыков: <b id="skillPointsText">0</b> · Касание — направление движения</div></section>
 <div id="toast" class="toast"></div><div id="joystick" class="joystick"><div id="knob" class="knob"></div></div>
 <div id="fatal" class="overlay hide"><div class="box"><div class="logo" style="font-size:38px">ИГРА НЕ ЗАПУЩЕНА</div><p id="fatalText">Не удалось загрузить игровой модуль.</p><button id="fatalReload">ПЕРЕЗАГРУЗИТЬ</button></div></div>
@@ -160,14 +198,15 @@ const PORING_SPRITE_DATA='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACkAAAAn
 const LUNATIC_SPRITE_DATA='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAcCAYAAADr9QYhAAADSElEQVR4nMxXP2gTURx+PRycS3EKCSEIQnFQ6SRGXAqmi4pDBXFRkHSIiEPVJRZEEXQwQ4KgDqJYUdTFFioiVpz8N4ggSIgnTkKLm91Ovpf7Lr/73bvLWR36Qbjc+/N73/t+f947z2wgbFrPpBPHZoOp/bXo/eCRvSN4Prn/KsDze++zbT91fmbkfxF1Agt+ePctAFZWggDv1y+1bZtsx3+0/43tXMpoJUrlUqz/6Mm6GR2Nz/G/+qZYHrdzb965kkuhoTGD3YHIgelq1CYXRjvfV1f7v+WlZfsOd23fVsrDw2KoMp+++OG/PpnqZDVaWJLCO8ExnFMsjwcg9k8xxFiA1IwFF9Ce1if7YS8rjjKV2TNZS8SHhlbIBfbDnt2kaQculVLJYAeaiF7URaR1uWOfjXN12+/3+m6GrR27aK/mJOQkA7dwF1m7Zh8JANNrP8z85kL0zg3JoEYczjTqCUKpykhV0jKCJJDChef3TLEw5iRrwqAGIYwF2q1Owu66jwMQQX2B8Z9vHw8dD2IgVNraJ4DaM8jUPmLKVCqVC9qACXfuIoKdgsjOX78jVeAixAvBlJcqwR7Wevnm0Zy067mISPk+vvdjRkEEi5FIHkU4H3Pgfqqj1/Vcikgjr5cWoskk8nR+QCRLFWmLbiKhhw9eNDWhoTHDWgMjTNdniwsJIho8GmRlBrCx2dNn7f+rF283ZZ/nUiU2OcwqlnimqCaiVZExAiVlTUJaI5uwqX27DzepjlMZHbDa+MTYmpOIVoFz6B70c3M4fBHAMoiHHpRZRY/FjYpgrCQk58I9d290oiPBBa/b7cbc1Dh+pjk4dZNgMIMIFESKp5GXroEiIIKEkHYI8HC6KUsNGN0ycciSAGnXWNnG0iBBQhoeWaUvnwRI8ACkW+RTKwL3YDzjpXXr2hwCmOD6nm6gQWSAC6wZgCYEFXSbCRMCarAPYODKdWNuQgczibWE0OSwS70A7r321/Nj7YgPnEMYT/tYS3skETP47ICseneSHNthGHIjbeXiaCMpAkcMD8a0sHCmNu4YvB5KQrqOSKJTpmYVAAnUEEt+MU4i/EpIvXZmXpBxyTKO+4x0JT9DMFaPA4m8nykbDn8CAAD//4hYJmVCfr1+AAAAAElFTkSuQmCC';const lunaticSprite=new Image();lunaticSprite.src=LUNATIC_SPRITE_DATA;lunaticSprite.onload=()=>{if(typeof draw==='function')draw()};
 const poringTintCanvas=document.createElement('canvas'),poringTintCtx=poringTintCanvas.getContext('2d'),giftBoxSprite=new Image();giftBoxSprite.src=ITEM_DEFS.giftBoxPlain.visual.spriteUrl;giftBoxSprite.onload=()=>{if(typeof draw==='function')draw()};
 const types=Object.fromEntries(Object.values(DB.monsters).map(m=>[m.key,[m.name,m.visual.color,m.visual.shadow,m.combat.hp,m.combat.speed,m.combat.damage,m.combat.exp,m.visual.radius,m]])),monsterSprites={};Object.values(DB.monsters).forEach(m=>{if(!m.visual?.spriteUrl)return;let sprite=new Image();sprite.src=m.visual.spriteUrl;monsterSprites[m.key]=sprite;sprite.onload=()=>{if(typeof draw==='function')draw()};sprite.onerror=()=>{monsterSprites[m.key]=null}});
-const SKILL_DEFS=DB.skills,SKILL_BY_ID=Object.fromEntries(SKILL_DEFS.map(s=>[s.id,s]));
+const SKILL_DEFS=DB.skills,SKILL_BY_ID=Object.fromEntries(SKILL_DEFS.map(s=>[s.id,s])),JOB_RANK={novice:0,swordman:1,knight:2};
 const ups=SKILL_DEFS.map(d=>[d.icon,d.name,d.description,()=>S[d.stateKey]++,d.jobId,d.id]);
-function stageAllows(jobId){let rank={novice:0,swordman:1,knight:2};return rank[jobId]<=rank[STAGE_JOB_IDS[S.stage]]}
+function stageAllows(jobId){return JOB_RANK[jobId]<=JOB_RANK[STAGE_JOB_IDS[S.stage]]}
 function skillAvailable(id){let d=SKILL_BY_ID[id];return !!d&&d.spendable!==false&&stageAllows(d.jobId)&&S[d.stateKey]<d.maxLevel&&d.requires.every(r=>{let dep=SKILL_BY_ID[r.skillId];return dep&&(S[dep.stateKey]||0)>=r.level})}
 function skillIsActive(d){return !!d&&(Number(d.spCost)>0||Number(d.cooldown)>0)}
 function skillIsEnabled(id){return S.skillEnabled?.[id]!==false}
 function skillRuns(id){let d=SKILL_BY_ID[id];return !!d&&skillIsActive(d)&&(S[d.stateKey]||0)>0&&skillIsEnabled(id)}
 function skillMenuVisible(d){return stageAllows(d.jobId)&&(skillIsActive(d)||(S[d.stateKey]||0)>0)}
+function unlockQuestSkillsForStage(){if(!S.questUnlocked)S.questUnlocked={};SKILL_DEFS.filter(d=>d.quest).forEach(d=>{let rank=JOB_RANK[d.jobId],current=JOB_RANK[STAGE_JOB_IDS[S.stage]],required=Math.max(1,Number(d.jobLevelRequirement)||1),unlocked=!!S.questUnlocked[d.id]||(rank<current)||(rank===current&&S.job>=required);if(unlocked){S.questUnlocked[d.id]=true;S[d.stateKey]=Math.max(1,S[d.stateKey]||0)}})}
 function renderSkillToggleBox(box){if(!box)return;let sig=SKILL_DEFS.filter(skillMenuVisible).map(d=>d.id+':'+(S[d.stateKey]||0)+':'+(skillIsEnabled(d.id)?1:0)).join('|');if(box.dataset.signature===sig)return;box.dataset.signature=sig;box.innerHTML='';let pool=SKILL_DEFS.filter(skillMenuVisible);if(!pool.length){box.innerHTML='<span class="muted">Активных навыков пока нет.</span>';return}pool.forEach(d=>{let level=S[d.stateKey]||0,active=skillIsActive(d),enabled=skillIsEnabled(d.id),b=document.createElement('button');b.type='button';b.className='skill '+(active?(enabled?'skill-on':'skill-off'):'skill-passive');b.title=active?(enabled?'Отключить автозапуск':'Включить автозапуск'):d.description;b.innerHTML='<span class="skill-icon">'+d.icon+'</span><span class="skill-info"><span class="skill-name">'+d.name+'</span><span class="skill-level">Lv '+level+'/'+d.maxLevel+(active&&!enabled?'<em class="skill-state"> Off</em>':'')+'</span></span>';if(active&&level>0)b.onclick=()=>{S.skillEnabled[d.id]=!enabled;renderActiveSkills();hud()};else b.disabled=true;box.appendChild(b)})}
 function renderActiveSkills(){renderSkillToggleBox($('skills'));renderSkillToggleBox($('pauseActiveSkills')?.querySelector('.skills'))}
 function activeBuff(id){let b=S.buffs?.[id],d=BUFF_DEFS[id];return b&&d&&b.expiresAt>S.t?d:null}
@@ -176,10 +215,10 @@ function totalStats(){let q={},b=JOB_BONUSES[S.stage]||JOB_BONUSES.Novice;STAT_K
 function autoAllocateStats(){let guard=0;while(S.statPoints>0&&guard++<1000){let choices=STAT_KEYS.map(([k])=>k).filter(k=>S.stats[k]<HYBRID_TARGET[k]&&statCost(S.stats[k])<=S.statPoints);if(!choices.length)break;choices.sort((a,b)=>{let da=(HYBRID_TARGET[a]-S.stats[a])/HYBRID_TARGET[a],db=(HYBRID_TARGET[b]-S.stats[b])/HYBRID_TARGET[b];return db-da||statCost(S.stats[a])-statCost(S.stats[b])});let k=choices[0],cost=statCost(S.stats[k]);S.stats[k]++;S.statPoints-=cost}}
 function recalc(full=false){let q=totalStats(),oldMax=S.max||100,oldSp=S.spMax||40,baseAtk=12+q.str*1.35+Math.floor(q.dex/5)+Math.floor(q.luk/3)+S.basic*1.5+S.bash*3+S.magnum*2+S.provoke*2+S.swordMastery*4+S.twohandMastery*4+S.bowling*6+S.brandish*4+S.pierce*5+buffSum('atk');S.atkMin=Math.max(1,Math.floor(baseAtk*.9));S.atkMax=Math.max(S.atkMin+1,Math.ceil(baseAtk*1.1+q.str*.08));S.atk=(S.atkMin+S.atkMax)/2;S.rate=Math.max(.32,1.25-q.agi*.008-q.dex*.002-S.quicken*.08-S.endure*.012);S.rate*=1-buffSum('aspdRate');S.max=Math.floor(70+q.vit*3.5+S.guard*10+S.hpRecovery*4);S.spMax=48+q.int*2+S.firstAid*2+S.magnum*2+S.bowling*2+S.brandish*2+S.charge*2;S.armor=Math.floor(q.vit/10)+S.guard*2+S.endure*2;S.crit=Math.min(.85,.02+q.luk*.003+S.quicken*.015);S.hit=175+S.lvl+q.dex+Math.floor(q.luk/3)+buffSum('hit');S.flee=100+S.lvl+q.agi+Math.floor(q.luk/5)+S.playDead*2;S.perfect=Math.min(.2,Math.floor(q.luk/10)*.01);S.move=(125+q.agi*.75+S.peco*15)*(1+buffSum('moveRate'));S.mag=60+Math.floor(q.luk/2)+S.peco*12;S.count=1+(S.boomerang>=3?1:0);if(full){S.hp=S.max;S.sp=S.spMax}else{S.hp=Math.min(S.max,S.hp+Math.max(0,S.max-oldMax));S.sp=Math.min(S.spMax,S.sp+Math.max(0,S.spMax-oldSp))}}
 function statCost(v){return Math.floor((v-1)/10)+2}
-function syncJobLevel(){let p=PROGRESSION_BY_STAGE[S.stage]||PROGRESSION[0],old=S.job,baseSpan=Math.max(1,p.baseMilestone-p.baseStart),jobSpan=Math.max(0,p.jobMilestone-p.jobStart),levelOffset=cl(S.lvl-p.baseStart,0,baseSpan);S.job=Math.min(p.jobMilestone,p.jobStart+Math.floor(levelOffset*jobSpan/baseSpan));let gained=Math.max(0,S.job-old);if(gained)S.skillPoints+=gained;return gained}
-function evolveByProgression(){let p=PROGRESSION_BY_STAGE[S.stage];if(p&&p.nextStage&&S.lvl>=p.baseMilestone&&S.job>=p.jobMilestone&&S.skillPoints===0){S.stage=p.nextStage;S.job=1;say('Эволюция: '+S.stage);hud()}}
+function syncJobLevel(){let p=PROGRESSION_BY_STAGE[S.stage]||PROGRESSION[0],old=S.job,baseSpan=Math.max(1,p.baseMilestone-p.baseStart),jobSpan=Math.max(0,p.jobMilestone-p.jobStart),levelOffset=cl(S.lvl-p.baseStart,0,baseSpan);S.job=Math.min(p.jobMilestone,p.jobStart+Math.floor(levelOffset*jobSpan/baseSpan));let gained=Math.max(0,S.job-old);if(gained)S.skillPoints+=gained;unlockQuestSkillsForStage();return gained}
+function evolveByProgression(){let p=PROGRESSION_BY_STAGE[S.stage];if(p&&p.nextStage&&S.lvl>=p.baseMilestone&&S.job>=p.jobMilestone&&S.skillPoints===0){S.stage=p.nextStage;S.job=1;unlockQuestSkillsForStage();say('Эволюция: '+S.stage);hud()}}
 function spendStat(k){let v=S.stats[k],cost=statCost(v);if(S.statPoints<cost||v>=99)return;let old=S.max;S.stats[k]++;S.statPoints-=cost;recalc();if(k==='vit')S.hp+=S.max-old;hud()}
-function reset(){Object.assign(S,{run:false,pause:false,choose:false,end:false,t:0,spd:1,kills:0,lvl:1,xp:0,need:30,hp:100,max:100,sp:40,spMax:40,stage:'Novice',job:1,skillPoints:0,skillEnabled:{},statPoints:48,stats:{str:1,agi:1,vit:1,int:1,dex:1,luk:1},buffs:{},atk:18,atkMin:16,atkMax:20,rate:1.15,armor:0,mag:72,crit:.05,hit:176,flee:102,perfect:0,count:1,move:145,movePower:0,basic:0,firstAid:0,playDead:0,bash:0,endure:0,hpRecovery:0,magnum:0,provoke:0,swordMastery:0,twohandMastery:0,berserk:0,fatalBlow:0,hpRecoveryMoving:0,bowling:0,brandish:0,cavalier:0,pierce:0,boomerang:0,spearMastery:0,spearStab:0,quicken:0,peco:0,counter:0,charge:0,oneHandQuicken:0,guard:0,bowlingSeen:false,nextBoss:300,inv:0,attack:0,special:0,spawn:0});recalc(true);autoAllocateStats();recalc(true);P.x=P.y=0;en=[];shots=[];gems=[];fx=[];parts=[];dnums=[];skillTexts=[];eid=1;touch.on=false;touch.dx=touch.dy=0;['start','levelUp','pause','end'].forEach(id=>$(id).classList.toggle('hide',id!=='start'));hud();if(typeof updateJoystick==='function')updateJoystick()}
+function reset(){Object.assign(S,{run:false,pause:false,choose:false,end:false,t:0,spd:1,kills:0,lvl:1,xp:0,need:30,hp:100,max:100,sp:40,spMax:40,stage:'Novice',job:1,skillPoints:0,skillEnabled:{},questUnlocked:{},statPoints:48,stats:{str:1,agi:1,vit:1,int:1,dex:1,luk:1},buffs:{},atk:18,atkMin:16,atkMax:20,rate:1.15,armor:0,mag:72,crit:.05,hit:176,flee:102,perfect:0,count:1,move:145,movePower:0,basic:0,firstAid:0,playDead:0,bash:0,endure:0,hpRecovery:0,magnum:0,provoke:0,swordMastery:0,twohandMastery:0,berserk:0,fatalBlow:0,hpRecoveryMoving:0,bowling:0,brandish:0,cavalier:0,pierce:0,boomerang:0,spearMastery:0,spearStab:0,quicken:0,peco:0,counter:0,charge:0,oneHandQuicken:0,guard:0,bowlingSeen:false,nextBoss:300,inv:0,attack:0,special:0,spawn:0});unlockQuestSkillsForStage();recalc(true);autoAllocateStats();recalc(true);P.x=P.y=0;en=[];shots=[];gems=[];fx=[];parts=[];dnums=[];skillTexts=[];eid=1;touch.on=false;touch.dx=touch.dy=0;['start','levelUp','pause','end'].forEach(id=>$(id).classList.toggle('hide',id!=='start'));hud();if(typeof updateJoystick==='function')updateJoystick()}
 function start(){ $('start').classList.add('hide');S.run=true;last=performance.now();say('Испытание началось!');requestAnimationFrame(loop)}
 function say(t){$('toast').textContent=t;$('toast').classList.add('show');clearTimeout(say.timer);say.timer=setTimeout(()=>$('toast').classList.remove('show'),2200)}
 function time(t){return String(Math.floor(t/60)).padStart(2,'0')+':'+String(Math.floor(t%60)).padStart(2,'0')}
@@ -236,7 +275,7 @@ function drawDamageNumber(n){let s=screen(n.x,n.y-n.lift),alpha=cl(n.life/.22,0,
 function skillLabel(n){let s=screen(n.x,n.y);x.save();x.globalAlpha=cl(n.life/n.m,0,1)*.72;x.textAlign='center';x.textBaseline='middle';x.font='700 11px Arial';x.lineJoin='round';x.fillStyle='#e7f6ff';x.strokeStyle='#13212b';x.lineWidth=3;x.strokeText(n.text,s.x,s.y);x.fillText(n.text,s.x,s.y);x.restore()}
 function effect(f){let s=screen(f.x,f.y);x.save();x.translate(s.x,s.y);x.globalAlpha=cl(f.life/f.m,0,1)*.75;x.strokeStyle=f.col;if(f.kind==='bowling'){x.lineWidth=10;x.beginPath();x.arc(0,0,f.r,0,TAU);x.stroke();x.globalAlpha*=.55;x.lineWidth=3;x.beginPath();x.arc(0,0,f.r*.72,0,TAU);x.stroke()}else if(f.kind==='melee'){x.rotate(f.a);x.lineWidth=7;x.beginPath();x.arc(0,0,f.r,-.95,.95);x.stroke();x.globalAlpha*=.7;x.lineWidth=3;x.beginPath();x.moveTo(-10,0);x.lineTo(f.r,0);x.stroke()}else{x.lineWidth=f.kind==='ring'?7:16;if(f.kind==='ring'){x.beginPath();x.arc(0,0,f.r,0,TAU);x.stroke()}else{x.rotate(f.a);x.beginPath();x.moveTo(0,0);x.lineTo(f.r,0);x.stroke()}}x.restore()}
 function particle(q){let s=screen(q.x,q.y);x.globalAlpha=cl(q.life/q.m,0,1);x.fillStyle=q.col;x.fillRect(s.x,s.y,q.r,q.r);x.globalAlpha=1}
-function hud(){$('level').textContent=S.lvl;$('jobLevel').textContent=S.job;$('job').textContent=S.stage;$('hpText').textContent=Math.ceil(Math.max(0,S.hp))+'/'+S.max;$('spText').textContent=Math.ceil(S.sp)+'/'+S.spMax;$('hp').style.width=cl(S.hp/S.max,0,1)*100+'%';$('sp').style.width=cl(S.sp/S.spMax,0,1)*100+'%';$('time').textContent=time(S.t);$('kills').textContent=S.kills;document.querySelector('.right .legend').textContent=S.stage+' · Base 99 / Job 50';let q=totalStats();$('statGrid').innerHTML=STAT_KEYS.map(([k,n])=>'<div class="stat-cell"><span>'+n+' <em>'+q[k]+'</em></span></div>').join('');$('statPoints').textContent='Hybrid';$('skillPointsText').textContent=S.skillPoints;renderActiveSkills();$('buffs').innerHTML=Object.keys(BUFF_DEFS).filter(id=>activeBuff(id)).map(id=>'<div class="buff">'+BUFF_DEFS[id].name+' · '+Math.ceil(S.buffs[id].expiresAt-S.t)+'с</div>').join('');updateSkillIndicator()}
+function hud(){$('level').textContent=S.lvl;$('jobLevel').textContent=S.job;$('job').textContent=S.stage;$('hpText').textContent=Math.ceil(Math.max(0,S.hp))+'/'+S.max;$('spText').textContent=Math.ceil(S.sp)+'/'+S.spMax;$('hp').style.width=cl(S.hp/S.max,0,1)*100+'%';$('sp').style.width=cl(S.sp/S.spMax,0,1)*100+'%';$('time').textContent=time(S.t);$('kills').textContent=S.kills;let legend=document.querySelector('.hud-side .legend');if(legend)legend.textContent=S.stage+' · Base 99 / Job 50';let q=totalStats();$('statGrid').innerHTML=STAT_KEYS.map(([k,n])=>'<div class="stat-cell"><span>'+n+' <em>'+q[k]+'</em></span></div>').join('');$('statPoints').textContent='Hybrid';$('skillPointsText').textContent=S.skillPoints;renderActiveSkills();$('buffs').innerHTML=Object.keys(BUFF_DEFS).filter(id=>activeBuff(id)).map(id=>{let d=BUFF_DEFS[id],left=Math.max(0,Math.ceil(S.buffs[id].expiresAt-S.t));return '<div class="buff" title="'+d.skill+' '+d.level+' · '+left+' сек."><span class="buff-icon-wrap"><span class="buff-fallback">'+(d.icon||'✦')+'</span><img class="buff-icon" src="'+(d.iconUrl||'')+'" alt="" onerror="this.classList.add(\'is-missing\')"></span><span class="buff-copy"><b>'+d.name+'</b><span>'+left+' сек.</span></span></div>'}).join('');updateSkillIndicator()}
 function finish(win){S.run=false;S.end=true;$('end').classList.remove('hide');$('endTitle').textContent=win?'МИДГАРД ВЫДЕРЖАЛ ИСПЫТАНИЕ':'ГЕРОЙ ПАЛ В БОЮ';$('endStats').innerHTML='Время: <b>'+time(S.t)+'</b><br>Уровень: <b>'+S.lvl+'</b> · Профессия: <b>'+S.stage+'</b><br>Монстров повержено: <b>'+S.kills+'</b>'}
 function pause(){if(!S.run||S.end)return;if(S.pause){evolveByProgression();S.pause=false;$('pause').classList.add('hide');hud()}else openPause(false)}
 async function fullscreen(){let a=$('app'),on=!a.classList.contains('immersive');a.classList.toggle('immersive',on);try{if(!on&&(document.fullscreenElement||document.webkitFullscreenElement)){if(document.exitFullscreen)await document.exitFullscreen();else if(document.webkitExitFullscreen)document.webkitExitFullscreen();return}if(on){if(a.requestFullscreen)await a.requestFullscreen();else if(a.webkitRequestFullscreen)await a.webkitRequestFullscreen();else say('В Яндекс.Браузере включён компактный режим. Панель браузера скрывается только через меню браузера.')}}catch(e){say('Включён компактный режим. Для полного экрана используйте меню Яндекс.Браузера')}}
@@ -256,9 +295,10 @@ document.addEventListener('selectstart',e=>{if(e.target.closest('#app')){e.preve
 addEventListener('resize',resizeCanvas);$('startBtn').onclick=start;$('resume').onclick=pause;$('pauseBtn').onclick=()=>pause();$('restart').onclick=()=>{reset();start()};$('fatalReload').onclick=()=>location.reload();document.querySelectorAll('.speed').forEach(b=>b.onclick=()=>{S.spd=+b.dataset.s;document.querySelectorAll('.speed').forEach(q=>q.classList.remove('active'));b.classList.add('active')});
 function jobExpDisplay(){let p=PROGRESSION_BY_STAGE[S.stage]||PROGRESSION[0],baseSpan=Math.max(1,p.baseMilestone-p.baseStart),jobSpan=Math.max(1,p.jobMilestone-p.jobStart),levelOffset=cl(S.lvl-p.baseStart,0,baseSpan),fraction=cl(S.xp/S.need,0,1),progress=(levelOffset+fraction)*jobSpan/baseSpan,whole=Math.floor(progress),part=cl(progress-whole,0,1);return{xp:Math.floor(part*30),need:30}}
 function updateXpText(){let j=jobExpDisplay();$('xpText').textContent=Math.floor(S.xp)+'/'+S.need;$('xp').style.width=cl(S.xp/S.need,0,1)*100+'%';$('jobXpText').textContent=j.xp+'/'+j.need;$('jobXp').style.width=j.xp/j.need*100+'%';$('critText').textContent=Math.round(S.crit*100)+'%'}setInterval(updateXpText,100);
-document.querySelector('.right').addEventListener('pointerdown',e=>{if(!matchMedia('(orientation: portrait)').matches||!S.run||S.end||e.target.closest('button'))return;e.preventDefault();pause()},{passive:false});
+document.querySelector('.hud-side').addEventListener('pointerdown',e=>{if(!matchMedia('(orientation: portrait)').matches||!S.run||S.end||e.target.closest('button'))return;e.preventDefault();pause()},{passive:false});
 resizeCanvas();reset();updateXpText();draw();
 })();
 </script>
 </body>
 </html>
+
