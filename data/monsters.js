@@ -45,7 +45,7 @@ window.RS_MONSTERS = {
     id: 1018, key: 'creamy', name: 'Creamy', source: 'https://db.irowiki.org/db/monster-info/1018/', sourceRefs: ['irowiki_monster_db', 'irowiki_monster_creamy'],
     classification: { size: 'small', race: 'insect', element: 'wind', elementLevel: 1, modes: ['passive'] },
     stats: { level: 23, def: 28, mdef: 20, agi: 1, vit: 1, int: 0, dex: 1, luk: 20, hit: 224, flee: 194 },
-    combat: { hp: 378, atkMin: 61, atkMax: 62, range: 1, aspd: 143.2, moveMs: 150, speed: 74, damage: 62, baseExp: 144, jobExp: 162, exp: 144 },
+    combat: { hp: 378, atkMin: 61, atkMax: 62, range: 1, aspd: 143.2, moveMs: 150, speed: 60, damage: 62, baseExp: 144, jobExp: 162, exp: 144 },
     visual: { spriteKey: 'creamy', spriteUrl: 'https://nn.ai4rei.net/dev/npclist/i/CREAMY.gif', color: '#d8a6e8', shadow: '#845c9b', radius: 14 }
   },
   soldierSkeleton: {
