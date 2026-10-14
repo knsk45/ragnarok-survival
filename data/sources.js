@@ -47,6 +47,42 @@ window.RS_SOURCES = {
     irowiki_monster_lunatic: {
       id: 'irowiki_monster_lunatic', type: 'monster', authority: 'reference',
       title: 'iRO Wiki DB — Lunatic', url: 'https://db.irowiki.org/db/monster-info/1063/'
+    },
+    irowiki_monster_rocker: {
+      id: 'irowiki_monster_rocker', type: 'monster', authority: 'reference',
+      title: 'iRO Wiki DB — Rocker', url: 'https://db.irowiki.org/db/monster-info/1052/'
+    },
+    irowiki_monster_creamy: {
+      id: 'irowiki_monster_creamy', type: 'monster', authority: 'reference',
+      title: 'iRO Wiki DB — Creamy', url: 'https://db.irowiki.org/db/monster-info/1018/'
+    },
+    irowiki_monster_soldier_skeleton: {
+      id: 'irowiki_monster_soldier_skeleton', type: 'monster', authority: 'reference',
+      title: 'iRO Wiki DB — Soldier Skeleton', url: 'https://db.irowiki.org/db/monster-info/1028/'
+    },
+    irowiki_monster_orc_warrior: {
+      id: 'irowiki_monster_orc_warrior', type: 'monster', authority: 'reference',
+      title: 'iRO Wiki DB — Orc Warrior', url: 'https://db.irowiki.org/db/monster-info/1023/'
+    },
+    irowiki_monster_myst: {
+      id: 'irowiki_monster_myst', type: 'monster', authority: 'reference',
+      title: 'iRO Wiki DB — Myst', url: 'https://db.irowiki.org/db/monster-info/1151/'
+    },
+    irowiki_monster_savage: {
+      id: 'irowiki_monster_savage', type: 'monster', authority: 'reference',
+      title: 'iRO Wiki DB — Savage', url: 'https://db.irowiki.org/db/monster-info/1166/'
+    },
+    irowiki_monster_zerom: {
+      id: 'irowiki_monster_zerom', type: 'monster', authority: 'reference',
+      title: 'iRO Wiki DB — Zerom', url: 'https://db.irowiki.org/db/monster-info/1178/'
+    },
+    irowiki_monster_goat: {
+      id: 'irowiki_monster_goat', type: 'monster', authority: 'reference',
+      title: 'iRO Wiki DB — Goat', url: 'https://db.irowiki.org/db/monster-info/1372/'
+    },
+    irowiki_monster_marionette: {
+      id: 'irowiki_monster_marionette', type: 'monster', authority: 'reference',
+      title: 'iRO Wiki DB — Marionette', url: 'https://db.irowiki.org/db/monster-info/1143/'
     }
   }
 };
