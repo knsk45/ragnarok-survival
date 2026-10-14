@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- 0.6.19: portrait HUD and touch-safe pause controls -->
+<!-- 0.6.20: fix pause hit target -->
 <html lang="ru">
 <head>
 <meta charset="utf-8">
@@ -24,6 +24,7 @@ canvas{touch-action:none}
 .immersive .bottom{display:none}.immersive .stat-grid,.immersive .left>div:last-child{display:none}
 canvas{object-fit:fill;background:#467b49}
 .pause-btn{position:relative;padding:4px 8px;font-size:16px;margin-left:4px}
+.pause-btn{pointer-events:auto}
 .skill-badge{position:absolute;right:-5px;top:-7px;min-width:16px;height:16px;padding:0 4px;border-radius:9px;background:#ff536c;color:#fff;font-size:10px;line-height:16px;text-align:center}
 .buffs{display:flex;flex-direction:column;gap:2px;margin-top:5px;color:#bfe8ff;font-size:10px;line-height:1.15}
 .buff{white-space:nowrap}
@@ -72,17 +73,17 @@ canvas{object-fit:fill;background:#467b49}
 #cards{max-height:min(60vh,430px);overflow-y:scroll;-webkit-overflow-scrolling:touch;grid-template-columns:repeat(2,minmax(0,1fr));touch-action:pan-y;overscroll-behavior:contain;padding:2px;pointer-events:auto}
 @media(max-width:650px){#cards{grid-template-columns:1fr}}
 </style>
-<script src="data/sources.js?v=0.6.19"></script>
-<script src="data/stats.js?v=0.6.19"></script>
-<script src="data/jobs.js?v=0.6.19"></script>
-<script src="data/characters.js?v=0.6.19"></script>
-<script src="data/progression.js?v=0.6.19"></script>
-<script src="data/builds.js?v=0.6.19"></script>
-<script src="data/skills.js?v=0.6.19"></script>
-<script src="data/monsters.js?v=0.6.19"></script>
-<script src="data/buffs.js?v=0.6.19"></script>
-<script src="data/items.js?v=0.6.19"></script>
-<script src="data/database.js?v=0.6.19"></script>
+<script src="data/sources.js?v=0.6.20"></script>
+<script src="data/stats.js?v=0.6.20"></script>
+<script src="data/jobs.js?v=0.6.20"></script>
+<script src="data/characters.js?v=0.6.20"></script>
+<script src="data/progression.js?v=0.6.20"></script>
+<script src="data/builds.js?v=0.6.20"></script>
+<script src="data/skills.js?v=0.6.20"></script>
+<script src="data/monsters.js?v=0.6.20"></script>
+<script src="data/buffs.js?v=0.6.20"></script>
+<script src="data/items.js?v=0.6.20"></script>
+<script src="data/database.js?v=0.6.20"></script>
 </head>
 <body>
 <main id="app">
