@@ -15,6 +15,7 @@
 - `sources.js` — каталог первоисточников и стабильные `sourceRefs` для профессий, навыков и монстров.
 - `database.js.settings.maxEnemies` — ограничение одновременно живых монстров для контроля нагрузки на мобильных браузерах.
 - `database.js.settings.enemyPowerCap` — верхний предел масштабирования силы монстров; используется вместе с `maxEnemies`.
+- `database.js.settings.bossHpMultiplier` — множитель HP элитных боссов.
 
 ## Правила расширения
 
