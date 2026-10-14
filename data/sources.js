@@ -28,6 +28,14 @@ window.RS_SOURCES = {
       id: 'irowiki_knight', type: 'job', authority: 'reference',
       title: 'iRO Wiki — Knight', url: 'https://irowiki.org/wiki/Knight'
     },
+    irowiki_stats: {
+      id: 'irowiki_stats', type: 'stats', authority: 'reference',
+      title: 'iRO Wiki — Stats', url: 'https://irowiki.org/wiki/Stats'
+    },
+    irowiki_max_hp: {
+      id: 'irowiki_max_hp', type: 'formula', authority: 'reference',
+      title: 'iRO Wiki — Max HP', url: 'https://irowiki.org/wiki/Max_HP'
+    },
     oldskillsim_index: {
       id: 'oldskillsim_index', type: 'skill-simulator', authority: 'reference',
       title: 'Old iRO Wiki Skill Simulator', url: 'https://oldskillsim.irowiki.org/'
