@@ -2,16 +2,16 @@ const progression = window.RS_PROGRESSION || {
   id: 'classic_knight_path',
   milestones: [
     { stage: 'Novice', jobId: 'novice', baseStart: 1, baseMilestone: 15, jobStart: 1, jobMilestone: 10, nextStage: 'Swordman' },
-    { stage: 'Swordman', jobId: 'swordman', baseStart: 15, baseMilestone: 65, jobStart: 10, jobMilestone: 50, nextStage: 'Knight' },
-    { stage: 'Knight', jobId: 'knight', baseStart: 65, baseMilestone: 80, jobStart: 50, jobMilestone: 50, nextStage: null }
+    { stage: 'Swordman', jobId: 'swordman', baseStart: 15, baseMilestone: 65, jobStart: 1, jobMilestone: 50, nextStage: 'Knight' },
+    { stage: 'Knight', jobId: 'knight', baseStart: 65, baseMilestone: 80, jobStart: 1, jobMilestone: 50, nextStage: null }
   ],
   levelCap: { base: 99, job: 50 }
 };
 
 window.RS_DATABASE = {
   schemaVersion: '1.0.0',
-  contentVersion: 2,
-  gameVersion: '0.5.1',
+  contentVersion: 3,
+  gameVersion: '0.6.0',
   sources: {
     monsterDatabase: 'https://db.irowiki.org/db/',
     classDatabase: 'https://irowiki.org/wiki/Classes',
