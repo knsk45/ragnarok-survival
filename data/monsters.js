@@ -18,7 +18,7 @@ window.RS_MONSTERS = {
     classification: { size: 'small', race: 'insect', element: 'earth', elementLevel: 1, modes: ['aggressive'] },
     stats: { level: 2, def: 5, mdef: 0, agi: 5, vit: 2, int: 0, dex: 7, luk: 2 },
     combat: { hp: 52, atkMin: 8, atkMax: 12, range: 1, aspd: 120, moveMs: 300, speed: 55, damage: 10, baseExp: 14, jobExp: 9, exp: 14 },
-    visual: { spriteKey: 'poring', color: '#75bc5e', shadow: '#3e713c', radius: 14 }
+    visual: { spriteKey: 'fabre', spriteUrl: 'assets/monsters/fabre.svg', facing: 'right', color: '#75bc5e', shadow: '#3e713c', radius: 14 }
   },
   poporing: {
     id: 1031, key: 'poporing', name: 'Poporing', source: 'prototype',
