@@ -16,8 +16,8 @@ const sourceRegistry = window.RS_SOURCES || {
 
 window.RS_DATABASE = {
   schemaVersion: '1.0.0',
-  contentVersion: 7,
-  gameVersion: '0.6.4',
+  contentVersion: 8,
+  gameVersion: '0.6.5',
   sourceRegistry,
   sources: {
     monsterDatabase: 'https://db.irowiki.org/db/',
@@ -28,7 +28,8 @@ window.RS_DATABASE = {
   },
   settings: {
     infiniteSp: true,
-    maxEnemies: 60
+    maxEnemies: 60,
+    enemyPowerCap: 7
   },
   stats: window.RS_STATS,
   jobs: window.RS_JOBS,
