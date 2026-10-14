@@ -1,0 +1,11 @@
+{
+  "name": "ragnarok-survival",
+  "version": "0.7.0",
+  "private": true,
+  "scripts": {
+    "test": "node --test --test-force-exit tests/*.test.cjs"
+  },
+  "devDependencies": {
+    "jsdom": "26.1.0"
+  }
+}
