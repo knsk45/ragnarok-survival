@@ -28,7 +28,7 @@ window.RS_MONSTERS = {
     visual: { spriteKey: 'poring', color: '#79ca76', shadow: '#398954', radius: 18 }
   },
   orc: {
-    id: 1023, key: 'orc_warrior', name: 'Orc Warrior', source: 'prototype',
+    id: 1023, key: 'orc', name: 'Orc Warrior', source: 'prototype',
     classification: { size: 'medium', race: 'demihuman', element: 'earth', elementLevel: 1, modes: ['aggressive', 'elite'] },
     stats: { level: 44, def: 40, mdef: 5, agi: 20, vit: 30, int: 0, dex: 25, luk: 5 },
     combat: { hp: 190, atkMin: 35, atkMax: 52, range: 1, aspd: 90, moveMs: 500, speed: 50, damage: 23, baseExp: 120, jobExp: 80, exp: 120 },
