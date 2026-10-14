@@ -3,6 +3,7 @@ window.RS_CHARACTERS = {
     id: 'knight_male',
     name: 'Knight',
     gender: 'male',
+    sourceRefs: ['irowiki_novice', 'irowiki_swordman', 'irowiki_knight'],
     playable: true,
     baseStats: { str: 1, agi: 1, vit: 1, int: 1, dex: 1, luk: 1 },
     startingJobId: 'novice',
