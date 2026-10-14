@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- 0.6.18: Creamy balance and Gift Box buff drops -->
+<!-- 0.6.19: portrait HUD and touch-safe pause controls -->
 <html lang="ru">
 <head>
 <meta charset="utf-8">
@@ -47,16 +47,21 @@ canvas{object-fit:fill;background:#467b49}
 .level-line>.crit-label{margin-left:auto}
 .crit-label b{color:#ffd66b}
 .exp{background:#f4f7fb}
+.job-exp{background:#bf77e8}
+.crit-line{color:#b7c3cf;font-size:11px;text-align:right;line-height:1.1}
+.crit-line b{color:#ffd66b}
 .exp-bar .bar-label{color:#fff;text-shadow:0 1px 2px #000,0 0 3px #000}
 .toast{top:auto;bottom:102px;transform:translateX(-50%);white-space:nowrap}
 @media (orientation:portrait){
-  .left{right:150px;width:auto}
-  .right{width:138px}
-  .left>.sp-bar{display:block}
-  .left>.xp-line{display:block;font-size:9px}
-  .left>.hp-bar,.left>.sp-bar,.left>.exp-bar{height:16px;margin:3px 0}
-  .left>.level-line{display:flex;font-size:10px;margin:0 0 1px}
-  .level-line>#job{font-size:10px;margin-right:1px}
+  .left{left:6px;right:6px;top:6px;width:auto;padding:6px;pointer-events:auto}
+  .right{left:6px;right:6px;top:112px;width:auto;padding:6px;pointer-events:auto;text-align:right}
+  .left .title,.left>#job{display:none}
+  .left>.statusbar{height:17px;margin:3px 0}
+  .left .bar-label{font-size:9px;white-space:nowrap}
+  .left>.crit-line{display:block;margin:3px 2px 0;font-size:10px}
+  .left>.stat-grid,.left>div:last-child{display:none}
+  .right .pause-btn{min-width:56px;min-height:42px;font-size:23px;padding:4px 12px}
+  .right .full{min-height:42px;font-size:20px;padding:4px 10px}
   .toast{top:auto;bottom:92px}
 }
 </style>
@@ -67,22 +72,22 @@ canvas{object-fit:fill;background:#467b49}
 #cards{max-height:min(60vh,430px);overflow-y:scroll;-webkit-overflow-scrolling:touch;grid-template-columns:repeat(2,minmax(0,1fr));touch-action:pan-y;overscroll-behavior:contain;padding:2px;pointer-events:auto}
 @media(max-width:650px){#cards{grid-template-columns:1fr}}
 </style>
-<script src="data/sources.js?v=0.6.17"></script>
-<script src="data/stats.js?v=0.6.17"></script>
-<script src="data/jobs.js?v=0.6.17"></script>
-<script src="data/characters.js?v=0.6.17"></script>
-<script src="data/progression.js?v=0.6.17"></script>
-<script src="data/builds.js?v=0.6.17"></script>
-<script src="data/skills.js?v=0.6.17"></script>
-<script src="data/monsters.js?v=0.6.18"></script>
-<script src="data/buffs.js?v=0.6.18"></script>
-<script src="data/items.js?v=0.6.18"></script>
-<script src="data/database.js?v=0.6.18"></script>
+<script src="data/sources.js?v=0.6.19"></script>
+<script src="data/stats.js?v=0.6.19"></script>
+<script src="data/jobs.js?v=0.6.19"></script>
+<script src="data/characters.js?v=0.6.19"></script>
+<script src="data/progression.js?v=0.6.19"></script>
+<script src="data/builds.js?v=0.6.19"></script>
+<script src="data/skills.js?v=0.6.19"></script>
+<script src="data/monsters.js?v=0.6.19"></script>
+<script src="data/buffs.js?v=0.6.19"></script>
+<script src="data/items.js?v=0.6.19"></script>
+<script src="data/database.js?v=0.6.19"></script>
 </head>
 <body>
 <main id="app">
 <canvas id="game" width="960" height="540"></canvas>
-<section class="panel left"><div class="title">Ragnarok: Survival</div><div id="job" class="muted">Novice</div><div class="level-line"><span class="muted">Base / Job</span> <b id="level">1</b>/<b id="jobLevel">1</b></div><div class="bar statusbar hp-bar"><div id="hp" class="fill hp"></div><span class="bar-label">HP <b id="hpText">100/100</b></span></div><div class="bar statusbar sp-bar"><div id="sp" class="fill sp"></div><span class="bar-label">SP <b id="spText">40/40</b></span></div><div class="stat-grid" id="statGrid"></div><div class="muted">Автопрокачка: <b id="statPoints">Hybrid</b></div></section>
+<section class="panel left"><div class="title">Ragnarok: Survival</div><div id="job" class="muted">Novice</div><div class="bar statusbar exp-bar"><div id="xp" class="fill exp"></div><span class="bar-label">Base Lv. <b id="level">1</b> | Exp <b id="xpText">0/30</b></span></div><div class="bar statusbar job-exp-bar"><div id="jobXp" class="fill job-exp"></div><span class="bar-label">Job Lv. <b id="jobLevel">1</b> | Exp <b id="jobXpText">0/30</b></span></div><div class="bar statusbar hp-bar"><div id="hp" class="fill hp"></div><span class="bar-label">HP <b id="hpText">100/100</b></span></div><div class="bar statusbar sp-bar"><div id="sp" class="fill sp"></div><span class="bar-label">SP <b id="spText">40/40</b></span></div><div class="crit-line">CRIT <b id="critText">2%</b></div><div class="stat-grid" id="statGrid"></div><div class="muted">Автопрокачка: <b id="statPoints">Hybrid</b></div></section>
 <section class="panel right"><div id="time" class="timer">00:00</div><div class="muted">Убито: <b id="kills">0</b></div><div class="legend">Knight · Base 99 / Job 50</div><div id="buffs" class="buffs"></div><div style="margin-top:8px"><button class="speed active" data-s="1">1×</button><button class="speed" data-s="2">2×</button><button class="speed" data-s="4">4×</button><button id="pauseBtn" class="pause-btn" title="Пауза и навыки">⏸<span id="skillBadge" class="skill-badge hide">0</span></button><button id="fullscreenBtn" class="full" title="Полный экран">⛶</button></div></section>
 <section class="panel bottom"><div class="title">Навыки</div><div id="skills" class="skills"></div><div class="legend">Очки навыков: <b id="skillPointsText">0</b> · Касание — направление движения</div></section>
 <div id="toast" class="toast"></div><div id="joystick" class="joystick"><div id="knob" class="knob"></div></div>
@@ -198,9 +203,9 @@ function clearSelection(){let s=window.getSelection?.();if(s&&s.removeAllRanges)
 const app=document.getElementById('app');app.addEventListener('touchstart',e=>{clearSelection();if(!e.target.closest('button')&&!e.target.closest('#cards')&&!e.target.closest('#pauseCards'))e.preventDefault()},{capture:true,passive:false});app.addEventListener('touchmove',e=>{clearSelection();if(e.target.closest('#cards')||e.target.closest('#pauseCards'))return;e.preventDefault()},{capture:true,passive:false});app.addEventListener('touchend',clearSelection,{passive:true});app.addEventListener('pointerdown',clearSelection,{passive:true});
 document.addEventListener('selectstart',e=>{if(e.target.closest('#app')){e.preventDefault();clearSelection()}});document.addEventListener('dragstart',e=>{if(e.target.closest('#app'))e.preventDefault()});document.addEventListener('contextmenu',e=>{if(e.target.closest('#app')){e.preventDefault();clearSelection()}});document.addEventListener('dblclick',e=>{if(e.target.closest('#app')){e.preventDefault();clearSelection()}},{passive:false});
 addEventListener('resize',resizeCanvas);$('startBtn').onclick=start;$('resume').onclick=pause;$('pauseBtn').onclick=()=>pause();$('restart').onclick=()=>{reset();start()};$('fatalReload').onclick=()=>location.reload();$('fullscreenBtn').onclick=fullscreen;document.querySelectorAll('.speed').forEach(b=>b.onclick=()=>{S.spd=+b.dataset.s;document.querySelectorAll('.speed').forEach(q=>q.classList.remove('active'));b.classList.add('active')});
-const levelLine=document.querySelector('.left .level-line'),jobLabel=$('job');levelLine.innerHTML='';levelLine.append(jobLabel);levelLine.insertAdjacentHTML('beforeend','<b><span id="level">1</span>/<span id="jobLevel">1</span></b><span class="crit-label">CRIT <b id="critText">2%</b></span>');
-const xpBar=document.createElement('div');xpBar.className='bar statusbar exp-bar';xpBar.innerHTML='<div id="xp" class="fill exp"></div><span class="bar-label">Base EXP <b id="xpText">0/30</b></span>';document.querySelector('.left .sp-bar').after(xpBar);
-function updateXpText(){$('xpText').textContent=Math.floor(S.xp)+'/'+S.need;$('xp').style.width=cl(S.xp/S.need,0,1)*100+'%';$('critText').textContent=Math.round(S.crit*100)+'%'}setInterval(updateXpText,100);
+function jobExpDisplay(){let p=PROGRESSION_BY_STAGE[S.stage]||PROGRESSION[0],baseSpan=Math.max(1,p.baseMilestone-p.baseStart),jobSpan=Math.max(1,p.jobMilestone-p.jobStart),levelOffset=cl(S.lvl-p.baseStart,0,baseSpan),fraction=cl(S.xp/S.need,0,1),progress=(levelOffset+fraction)*jobSpan/baseSpan,whole=Math.floor(progress),part=cl(progress-whole,0,1);return{xp:Math.floor(part*30),need:30}}
+function updateXpText(){let j=jobExpDisplay();$('xpText').textContent=Math.floor(S.xp)+'/'+S.need;$('xp').style.width=cl(S.xp/S.need,0,1)*100+'%';$('jobXpText').textContent=j.xp+'/'+j.need;$('jobXp').style.width=j.xp/j.need*100+'%';$('critText').textContent=Math.round(S.crit*100)+'%'}setInterval(updateXpText,100);
+document.querySelector('.right').addEventListener('pointerdown',e=>{if(!matchMedia('(orientation: portrait)').matches||!S.run||S.end||e.target.closest('button'))return;e.preventDefault();pause()},{passive:false});
 resizeCanvas();reset();updateXpText();draw();
 })();
 </script>
