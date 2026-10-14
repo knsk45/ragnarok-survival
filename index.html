@@ -178,6 +178,17 @@ body.portrait-ui .top-hud .hud-side .buffs{max-height:47px!important}
   .bottom .skill{flex-basis:82px;width:82px;height:40px}
 }
 </style>
+<style>
+/* Pause has one scroll surface and a permanently visible footer. */
+#pause{height:100%;min-height:0;touch-action:pan-y;padding:8px}
+#pause .box{display:flex;flex-direction:column;max-height:calc(100% - 16px);max-height:min(calc(100% - 16px),calc(100dvh - 32px));min-height:0;overflow:hidden;padding:14px}
+#pause .pause-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding:3px 4px 10px}
+#pause #pauseCards{max-height:none;overflow:visible;touch-action:pan-y}
+#pause #resume{flex:0 0 auto;display:block;width:100%;min-height:48px;margin:8px 0 0;position:relative;z-index:1;background:#36536c}
+#pause .pause-active-skills .skills{flex-wrap:wrap;overflow:visible}
+/* Legacy .left>div:last-child hid the entire right HUD in portrait. */
+@media(orientation:portrait){.left.top-hud>.hud-side{display:flex!important}}
+</style>
 <script src="data/sources.js?v=0.6.26"></script>
 <script src="data/stats.js?v=0.6.26"></script>
 <script src="data/jobs.js?v=0.6.26"></script>
@@ -229,7 +240,7 @@ function skillAvailable(id){let d=SKILL_BY_ID[id];return !!d&&d.spendable!==fals
 function skillIsActive(d){return !!d&&(Number(d.spCost)>0||Number(d.cooldown)>0)}
 function skillIsEnabled(id){return S.skillEnabled?.[id]!==false}
 function skillRuns(id){let d=SKILL_BY_ID[id];return !!d&&skillIsActive(d)&&(S[d.stateKey]||0)>0&&skillIsEnabled(id)}
-function skillMenuVisible(d){return stageAllows(d.jobId)&&(skillIsActive(d)||(S[d.stateKey]||0)>0)}
+function skillMenuVisible(d){return stageAllows(d.jobId)&&skillIsActive(d)&&(S[d.stateKey]||0)>0}
 function unlockQuestSkillsForStage(){if(!S.questUnlocked)S.questUnlocked={};SKILL_DEFS.filter(d=>d.quest).forEach(d=>{let rank=JOB_RANK[d.jobId],current=JOB_RANK[STAGE_JOB_IDS[S.stage]],unlocked=!!S.questUnlocked[d.id]||rank<=current;if(unlocked){S.questUnlocked[d.id]=true;S[d.stateKey]=Math.max(1,S[d.stateKey]||0)}})}
 function renderSkillToggleBox(box){if(!box)return;let sig=SKILL_DEFS.filter(skillMenuVisible).map(d=>d.id+':'+(S[d.stateKey]||0)+':'+(skillIsEnabled(d.id)?1:0)).join('|');if(box.dataset.signature===sig)return;box.dataset.signature=sig;box.innerHTML='';let pool=SKILL_DEFS.filter(skillMenuVisible);if(!pool.length){box.innerHTML='<span class="muted">Активных навыков пока нет.</span>';return}pool.forEach(d=>{let level=S[d.stateKey]||0,active=skillIsActive(d),enabled=skillIsEnabled(d.id),b=document.createElement('button');b.type='button';b.className='skill '+(active?(enabled?'skill-on':'skill-off'):'skill-passive');b.title=active?(enabled?'Отключить автозапуск':'Включить автозапуск'):d.description;b.innerHTML='<span class="skill-icon">'+d.icon+'</span><span class="skill-info"><span class="skill-name">'+d.name+'</span><span class="skill-level">Lv '+level+'/'+d.maxLevel+(active&&!enabled?'<em class="skill-state"> Off</em>':'')+'</span></span>';if(active&&level>0)b.onclick=()=>{S.skillEnabled[d.id]=!enabled;renderActiveSkills();hud()};else b.disabled=true;box.appendChild(b)})}
 function renderActiveSkills(){renderSkillToggleBox($('skills'));renderSkillToggleBox($('pauseActiveSkills')?.querySelector('.skills'))}
@@ -316,7 +327,8 @@ function stopJoystick(){touch.on=false;touch.id=null;touch.dx=0;touch.dy=0;updat
 function updateJoystick(){let j=$('joystick'),k=$('knob');j.style.left=touch.bx+'px';j.style.top=touch.by+'px';j.classList.toggle('visible',touch.on);k.style.transform='translate('+touch.dx+'px,'+touch.dy+'px)'}
 c.addEventListener('pointerup',stopJoystick);c.addEventListener('pointercancel',stopJoystick);c.addEventListener('lostpointercapture',stopJoystick);
 function clearSelection(){let s=window.getSelection?.();if(s&&s.removeAllRanges)s.removeAllRanges()}
-const app=document.getElementById('app');app.addEventListener('touchstart',e=>{clearSelection();if(!e.target.closest('button')&&!e.target.closest('#cards')&&!e.target.closest('#pauseCards'))e.preventDefault()},{capture:true,passive:false});app.addEventListener('touchmove',e=>{clearSelection();if(e.target.closest('#cards')||e.target.closest('#pauseCards'))return;e.preventDefault()},{capture:true,passive:false});app.addEventListener('touchend',clearSelection,{passive:true});app.addEventListener('pointerdown',clearSelection,{passive:true});
+const pauseBox=$('pause').querySelector('.box'),pauseScroll=document.createElement('div');pauseScroll.className='pause-scroll';while(pauseBox.firstChild&&pauseBox.firstChild!==$('resume'))pauseScroll.appendChild(pauseBox.firstChild);pauseBox.insertBefore(pauseScroll,$('resume'));
+const app=document.getElementById('app');app.addEventListener('touchstart',e=>{clearSelection();if(!e.target.closest('button')&&!e.target.closest('#cards')&&!e.target.closest('.pause-scroll'))e.preventDefault()},{capture:true,passive:false});app.addEventListener('touchmove',e=>{clearSelection();if(e.target.closest('#cards')||e.target.closest('.pause-scroll'))return;e.preventDefault()},{capture:true,passive:false});app.addEventListener('touchend',clearSelection,{passive:true});app.addEventListener('pointerdown',clearSelection,{passive:true});
 document.addEventListener('selectstart',e=>{if(e.target.closest('#app')){e.preventDefault();clearSelection()}});document.addEventListener('dragstart',e=>{if(e.target.closest('#app'))e.preventDefault()});document.addEventListener('contextmenu',e=>{if(e.target.closest('#app')){e.preventDefault();clearSelection()}});document.addEventListener('dblclick',e=>{if(e.target.closest('#app')){e.preventDefault();clearSelection()}},{passive:false});
 addEventListener('resize',resizeCanvas);window.visualViewport?.addEventListener('resize',resizeCanvas);$('startBtn').onclick=start;$('resume').onclick=pause;$('pauseBtn').onclick=()=>pause();$('restart').onclick=()=>{reset();start()};$('fatalReload').onclick=()=>location.reload();document.querySelectorAll('.speed').forEach(b=>b.onclick=()=>{S.spd=+b.dataset.s;document.querySelectorAll('.speed').forEach(q=>q.classList.remove('active'));b.classList.add('active')});$('debugInfiniteHp').onchange=e=>{S.debugInfiniteHp=e.target.checked;if(S.debugInfiniteHp)S.hp=S.max;hud()};$('debugInfiniteSp').onchange=e=>{S.debugInfiniteSp=e.target.checked;if(S.debugInfiniteSp)S.sp=S.spMax;hud()};
 function jobExpDisplay(){let p=PROGRESSION_BY_STAGE[S.stage]||PROGRESSION[0],baseSpan=Math.max(1,p.baseMilestone-p.baseStart),jobSpan=Math.max(1,p.jobMilestone-p.jobStart),levelOffset=cl(S.lvl-p.baseStart,0,baseSpan),fraction=cl(S.xp/S.need,0,1),progress=(levelOffset+fraction)*jobSpan/baseSpan,whole=Math.floor(progress),part=cl(progress-whole,0,1);return{xp:Math.floor(part*30),need:30}}
@@ -327,4 +339,3 @@ syncViewportLayout();resizeCanvas();reset();updateXpText();draw();
 </script>
 </body>
 </html>
-
