@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- 0.6.20: fix pause hit target -->
+<!-- 0.6.21: unified portrait HUD -->
 <html lang="ru">
 <head>
 <meta charset="utf-8">
@@ -73,29 +73,55 @@ canvas{object-fit:fill;background:#467b49}
 #cards{max-height:min(60vh,430px);overflow-y:scroll;-webkit-overflow-scrolling:touch;grid-template-columns:repeat(2,minmax(0,1fr));touch-action:pan-y;overscroll-behavior:contain;padding:2px;pointer-events:auto}
 @media(max-width:650px){#cards{grid-template-columns:1fr}}
 </style>
-<script src="data/sources.js?v=0.6.20"></script>
-<script src="data/stats.js?v=0.6.20"></script>
-<script src="data/jobs.js?v=0.6.20"></script>
-<script src="data/characters.js?v=0.6.20"></script>
-<script src="data/progression.js?v=0.6.20"></script>
-<script src="data/builds.js?v=0.6.20"></script>
-<script src="data/skills.js?v=0.6.20"></script>
-<script src="data/monsters.js?v=0.6.20"></script>
-<script src="data/buffs.js?v=0.6.20"></script>
-<script src="data/items.js?v=0.6.20"></script>
-<script src="data/database.js?v=0.6.20"></script>
+<style>
+/* Unified top HUD: gameplay controls live in the same panel as the four status bars. */
+.top-hud{display:flex;align-items:stretch;gap:10px;width:min(540px,calc(100% - 24px));padding:10px;pointer-events:none}
+.top-hud .hud-main{flex:1;min-width:0}
+.top-hud .hud-side{position:relative;inset:auto;width:154px;padding:8px;text-align:right;background:#101923dd;border:1px solid #ffffff24;border-radius:9px;box-shadow:none;pointer-events:auto}
+.top-hud .hud-side .legend{display:none}
+.hud-actions{margin-top:8px;text-align:right}
+.hud-actions .pause-btn{min-width:52px;min-height:38px;font-size:21px}
+.pause-speed{display:flex;align-items:center;justify-content:center;gap:6px;margin:4px 0 10px;color:#b7c3cf;font-size:12px}
+.pause-speed span{margin-right:4px}
+.pause-speed .speed{min-width:42px;padding:6px 8px}
+@media (orientation:portrait){
+  .top-hud{left:6px;right:6px;top:6px;width:auto;display:grid;grid-template-columns:minmax(0,1fr) 124px;gap:6px;padding:6px;pointer-events:auto}
+  .top-hud .title,.top-hud #job{display:none}
+  .top-hud .statusbar{height:17px;margin:3px 0}
+  .top-hud .bar-label{font-size:9px;white-space:nowrap}
+  .top-hud .crit-line{margin:3px 2px 0;font-size:10px}
+  .top-hud .stat-grid,.top-hud .hud-main>div:last-child{display:none}
+  .top-hud .hud-side{width:auto;min-height:96px;padding:7px;display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-start}
+  .top-hud .hud-side .timer{font-size:22px}
+  .top-hud .hud-side .buffs{display:none}
+  .hud-actions{margin-top:auto}
+  .hud-actions .pause-btn{min-width:58px;min-height:42px;font-size:24px}
+  .pause-speed{flex-wrap:wrap}
+  .pause-speed span{flex-basis:100%;margin:0 0 3px}
+}
+</style>
+<script src="data/sources.js?v=0.6.21"></script>
+<script src="data/stats.js?v=0.6.21"></script>
+<script src="data/jobs.js?v=0.6.21"></script>
+<script src="data/characters.js?v=0.6.21"></script>
+<script src="data/progression.js?v=0.6.21"></script>
+<script src="data/builds.js?v=0.6.21"></script>
+<script src="data/skills.js?v=0.6.21"></script>
+<script src="data/monsters.js?v=0.6.21"></script>
+<script src="data/buffs.js?v=0.6.21"></script>
+<script src="data/items.js?v=0.6.21"></script>
+<script src="data/database.js?v=0.6.21"></script>
 </head>
 <body>
 <main id="app">
 <canvas id="game" width="960" height="540"></canvas>
-<section class="panel left"><div class="title">Ragnarok: Survival</div><div id="job" class="muted">Novice</div><div class="bar statusbar exp-bar"><div id="xp" class="fill exp"></div><span class="bar-label">Base Lv. <b id="level">1</b> | Exp <b id="xpText">0/30</b></span></div><div class="bar statusbar job-exp-bar"><div id="jobXp" class="fill job-exp"></div><span class="bar-label">Job Lv. <b id="jobLevel">1</b> | Exp <b id="jobXpText">0/30</b></span></div><div class="bar statusbar hp-bar"><div id="hp" class="fill hp"></div><span class="bar-label">HP <b id="hpText">100/100</b></span></div><div class="bar statusbar sp-bar"><div id="sp" class="fill sp"></div><span class="bar-label">SP <b id="spText">40/40</b></span></div><div class="crit-line">CRIT <b id="critText">2%</b></div><div class="stat-grid" id="statGrid"></div><div class="muted">Автопрокачка: <b id="statPoints">Hybrid</b></div></section>
-<section class="panel right"><div id="time" class="timer">00:00</div><div class="muted">Убито: <b id="kills">0</b></div><div class="legend">Knight · Base 99 / Job 50</div><div id="buffs" class="buffs"></div><div style="margin-top:8px"><button class="speed active" data-s="1">1×</button><button class="speed" data-s="2">2×</button><button class="speed" data-s="4">4×</button><button id="pauseBtn" class="pause-btn" title="Пауза и навыки">⏸<span id="skillBadge" class="skill-badge hide">0</span></button><button id="fullscreenBtn" class="full" title="Полный экран">⛶</button></div></section>
+<section class="panel left top-hud"><div class="hud-main"><div class="title">Ragnarok: Survival</div><div id="job" class="muted">Novice</div><div class="bar statusbar exp-bar"><div id="xp" class="fill exp"></div><span class="bar-label">Base Lv. <b id="level">1</b> | Exp <b id="xpText">0/30</b></span></div><div class="bar statusbar job-exp-bar"><div id="jobXp" class="fill job-exp"></div><span class="bar-label">Job Lv. <b id="jobLevel">1</b> | Exp <b id="jobXpText">0/30</b></span></div><div class="bar statusbar hp-bar"><div id="hp" class="fill hp"></div><span class="bar-label">HP <b id="hpText">100/100</b></span></div><div class="bar statusbar sp-bar"><div id="sp" class="fill sp"></div><span class="bar-label">SP <b id="spText">40/40</b></span></div><div class="crit-line">CRIT <b id="critText">2%</b></div><div class="stat-grid" id="statGrid"></div><div class="muted">Автопрокачка: <b id="statPoints">Hybrid</b></div></div><div class="right hud-side"><div id="time" class="timer">00:00</div><div class="muted">Убито: <b id="kills">0</b></div><div class="legend">Knight · Base 99 / Job 50</div><div id="buffs" class="buffs"></div><div class="hud-actions"><button id="pauseBtn" class="pause-btn" title="Пауза и навыки">⏸<span id="skillBadge" class="skill-badge hide">0</span></button></div></div></section>
 <section class="panel bottom"><div class="title">Навыки</div><div id="skills" class="skills"></div><div class="legend">Очки навыков: <b id="skillPointsText">0</b> · Касание — направление движения</div></section>
 <div id="toast" class="toast"></div><div id="joystick" class="joystick"><div id="knob" class="knob"></div></div>
 <div id="fatal" class="overlay hide"><div class="box"><div class="logo" style="font-size:38px">ИГРА НЕ ЗАПУЩЕНА</div><p id="fatalText">Не удалось загрузить игровой модуль.</p><button id="fatalReload">ПЕРЕЗАГРУЗИТЬ</button></div></div>
 <div id="start" class="overlay"><div class="box"><div class="logo">RAGNAROK<br>SURVIVAL</div><h2>Испытание Novice</h2><p>Начни как Novice, развивай STR, AGI, VIT, INT, DEX и LUK, эволюционируй в Swordman, а затем в Knight и выживи 30 минут.</p><p class="muted">Статы распределяются автоматически по Hybrid-билду Knight. Мужские спрайты профессий взяты с iRO Wiki-совместимого рендера. Анимации движения пока отключены.</p><button id="startBtn" class="start">НАЧАТЬ ЗАБЕГ</button></div></div>
 <div id="levelUp" class="overlay hide"><div class="box"><h2 style="color:#ffd66b">Новый уровень!</h2><p id="levelHint">Выбери одно улучшение</p><div id="cards" class="cards"></div></div></div>
-<div id="pause" class="overlay hide"><div class="box"><div class="logo" style="font-size:38px">ПАУЗА</div><p id="pauseHint">Навыки можно распределить здесь.</p><div id="pauseCards" class="cards"></div><button id="resume">ПРОДОЛЖИТЬ</button></div></div>
+<div id="pause" class="overlay hide"><div class="box"><div class="logo" style="font-size:38px">ПАУЗА</div><p id="pauseHint">Навыки можно распределить здесь.</p><div class="pause-speed"><span>Скорость игры</span><button class="speed active" data-s="1">1×</button><button class="speed" data-s="2">2×</button><button class="speed" data-s="4">4×</button></div><div id="pauseCards" class="cards"></div><button id="resume">ПРОДОЛЖИТЬ</button></div></div>
 <div id="end" class="overlay hide"><div class="box"><div class="logo" style="font-size:38px">ЗАБЕГ ОКОНЧЕН</div><h2 id="endTitle"></h2><p id="endStats"></p><button id="restart">НОВЫЙ ЗАБЕГ</button></div></div>
 </main>
 <script>
@@ -203,7 +229,7 @@ c.addEventListener('pointerup',stopJoystick);c.addEventListener('pointercancel',
 function clearSelection(){let s=window.getSelection?.();if(s&&s.removeAllRanges)s.removeAllRanges()}
 const app=document.getElementById('app');app.addEventListener('touchstart',e=>{clearSelection();if(!e.target.closest('button')&&!e.target.closest('#cards')&&!e.target.closest('#pauseCards'))e.preventDefault()},{capture:true,passive:false});app.addEventListener('touchmove',e=>{clearSelection();if(e.target.closest('#cards')||e.target.closest('#pauseCards'))return;e.preventDefault()},{capture:true,passive:false});app.addEventListener('touchend',clearSelection,{passive:true});app.addEventListener('pointerdown',clearSelection,{passive:true});
 document.addEventListener('selectstart',e=>{if(e.target.closest('#app')){e.preventDefault();clearSelection()}});document.addEventListener('dragstart',e=>{if(e.target.closest('#app'))e.preventDefault()});document.addEventListener('contextmenu',e=>{if(e.target.closest('#app')){e.preventDefault();clearSelection()}});document.addEventListener('dblclick',e=>{if(e.target.closest('#app')){e.preventDefault();clearSelection()}},{passive:false});
-addEventListener('resize',resizeCanvas);$('startBtn').onclick=start;$('resume').onclick=pause;$('pauseBtn').onclick=()=>pause();$('restart').onclick=()=>{reset();start()};$('fatalReload').onclick=()=>location.reload();$('fullscreenBtn').onclick=fullscreen;document.querySelectorAll('.speed').forEach(b=>b.onclick=()=>{S.spd=+b.dataset.s;document.querySelectorAll('.speed').forEach(q=>q.classList.remove('active'));b.classList.add('active')});
+addEventListener('resize',resizeCanvas);$('startBtn').onclick=start;$('resume').onclick=pause;$('pauseBtn').onclick=()=>pause();$('restart').onclick=()=>{reset();start()};$('fatalReload').onclick=()=>location.reload();document.querySelectorAll('.speed').forEach(b=>b.onclick=()=>{S.spd=+b.dataset.s;document.querySelectorAll('.speed').forEach(q=>q.classList.remove('active'));b.classList.add('active')});
 function jobExpDisplay(){let p=PROGRESSION_BY_STAGE[S.stage]||PROGRESSION[0],baseSpan=Math.max(1,p.baseMilestone-p.baseStart),jobSpan=Math.max(1,p.jobMilestone-p.jobStart),levelOffset=cl(S.lvl-p.baseStart,0,baseSpan),fraction=cl(S.xp/S.need,0,1),progress=(levelOffset+fraction)*jobSpan/baseSpan,whole=Math.floor(progress),part=cl(progress-whole,0,1);return{xp:Math.floor(part*30),need:30}}
 function updateXpText(){let j=jobExpDisplay();$('xpText').textContent=Math.floor(S.xp)+'/'+S.need;$('xp').style.width=cl(S.xp/S.need,0,1)*100+'%';$('jobXpText').textContent=j.xp+'/'+j.need;$('jobXp').style.width=j.xp/j.need*100+'%';$('critText').textContent=Math.round(S.crit*100)+'%'}setInterval(updateXpText,100);
 document.querySelector('.right').addEventListener('pointerdown',e=>{if(!matchMedia('(orientation: portrait)').matches||!S.run||S.end||e.target.closest('button'))return;e.preventDefault();pause()},{passive:false});
