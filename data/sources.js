@@ -83,6 +83,27 @@ window.RS_SOURCES = {
     irowiki_monster_marionette: {
       id: 'irowiki_monster_marionette', type: 'monster', authority: 'reference',
       title: 'iRO Wiki DB — Marionette', url: 'https://db.irowiki.org/db/monster-info/1143/'
+    },
+    irowiki_item_644: {
+      id: 'irowiki_item_644', type: 'item', authority: 'reference',
+      title: 'iRO Wiki DB — Gift Box (Plain)', url: 'https://db.irowiki.org/db/item-info/644/',
+      imageUrl: 'https://db.irowiki.org/image/item/644.png'
+    },
+    irowiki_blessing: {
+      id: 'irowiki_blessing', type: 'skill', authority: 'reference',
+      title: 'iRO Wiki — Blessing', url: 'https://irowiki.org/wiki/Blessing'
+    },
+    irowiki_increase_agi: {
+      id: 'irowiki_increase_agi', type: 'skill', authority: 'reference',
+      title: 'iRO Wiki — Increase AGI', url: 'https://irowiki.org/wiki/Increase_AGI'
+    },
+    irowiki_magnificat: {
+      id: 'irowiki_magnificat', type: 'skill', authority: 'reference',
+      title: 'iRO Wiki — Magnificat', url: 'https://irowiki.org/wiki/Magnificat'
+    },
+    irowiki_impositio_manus: {
+      id: 'irowiki_impositio_manus', type: 'skill', authority: 'reference',
+      title: 'iRO Wiki — Impositio Manus', url: 'https://irowiki.org/wiki/Impositio_Manus'
     }
   }
 };
