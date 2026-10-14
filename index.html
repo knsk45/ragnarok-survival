@@ -65,6 +65,26 @@ canvas{object-fit:fill;background:#467b49}
   .right .full{min-height:42px;font-size:20px;padding:4px 10px}
   .toast{top:auto;bottom:92px}
 }
+/* Device browsers do not always update CSS orientation reliably.  The JS
+   portrait-ui class below is based on the real viewport and is the final
+   authority for the mobile HUD layout. */
+body.portrait-ui .top-hud{
+  left:6px!important;right:6px!important;top:6px!important;
+  width:auto!important;max-width:none!important;
+  display:grid!important;grid-template-columns:minmax(0,1fr) 142px!important;
+  gap:6px!important;padding:6px!important;pointer-events:auto!important;
+  z-index:4!important
+}
+body.portrait-ui .top-hud .hud-main{min-width:0!important;width:auto!important}
+body.portrait-ui .top-hud .hud-side{
+  position:relative!important;display:flex!important;visibility:visible!important;
+  opacity:1!important;z-index:2!important;width:auto!important;min-width:0!important;
+  height:126px!important;min-height:126px!important;padding:7px!important;
+  overflow:hidden!important
+}
+body.portrait-ui .top-hud .hud-side .timer{font-size:22px!important;line-height:1.05}
+body.portrait-ui .top-hud .hud-side .legend{display:none!important}
+body.portrait-ui .top-hud .hud-side .buffs{max-height:47px!important}
 </style>
 <style>
 #levelUp .box{max-height:calc(100vh - 24px);overflow:hidden}
@@ -186,7 +206,8 @@ canvas{object-fit:fill;background:#467b49}
 (()=>{
 const c=document.getElementById('game'),x=c.getContext('2d'),TAU=Math.PI*2,JOY_MAX=92,MELEE_RANGE=92,MELEE_SPLASH=44;let W=960,H=540;
 const $=id=>document.getElementById(id),cl=(v,a,b)=>Math.max(a,Math.min(b,v)),rnd=(a,b)=>a+Math.random()*(b-a);
-function resizeCanvas(){let r=document.getElementById('app').getBoundingClientRect();W=Math.max(320,Math.round(r.width));H=Math.max(240,Math.round(r.height));c.width=W;c.height=H;x.imageSmoothingEnabled=false}
+function syncViewportLayout(){let v=window.visualViewport,portrait=window.innerWidth<window.innerHeight||(v&&v.width<v.height);document.body.classList.toggle('portrait-ui',!!portrait)}
+function resizeCanvas(){syncViewportLayout();let r=document.getElementById('app').getBoundingClientRect();W=Math.max(320,Math.round(r.width));H=Math.max(240,Math.round(r.height));c.width=W;c.height=H;x.imageSmoothingEnabled=false}
 let keys={},touch={on:false,id:null,bx:0,by:0,x:0,y:0,dx:0,dy:0,max:JOY_MAX},en=[],shots=[],gems=[],fx=[],parts=[],dnums=[],skillTexts=[],eid=1,last=0;
 function showFatal(message,error){let detail=error?.message?` (${error.message})`:'';$('fatalText').textContent=message+detail;$('fatal').classList.remove('hide');$('start').classList.add('hide');$('fatalReload').onclick=()=>location.reload();console.error('[Ragnarok Survival]',message,error||'')}
 function validateDatabase(db){if(!db||!Array.isArray(db.progression?.milestones)||!Array.isArray(db.stats?.order)||!db.builds?.hybrid_knight||!Array.isArray(db.skills)||!db.monsters||!db.items||!db.buffs)throw new Error('Игровая база загружена неполностью.');let bad=Object.values(db.monsters).some(m=>!m?.key||!Number.isFinite(m?.stats?.level)||!Number.isFinite(m?.combat?.hp));if(bad)throw new Error('В базе монстров найдена повреждённая запись.');return db}
@@ -297,12 +318,13 @@ c.addEventListener('pointerup',stopJoystick);c.addEventListener('pointercancel',
 function clearSelection(){let s=window.getSelection?.();if(s&&s.removeAllRanges)s.removeAllRanges()}
 const app=document.getElementById('app');app.addEventListener('touchstart',e=>{clearSelection();if(!e.target.closest('button')&&!e.target.closest('#cards')&&!e.target.closest('#pauseCards'))e.preventDefault()},{capture:true,passive:false});app.addEventListener('touchmove',e=>{clearSelection();if(e.target.closest('#cards')||e.target.closest('#pauseCards'))return;e.preventDefault()},{capture:true,passive:false});app.addEventListener('touchend',clearSelection,{passive:true});app.addEventListener('pointerdown',clearSelection,{passive:true});
 document.addEventListener('selectstart',e=>{if(e.target.closest('#app')){e.preventDefault();clearSelection()}});document.addEventListener('dragstart',e=>{if(e.target.closest('#app'))e.preventDefault()});document.addEventListener('contextmenu',e=>{if(e.target.closest('#app')){e.preventDefault();clearSelection()}});document.addEventListener('dblclick',e=>{if(e.target.closest('#app')){e.preventDefault();clearSelection()}},{passive:false});
-addEventListener('resize',resizeCanvas);$('startBtn').onclick=start;$('resume').onclick=pause;$('pauseBtn').onclick=()=>pause();$('restart').onclick=()=>{reset();start()};$('fatalReload').onclick=()=>location.reload();document.querySelectorAll('.speed').forEach(b=>b.onclick=()=>{S.spd=+b.dataset.s;document.querySelectorAll('.speed').forEach(q=>q.classList.remove('active'));b.classList.add('active')});$('debugInfiniteHp').onchange=e=>{S.debugInfiniteHp=e.target.checked;if(S.debugInfiniteHp)S.hp=S.max;hud()};$('debugInfiniteSp').onchange=e=>{S.debugInfiniteSp=e.target.checked;if(S.debugInfiniteSp)S.sp=S.spMax;hud()};
+addEventListener('resize',resizeCanvas);window.visualViewport?.addEventListener('resize',resizeCanvas);$('startBtn').onclick=start;$('resume').onclick=pause;$('pauseBtn').onclick=()=>pause();$('restart').onclick=()=>{reset();start()};$('fatalReload').onclick=()=>location.reload();document.querySelectorAll('.speed').forEach(b=>b.onclick=()=>{S.spd=+b.dataset.s;document.querySelectorAll('.speed').forEach(q=>q.classList.remove('active'));b.classList.add('active')});$('debugInfiniteHp').onchange=e=>{S.debugInfiniteHp=e.target.checked;if(S.debugInfiniteHp)S.hp=S.max;hud()};$('debugInfiniteSp').onchange=e=>{S.debugInfiniteSp=e.target.checked;if(S.debugInfiniteSp)S.sp=S.spMax;hud()};
 function jobExpDisplay(){let p=PROGRESSION_BY_STAGE[S.stage]||PROGRESSION[0],baseSpan=Math.max(1,p.baseMilestone-p.baseStart),jobSpan=Math.max(1,p.jobMilestone-p.jobStart),levelOffset=cl(S.lvl-p.baseStart,0,baseSpan),fraction=cl(S.xp/S.need,0,1),progress=(levelOffset+fraction)*jobSpan/baseSpan,whole=Math.floor(progress),part=cl(progress-whole,0,1);return{xp:Math.floor(part*30),need:30}}
 function updateXpText(){let j=jobExpDisplay();$('xpText').textContent=Math.floor(S.xp)+'/'+S.need;$('xp').style.width=cl(S.xp/S.need,0,1)*100+'%';$('jobXpText').textContent=j.xp+'/'+j.need;$('jobXp').style.width=j.xp/j.need*100+'%';$('critText').textContent=Math.round(S.crit*100)+'%'}setInterval(updateXpText,100);
-document.querySelector('.hud-side').addEventListener('pointerdown',e=>{if(!matchMedia('(orientation: portrait)').matches||!S.run||S.end||e.target.closest('button'))return;e.preventDefault();pause()},{passive:false});
-resizeCanvas();reset();updateXpText();draw();
+document.querySelector('.hud-side').addEventListener('pointerdown',e=>{if(!document.body.classList.contains('portrait-ui')||!S.run||S.end||e.target.closest('button'))return;e.preventDefault();pause()},{passive:false});
+syncViewportLayout();resizeCanvas();reset();updateXpText();draw();
 })();
 </script>
 </body>
 </html>
+
