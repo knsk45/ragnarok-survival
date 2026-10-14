@@ -16,8 +16,8 @@ const sourceRegistry = window.RS_SOURCES || {
 
 window.RS_DATABASE = {
   schemaVersion: '1.0.0',
-  contentVersion: 8,
-  gameVersion: '0.6.5',
+  contentVersion: 9,
+  gameVersion: '0.6.6',
   sourceRegistry,
   sources: {
     monsterDatabase: 'https://db.irowiki.org/db/',
