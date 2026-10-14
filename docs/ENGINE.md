@@ -40,11 +40,11 @@ database.js
 
 ### Новая шкала прокачки
 
-Контрольные точки находятся в `data/progression.js`. Сейчас путь Knight задан так: Novice `15/10`, Swordman `65/50`, Knight — целевая точка `80/50`. Job Level рассчитывается отдельной функцией по текущему Base Level.
+Контрольные точки находятся в `data/progression.js`. Сейчас путь Knight задан так: Novice `15/10`, Swordman `65/50`, Knight — целевая точка `80/50`. При смене профессии Job Level начинается заново с 1: Novice получает 9 очков навыков к Job 10, Swordman — 49 очков к Job 50, Knight — 49 очков к Job 50. Job Level рассчитывается отдельной функцией по текущему Base Level, а очки навыков начисляются только при повышении Job Level.
 
 ### Новый навык или ветка
 
-Добавить запись в `data/skills.js` с `stateKey`, `maxLevel`, `spCost`, `cooldown` и массивом `requires`. Зависимости уже проверяются перед появлением навыка в окне повышения уровня.
+Добавить запись в `data/skills.js` с `stateKey`, `maxLevel`, `spCost`, `cooldown`, `spendable` и массивом `requires`. Зависимости уже проверяются перед появлением навыка в окне повышения Job Level. Quest и Soul Link навыки можно хранить в той же таблице, но с `spendable: false`.
 
 Следующий шаг для полноценного Skill Engine — заменить набор полей `S.bash`, `S.bowling` и т. п. на универсальный объект `S.skills[id]`, сохранив миграцию старых забегов.
 
