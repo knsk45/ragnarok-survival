@@ -16,8 +16,8 @@ const sourceRegistry = window.RS_SOURCES || {
 
 window.RS_DATABASE = {
   schemaVersion: '1.0.0',
-  contentVersion: 20,
-  gameVersion: '0.6.17',
+  contentVersion: 21,
+  gameVersion: '0.6.18',
   sourceRegistry,
   sources: {
     monsterDatabase: 'https://db.irowiki.org/db/',
@@ -38,5 +38,7 @@ window.RS_DATABASE = {
   progression,
   builds: window.RS_BUILDS,
   skills: window.RS_SKILLS,
-  monsters: window.RS_MONSTERS
+  monsters: window.RS_MONSTERS,
+  buffs: window.RS_BUFFS,
+  items: window.RS_ITEMS
 };
