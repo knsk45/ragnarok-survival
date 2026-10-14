@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- 0.6.22: active skill toggles and portrait skill bar -->
+<!-- 0.6.23: compact pause control panel and white Job EXP -->
 <html lang="ru">
 <head>
 <meta charset="utf-8">
@@ -48,7 +48,7 @@ canvas{object-fit:fill;background:#467b49}
 .level-line>.crit-label{margin-left:auto}
 .crit-label b{color:#ffd66b}
 .exp{background:#f4f7fb}
-.job-exp{background:#bf77e8}
+.job-exp{background:#f4f7fb}
 .crit-line{color:#b7c3cf;font-size:11px;text-align:right;line-height:1.1}
 .crit-line b{color:#ffd66b}
 .exp-bar .bar-label{color:#fff;text-shadow:0 1px 2px #000,0 0 3px #000}
@@ -77,9 +77,9 @@ canvas{object-fit:fill;background:#467b49}
 /* Unified top HUD: gameplay controls live in the same panel as the four status bars. */
 .top-hud{display:flex;align-items:stretch;gap:10px;width:min(540px,calc(100% - 24px));padding:10px;pointer-events:none}
 .top-hud .hud-main{flex:1;min-width:0}
-.top-hud .hud-side{position:relative;inset:auto;width:154px;padding:8px;text-align:right;background:#101923dd;border:1px solid #ffffff24;border-radius:9px;box-shadow:none;pointer-events:auto}
+.top-hud .hud-side{position:relative;inset:auto;align-self:flex-start;width:154px;height:118px;padding:8px;text-align:center;background:#101923dd;border:1px solid #ffffff24;border-radius:9px;box-shadow:none;pointer-events:auto;display:flex;flex-direction:column;align-items:stretch}
 .top-hud .hud-side .legend{display:none}
-.hud-actions{margin-top:8px;text-align:right}
+.hud-actions{margin-top:8px;text-align:center}
 .hud-actions .pause-btn{min-width:52px;min-height:38px;font-size:21px}
 .pause-speed{display:flex;align-items:center;justify-content:center;gap:6px;margin:4px 0 10px;color:#b7c3cf;font-size:12px}
 .pause-speed span{margin-right:4px}
@@ -104,10 +104,10 @@ canvas{object-fit:fill;background:#467b49}
   .top-hud .bar-label{font-size:9px;white-space:nowrap}
   .top-hud .crit-line{margin:3px 2px 0;font-size:10px}
   .top-hud .stat-grid,.top-hud .hud-main>div:last-child{display:none}
-  .top-hud .hud-side{width:auto;min-height:96px;padding:7px;display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-start}
+  .top-hud .hud-side{width:auto;height:96px;min-height:96px;padding:7px;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;text-align:center}
   .top-hud .hud-side .timer{font-size:22px}
   .top-hud .hud-side .buffs{display:none}
-  .hud-actions{margin-top:auto}
+  .hud-actions{margin-top:8px;text-align:center}
   .hud-actions .pause-btn{min-width:58px;min-height:42px;font-size:24px}
   .pause-speed{flex-wrap:wrap}
   .pause-speed span{flex-basis:100%;margin:0 0 3px}
@@ -117,17 +117,17 @@ canvas{object-fit:fill;background:#467b49}
   .bottom .skill{flex-basis:78px;width:78px;height:40px}
 }
 </style>
-<script src="data/sources.js?v=0.6.22"></script>
-<script src="data/stats.js?v=0.6.22"></script>
-<script src="data/jobs.js?v=0.6.22"></script>
-<script src="data/characters.js?v=0.6.22"></script>
-<script src="data/progression.js?v=0.6.22"></script>
-<script src="data/builds.js?v=0.6.22"></script>
-<script src="data/skills.js?v=0.6.22"></script>
-<script src="data/monsters.js?v=0.6.22"></script>
-<script src="data/buffs.js?v=0.6.22"></script>
-<script src="data/items.js?v=0.6.22"></script>
-<script src="data/database.js?v=0.6.22"></script>
+<script src="data/sources.js?v=0.6.23"></script>
+<script src="data/stats.js?v=0.6.23"></script>
+<script src="data/jobs.js?v=0.6.23"></script>
+<script src="data/characters.js?v=0.6.23"></script>
+<script src="data/progression.js?v=0.6.23"></script>
+<script src="data/builds.js?v=0.6.23"></script>
+<script src="data/skills.js?v=0.6.23"></script>
+<script src="data/monsters.js?v=0.6.23"></script>
+<script src="data/buffs.js?v=0.6.23"></script>
+<script src="data/items.js?v=0.6.23"></script>
+<script src="data/database.js?v=0.6.23"></script>
 </head>
 <body>
 <main id="app">
