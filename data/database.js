@@ -29,8 +29,6 @@ window.RS_DATABASE = {
   settings: {
     infiniteSp: false,
     maxEnemies: 60,
-    enemyPowerCap: 1,
-    bossHpMultiplier: 1,
     debugInfiniteHp: false,
     debugInfiniteSp: false
   },
