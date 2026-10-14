@@ -13,6 +13,7 @@ window.RS_DATABASE = {
   stats: window.RS_STATS,
   jobs: window.RS_JOBS,
   characters: window.RS_CHARACTERS,
+  progression: window.RS_PROGRESSION,
   builds: window.RS_BUILDS,
   skills: window.RS_SKILLS,
   monsters: window.RS_MONSTERS
