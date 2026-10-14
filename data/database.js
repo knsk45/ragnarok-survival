@@ -8,10 +8,17 @@ const progression = window.RS_PROGRESSION || {
   levelCap: { base: 99, job: 50 }
 };
 
+const sourceRegistry = window.RS_SOURCES || {
+  schemaVersion: '1.0.0',
+  policy: { priority: ['prototype'], rule: 'No source registry loaded.' },
+  records: {}
+};
+
 window.RS_DATABASE = {
   schemaVersion: '1.0.0',
-  contentVersion: 3,
-  gameVersion: '0.6.0',
+  contentVersion: 4,
+  gameVersion: '0.6.1',
+  sourceRegistry,
   sources: {
     monsterDatabase: 'https://db.irowiki.org/db/',
     classDatabase: 'https://irowiki.org/wiki/Classes',
