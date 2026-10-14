@@ -32,3 +32,14 @@ window.RS_SKILLS = [
   { id: 'charge_attack', name: 'Charge Attack', icon: '⚡', jobId: 'knight', maxLevel: 1, stateKey: 'charge', spendable: false, quest: true, jobLevelRequirement: 40, spCost: 0, cooldown: 0, requires: [], description: 'Quest skill: дальняя атака-рывок.' },
   { id: 'one_hand_quicken', name: 'One-Hand Quicken', icon: '⇈', jobId: 'knight', maxLevel: 1, stateKey: 'oneHandQuicken', spendable: false, soulLink: true, spCost: 0, cooldown: 0, requires: [], description: 'Soul Link skill: ASPD одноручного меча.' }
 ];
+
+// The skill records share the job-page source and, for the Knight tree,
+// the legacy simulator that exposes exact prerequisites and max levels.
+const SKILL_SOURCE_REFS = {
+  novice: ['irowiki_novice'],
+  swordman: ['irowiki_swordman'],
+  knight: ['irowiki_knight', 'oldskillsim_knight']
+};
+window.RS_SKILLS.forEach(skill => {
+  skill.sourceRefs = [...(SKILL_SOURCE_REFS[skill.jobId] || ['irowiki_classes'])];
+});
