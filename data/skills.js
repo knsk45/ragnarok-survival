@@ -1,0 +1,20 @@
+window.RS_SKILLS = [
+  { id: 'basic_skill', name: 'Basic Skill', icon: '◉', jobId: 'novice', maxLevel: 9, stateKey: 'basic', spCost: 0, cooldown: 0, requires: [], description: 'Базовая подготовка Novice: немного повышает урон.' },
+  { id: 'first_aid', name: 'First Aid', icon: '✚', jobId: 'novice', maxLevel: 10, stateKey: 'firstAid', spCost: 3, cooldown: 4, requires: [], description: 'Восстанавливает здоровье при сборе сердца.' },
+  { id: 'play_dead', name: 'Play Dead', icon: '☠', jobId: 'novice', maxLevel: 10, stateKey: 'playDead', spCost: 0, cooldown: 0, requires: [], description: 'Тренировка выживания: повышает уклонение.' },
+  { id: 'bash', name: 'Bash', icon: '⚔', jobId: 'swordman', maxLevel: 10, stateKey: 'bash', spCost: 3, cooldown: 1.2, requires: [{ skillId: 'basic_skill', level: 1 }], description: 'Сильный удар по ближайшей цели.' },
+  { id: 'magnum_break', name: 'Magnum Break', icon: '🔥', jobId: 'swordman', maxLevel: 10, stateKey: 'magnum', spCost: 6, cooldown: 2.4, requires: [{ skillId: 'bash', level: 1 }], description: 'Огненная круговая атака вокруг героя.' },
+  { id: 'endure', name: 'Endure', icon: '🛡', jobId: 'swordman', maxLevel: 10, stateKey: 'endure', spCost: 10, cooldown: 8, requires: [], description: 'Повышает защиту и устойчивость героя.' },
+  { id: 'increase_hp_recovery', name: 'Increase HP Recovery', icon: '♥', jobId: 'swordman', maxLevel: 10, stateKey: 'hpRecovery', spCost: 0, cooldown: 0, requires: [], description: 'Ускоряет восстановление HP.' },
+  { id: 'provoke', name: 'Provoke', icon: '↘', jobId: 'swordman', maxLevel: 10, stateKey: 'provoke', spCost: 4, cooldown: 2.5, requires: [], description: 'Усиливает физический урон.' },
+  { id: 'sword_mastery', name: 'Sword Mastery', icon: '⚔', jobId: 'swordman', maxLevel: 10, stateKey: 'swordMastery', spCost: 0, cooldown: 0, requires: [], description: 'Повышает урон одноручным мечом.' },
+  { id: 'twohanded_sword_mastery', name: 'Two-Handed Sword Mastery', icon: '⚔', jobId: 'swordman', maxLevel: 10, stateKey: 'twohandMastery', spCost: 0, cooldown: 0, requires: [{ skillId: 'sword_mastery', level: 1 }], description: 'Повышает урон двуручным мечом.' },
+  { id: 'bowling_bash', name: 'Bowling Bash', icon: '⚔', jobId: 'knight', maxLevel: 10, stateKey: 'bowling', spCost: 5, cooldown: 3.2, requires: [{ skillId: 'bash', level: 5 }, { skillId: 'magnum_break', level: 5 }], description: 'Удар по области 5×5: мощная волна, отбрасывающая врагов.' },
+  { id: 'brandish_spear', name: 'Brandish Spear', icon: '➹', jobId: 'knight', maxLevel: 10, stateKey: 'brandish', spCost: 7, cooldown: 3, requires: [], description: 'Длинная фронтальная атака копьём по линии.' },
+  { id: 'pierce', name: 'Pierce', icon: '◈', jobId: 'knight', maxLevel: 10, stateKey: 'pierce', spCost: 5, cooldown: 2, requires: [], description: 'Пронзающая атака: повышает урон одиночной цели.' },
+  { id: 'spear_boomerang', name: 'Spear Boomerang', icon: '↗', jobId: 'knight', maxLevel: 5, stateKey: 'boomerang', spCost: 4, cooldown: 2, requires: [{ skillId: 'pierce', level: 3 }], description: 'Ускоряет копейные снаряды и добавляет второй при максимуме.' },
+  { id: 'twohand_quicken', name: 'Twohand Quicken', icon: '⇈', jobId: 'knight', maxLevel: 10, stateKey: 'quicken', spCost: 14, cooldown: 8, requires: [{ skillId: 'twohanded_sword_mastery', level: 5 }], description: 'Повышает ASPD и шанс критического удара.' },
+  { id: 'peco_peco_ride', name: 'Peco Peco Ride', icon: '🐤', jobId: 'knight', maxLevel: 1, stateKey: 'peco', spCost: 0, cooldown: 0, requires: [], description: 'Повышает скорость передвижения и радиус сбора.' },
+  { id: 'counter_attack', name: 'Counter Attack', icon: '🛡', jobId: 'knight', maxLevel: 5, stateKey: 'counter', spCost: 5, cooldown: 4, requires: [{ skillId: 'twohand_quicken', level: 1 }], description: 'Есть шанс заблокировать удар и ответить критической атакой.' },
+  { id: 'charge_attack', name: 'Charge Attack', icon: '⚡', jobId: 'knight', maxLevel: 10, stateKey: 'charge', spCost: 9, cooldown: 3, requires: [], description: 'Дальний рывок-удар с повышенным уроном.' }
+];
