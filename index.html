@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- 0.6.8 hotfix: republished from verified launch state -->
+<!-- 0.6.11 hotfix: renderer recovery and database preflight -->
 <html lang="ru">
 <head>
 <meta charset="utf-8">
@@ -87,7 +87,7 @@ const c=document.getElementById('game'),x=c.getContext('2d'),TAU=Math.PI*2,JOY_M
 const $=id=>document.getElementById(id),cl=(v,a,b)=>Math.max(a,Math.min(b,v)),rnd=(a,b)=>a+Math.random()*(b-a);
 function resizeCanvas(){let r=document.getElementById('app').getBoundingClientRect();W=Math.max(320,Math.round(r.width));H=Math.max(240,Math.round(r.height));c.width=W;c.height=H;x.imageSmoothingEnabled=false}
 let keys={},touch={on:false,id:null,bx:0,by:0,x:0,y:0,dx:0,dy:0,max:JOY_MAX},en=[],shots=[],gems=[],fx=[],parts=[],dnums=[],skillTexts=[],eid=1,last=0;
-function showFatal(message){$('fatalText').textContent=message;$('fatal').classList.remove('hide');$('start').classList.add('hide');console.error('[Ragnarok Survival]',message)}
+function showFatal(message){$('fatalText').textContent=message;$('fatal').classList.remove('hide');$('start').classList.add('hide');$('fatalReload').onclick=()=>location.reload();console.error('[Ragnarok Survival]',message)}
 function validateDatabase(db){if(!db||!Array.isArray(db.progression?.milestones)||!Array.isArray(db.stats?.order)||!db.builds?.hybrid_knight||!Array.isArray(db.skills)||!db.monsters)throw new Error('Игровая база загружена неполностью.');let bad=Object.values(db.monsters).some(m=>!m?.key||!Number.isFinite(m?.stats?.level)||!Number.isFinite(m?.combat?.hp));if(bad)throw new Error('В базе монстров найдена повреждённая запись.');return db}
 let DB;try{DB=validateDatabase(window.RS_DATABASE)}catch(e){showFatal(e.message);return}
 const STAGE_JOB_IDS={Novice:'novice',Swordman:'swordman',Knight:'knight'},PROGRESSION=DB.progression.milestones,PROGRESSION_BY_STAGE=Object.fromEntries(PROGRESSION.map(p=>[p.stage,p])),STAT_KEYS=DB.stats.order.map(s=>[s.id,s.label]),HYBRID_TARGET=DB.builds.hybrid_knight.target,JOB_BONUSES=Object.fromEntries(Object.values(DB.jobs).map(j=>[j.name,j.statBonuses])),PLAYTEST_FLAGS=DB.settings,MAX_ENEMIES=Math.max(10,Math.floor(PLAYTEST_FLAGS.maxEnemies??60)),ENEMY_POWER_CAP=Math.max(1,Number(PLAYTEST_FLAGS.enemyPowerCap??7));
@@ -161,7 +161,7 @@ function finish(win){S.run=false;S.end=true;$('end').classList.remove('hide');$(
 function pause(){if(!S.run||S.choose||S.end)return;S.pause=!S.pause;$('pause').classList.toggle('hide',!S.pause)}
 async function fullscreen(){let a=$('app'),on=!a.classList.contains('immersive');a.classList.toggle('immersive',on);try{if(!on&&(document.fullscreenElement||document.webkitFullscreenElement)){if(document.exitFullscreen)await document.exitFullscreen();else if(document.webkitExitFullscreen)document.webkitExitFullscreen();return}if(on){if(a.requestFullscreen)await a.requestFullscreen();else if(a.webkitRequestFullscreen)await a.webkitRequestFullscreen();else say('В Яндекс.Браузере включён компактный режим. Панель браузера скрывается только через меню браузера.')}}catch(e){say('Включён компактный режим. Для полного экрана используйте меню Яндекс.Браузера')}}
 let runtimeFault=false;const baseDraw=draw;draw=function(){if(runtimeFault)return;try{baseDraw();for(let n of skillTexts)skillLabel(n)}catch(e){runtimeFault=true;S.run=false;S.pause=true;showFatal('Ошибка игрового цикла. Нажмите «Перезагрузить», чтобы восстановить игру.')}}
-function loop(now){if(!S.run&&!S.end)return;let dt=Math.min(.05,(now-last)/1000||0);last=now;update(dt);draw();if(S.run)requestAnimationFrame(loop)}
+function loop(now){if(!S.run&&!S.end)return;let dt=Math.min(.05,(now-last)/1000||0);last=now;try{update(dt);draw()}catch(e){runtimeFault=true;S.run=false;S.pause=true;showFatal('Ошибка игрового цикла. Нажмите «Перезагрузить», чтобы восстановить игру.')}if(S.run)requestAnimationFrame(loop)}
 addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if(e.key.toLowerCase()==='p')pause();if(S.choose&&['1','2','3'].includes(e.key)){let b=$('cards').children[+e.key-1];if(b)b.click()}});addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
 c.addEventListener('pointerdown',e=>{if(!S.run||S.pause)return;let r=document.getElementById('app').getBoundingClientRect(),px=e.clientX-r.left,py=e.clientY-r.top,edge=JOY_MAX+10;touch={on:true,id:e.pointerId,bx:cl(px,edge,r.width-edge),by:cl(py,edge,r.height-edge),x:px,y:py,dx:0,dy:0,max:JOY_MAX};updateJoystick();c.setPointerCapture?.(e.pointerId)});
 c.addEventListener('pointermove',e=>{if(!touch.on||e.pointerId!==touch.id)return;let r=document.getElementById('app').getBoundingClientRect(),px=e.clientX-r.left,py=e.clientY-r.top,dx=px-touch.bx,dy=py-touch.by,d=Math.hypot(dx,dy)||1;if(d>touch.max){dx=dx/d*touch.max;dy=dy/d*touch.max}touch.x=touch.bx+dx;touch.y=touch.by+dy;touch.dx=dx;touch.dy=dy;updateJoystick()});
