@@ -16,8 +16,8 @@ const sourceRegistry = window.RS_SOURCES || {
 
 window.RS_DATABASE = {
   schemaVersion: '1.0.0',
-  contentVersion: 6,
-  gameVersion: '0.6.3',
+  contentVersion: 7,
+  gameVersion: '0.6.4',
   sourceRegistry,
   sources: {
     monsterDatabase: 'https://db.irowiki.org/db/',
@@ -26,7 +26,10 @@ window.RS_DATABASE = {
     swordman: 'https://irowiki.org/wiki/Swordman',
     novice: 'https://irowiki.org/wiki/Novice'
   },
-  settings: { infiniteSp: true },
+  settings: {
+    infiniteSp: true,
+    maxEnemies: 60
+  },
   stats: window.RS_STATS,
   jobs: window.RS_JOBS,
   characters: window.RS_CHARACTERS,
