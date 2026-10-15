@@ -163,6 +163,10 @@
   const P = { x: 0, y: 0, dir: 0 };
   function character() { return DB.characters[S.characterId || "knight_male"]; }
   function combatProfile() { return character().combatProfiles[STAGE_JOB_IDS[S.stage]]; }
+  function selectWeaponStyle(style){
+    if(S.run||S.characterId!=='assassin_male'||!['katar','dual'].includes(style))return false;
+    S.weaponStyle=style;recalc();renderStartMenu();return true;
+  }
   function progression() {
     const path=character().jobPath, index=path.indexOf(STAGE_JOB_IDS[S.stage]);
     const job=DB.jobs[path[index]];
@@ -470,6 +474,11 @@
     S.atkMin = Math.max(1, Math.floor(baseAtk * 0.9));
     S.atkMax = Math.max(S.atkMin + 1, Math.ceil(baseAtk * 1.1 + q[combatProfile().primaryStat] * 0.08));
     S.atk = (S.atkMin + S.atkMax) / 2;
+    // Separate MATK path: physical DEF and HIT never reduce magic damage.
+    S.matk = Math.round((q.int+Math.floor(q.int/5)**2+Math.floor(q.int/7)**2)*1.15+S.gear.weaponAtk);
+    if(S.stage==='Assassin'&&S.weaponStyle!=='dual'){
+      S.atkMin+=3*(S.katar_mastery||0);S.atkMax+=3*(S.katar_mastery||0);S.atk=(S.atkMin+S.atkMax)/2;
+    }
     S.rate =
       Math.max(0.32, 1.25 - q.agi * 0.008 - q.dex * 0.002) *
       (quick ? 0.7 : 1) *
@@ -482,10 +491,13 @@
     S.armor =
       Math.floor(q.vit / 10) + (S.effects?.endure?.expires > S.t ? 5 : 0) + S.gear.defense;
     S.crit = Math.min(0.85, 0.02 + q.luk * 0.003 + (quick ? 0.05 : 0));
+    if(S.stage==='Assassin'&&S.weaponStyle!=='dual')S.crit=Math.min(.85,S.crit*2);
     S.hit = 175 + S.lvl + q.dex + Math.floor(q.luk / 3) + buffSum("hit") + S.gear.hit + (S.vultures_eye || 0);
     S.flee = 100 + S.lvl + q.agi + Math.floor(q.luk / 5);
+    if(stageAllows('thief'))S.flee+=(S.improve_dodge||0)*(S.stage==='Assassin'?4:3);
     S.perfect = Math.min(0.2, Math.floor(q.luk / 10) * 0.01);
     S.move = (125 + q.agi * 0.75 + S.peco * 15) * (1 + buffSum("moveRate"));
+    if(S.stage==='Assassin')S.move*=1+.01*(S.improve_dodge||0);
     S.mag = 60 + Math.floor(q.luk / 2) + S.peco * 12;
     S.attackRange=combatProfile().range+(combatProfile().kind==='bow'?(S.vultures_eye||0)*14:0);
     if (full) {
@@ -628,6 +640,7 @@
     });
     for(const d of SKILL_DEFS) S[d.stateKey]=0;
     S.traps=[];S.falconFlights=[];S.hunterCastReady=0;S.pendingHunterCast=null;S.enemyTraps=[];
+    S.classFields=[];S.classVisuals=[];S.venomBombs=[];S.classCastReady=0;S.pendingClassCast=null;S.weaponStyle='katar';S.poisonedUntil=0;
     unlockQuestSkillsForStage();
     autoAllocateStats();
     recalc(true);
@@ -683,6 +696,13 @@
     }
     $('selectedPath').textContent=character().jobPath.map(id=>DB.jobs[id].name).join(' → ');
     $('characterHint').textContent=(S.characterId==='hunter_male'?'Лук, сокол и ловушки · авто-билд DEX/AGI':'Мечи, копья и Peco Peco · авто-билд Hybrid')+' · 30 минут';
+    if(character().hint)$('characterHint').textContent=character().hint+' · 30 минут';
+    let weaponBox=$('weaponStyle');
+    if(!weaponBox){weaponBox=document.createElement('div');weaponBox.id='weaponStyle';$('characterHint').after(weaponBox);}
+    weaponBox.innerHTML='';weaponBox.hidden=S.characterId!=='assassin_male';
+    if(!weaponBox.hidden)for(const [style,label]of [['katar','Катар · криты и Sonic Blow'],['dual','Два кинжала · Double Attack']]){
+      const b=document.createElement('button');b.type='button';b.textContent=label;b.setAttribute('aria-pressed',String(S.weaponStyle===style));b.onclick=()=>selectWeaponStyle(style);weaponBox.append(b);
+    }
   }
   function say(t) {
     $("toast").textContent = t;
@@ -914,6 +934,9 @@
     return true;
   }
   function attack() {
+    if(['magic','dagger','assassin'].includes(combatProfile().kind)){
+      RSAdventurers.basic(hunterContext(),combatProfile());return;
+    }
     if(S.pendingHunterCast)return;
     if(combatProfile().kind==='bow'){
       const target=nearest(S.attackRange);if(!target)return;
@@ -984,25 +1007,28 @@
       shots,
       effects: fx,
       types,
+      dropGift,
     });
   }
   function runEnabledSpecial() {
     if (S.effects.playDead?.expires > S.t) return false;
     return special();
   }
-  function hunterContext(){return {state:S,player:P,enemies:()=>en,stats:totalStats,shots,types,hit,burst,skillCast,useSp,nearest,recalc,say,byId:SKILL_BY_ID};}
+  function dropGift(e){gems.push({x:e.x,y:e.y,kind:'gift',itemId:644,life:30});}
+  function hunterContext(){return {state:S,player:P,enemies:()=>en,stats:totalStats,shots,types,hit,burst,skillCast,useSp,nearest,recalc,say,dropGift,byId:SKILL_BY_ID};}
   function hit(e, d, crit = false, skillId = "basic", options = {}) {
     if (!e || e.dead || en.indexOf(e) < 0 || !Number.isFinite(d) || d <= 0)
       return;
     if(options.element){
-      const classification=e.frozen?{element:'water',elementLevel:1}:types[e.type][8].classification;
+      const classification=RSAdventurers.classification(hunterContext(),e);
       const multiplier=RSCore.elementMultiplier(options.element,classification,DB.elements);
       if(multiplier<=0){if(multiplier<0)e.hp=Math.min(e.max,e.hp-d*multiplier);return;}
       d*=multiplier;
     }
     if(e.sleeping||e.frozen){e.stunnedUntil=0;e.sleeping=false;e.frozen=false;}
-    let def = types[e.type]?.[8]?.stats?.def || 0;
-    if (e.provokedUntil > S.t) def *= 1 - e.provoke.defDown;
+    if(e.stonedUntil>S.t){e.stonedUntil=0;e.stunnedUntil=0;}
+    let def = types[e.type]?.[8]?.stats?.[options.magical?'mdef':'def'] || 0;
+    if (!options.magical && e.provokedUntil > S.t) def *= 1 - e.provoke.defDown;
     d = options.ignoreDef ? Math.max(1,Math.round(d)) : RSCore.damage(d, def);
     e.hp -= d;
     S.metrics.damage[skillId] = (S.metrics.damage[skillId] || 0) + d;
@@ -1111,6 +1137,7 @@
     dt *= S.spd;
     S.t += dt;
     RSHunter.update(hunterContext(),dt);
+    RSAdventurers.update(hunterContext(),dt);
     S.metrics.spRegen = S.metrics.spRegen || 0;
     for (const id of Object.keys(S.effects)) {
       if (S.effects[id].expires <= S.t) {
@@ -1135,15 +1162,17 @@
         S.spMax,
         S.sp +
           dt *
-            (1.4 + totalStats().int * 0.05) *
+            (1.4 + totalStats().int * 0.05 + (stageAllows('mage')?(S.increase_sp_recovery||0)*(.2+S.spMax*.002):0)) *
             (activeBuff("magnificat") ? 2 : 1),
       );
     let m = move();
+    if(S.effects.hiding?.expires>S.t)m={x:0,y:0,power:0};
     if (m.power > 0.01) delete S.effects.playDead;
     let ease = 1 - Math.exp(-dt * 12);
     S.movePower += (m.power - S.movePower) * ease;
-    P.x += m.x * S.move * S.movePower * dt;
-    P.y += m.y * S.move * S.movePower * dt;
+    const cloakSpeed=S.effects.cloaking?.expires>S.t ? .5+.05*(S.effects.cloaking.level||1) : 1;
+    P.x += m.x * S.move * cloakSpeed * S.movePower * dt;
+    P.y += m.y * S.move * cloakSpeed * S.movePower * dt;
     if (m.power > 0.01) P.dir = Math.atan2(m.y, m.x);
     S.attack -= dt;
     if (S.attack <= 0 && !(S.effects.playDead?.expires > S.t)) {
@@ -1161,13 +1190,15 @@
     }
     for (let e of [...en]) {
       if (e.dead || e.stunnedUntil > S.t) continue;
+      if(!RSAdventurers.seesPlayer(hunterContext(),e))continue;
       let dx = P.x - e.x,
         dy = P.y - e.y,
         d = Math.hypot(dx, dy) || 1;
       e.attackCooldown = Math.max(0, (e.attackCooldown || 0) - dt);
       if(!(e.rootedUntil>S.t)){
-        e.x += (dx / d) * e.speed * dt;
-        e.y += (dy / d) * e.speed * dt;
+        const slow=e.quagmireUntil>S.t?(e.boss ? .8 : Math.max(.3,1-.1*e.quagmireLevel)):1;
+        e.x += (dx / d) * e.speed * dt * slow;
+        e.y += (dy / d) * e.speed * dt * slow;
       }
       if (
         d < e.r + 18 &&
@@ -1178,7 +1209,7 @@
         e.attackCooldown = monsterAttackInterval(e);
         if (
           Math.random() < S.perfect ||
-          Math.random() > RSCore.chance(types[e.type][8].stats.hit-(e.blindedUntil>S.t?35:0), S.flee)
+          Math.random() > RSCore.chance(types[e.type][8].stats.hit-(e.blindedUntil>S.t?35:0)-(e.quagmireUntil>S.t?5*e.quagmireLevel:0), S.flee)
         ) {
           say("Идеальное уклонение");
           continue;
@@ -1199,6 +1230,8 @@
                 S.armor,
             ),
           );
+        taken=RSAdventurers.incoming(hunterContext(),e,taken);
+        if(taken===0){burst(P.x,P.y,'#e9baff',4);continue;}
         if (!S.debugInfiniteHp) {
           S.hp -= taken;
           S.metrics.taken += taken;
@@ -1224,6 +1257,7 @@
         if (!p.hit.has(e.id) && RSCore.segmentHits(previousX,previousY,p.x,p.y,e.x,e.y,p.r+e.r)) {
           p.hit.add(e.id);
           if(p.hunterArrow){RSHunter.impact(hunterContext(),p,e);p.life=0;break;}
+          if(p.classMagic){hit(e,p.dmg,false,p.skillId,{magical:true,element:p.element});p.life=0;break;}
           hit(e, p.dmg, p.crit, p.skillId);
           p.life -= 0.08;
         }
@@ -1335,6 +1369,7 @@
       x.save();
       x.translate(X, Y);
       x.scale(flip, 1);
+      if(RSAdventurers.hidden(hunterContext()))x.globalAlpha=.35;
       x.drawImage(sprite, rect.x, rect.y, rect.width, rect.height, -w / 2, -h * 0.78, w, h);
       x.restore();
     } else {
@@ -1413,6 +1448,7 @@
       if (n && Number.isFinite(n.x) && Number.isFinite(n.y))
         drawDamageNumber(n);
     drawHunterWorld();
+    RSAdventurers.draw(hunterContext(),x,screen);
     player();
   }
   function poringShape(r) {
@@ -2171,6 +2207,8 @@
         ["Профессия", S.stage],
         ["Base / Job", S.lvl + " / " + S.job],
         ["ATK", S.atkMin + "–" + S.atkMax],
+        ...(stageAllows('mage')?[["MATK",S.matk],["Каст",'DEX сокращает время · адаптация Survivor ×0,35']]:[]),
+        ...(stageAllows('thief')?[["Оружие",S.stage==='Assassin'?(S.weaponStyle==='dual'?'Два кинжала':'Катар'):'Кинжал']]:[]),
         ["Защита", S.armor],
         ["Экипировка", S.gear.name],
         ["Бонус оружия", "+" + S.gear.weaponAtk + " ATK"],
@@ -2178,7 +2216,7 @@
         ["Бонус брони", "+" + S.gear.defense + " DEF"],
         ["Верхом", S.stage === "Knight" && S.peco > 0 ? "Peco Peco" : "Нет"],
         ["Билд", DB.builds[character().buildId].name],
-        ["Базовая атака", combatProfile().kind==='bow'?'Лук · '+S.attackRange+' px':'Ближний бой'],
+        ["Базовая атака", combatProfile().kind==='bow'?'Лук · '+S.attackRange+' px':combatProfile().kind==='magic'?'Магическая искра · '+S.attackRange+' px':'Ближний бой'],
         ...(combatProfile().kind==='bow'?[["Стрелы", "Без ограничений · элемент по уязвимости"]]:[]),
         ["HIT / FLEE", S.hit + " / " + S.flee],
         ["Критический шанс", Math.round(S.crit * 100) + "%"],
@@ -2400,6 +2438,7 @@
       hit,
       spawn,
       selectCharacter,
+      selectWeaponStyle,
       attack,
       totalStats,
       shots:()=>shots,

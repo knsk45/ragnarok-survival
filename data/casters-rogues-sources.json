@@ -1,0 +1,1089 @@
+{
+  "retrieved": "2026-10-15",
+  "jobs": [
+    {
+      "name": "Mage",
+      "source": "https://irowiki.org/classic/Mage"
+    },
+    {
+      "name": "Wizard",
+      "source": "https://irowiki.org/classic/Wizard"
+    },
+    {
+      "name": "Thief",
+      "source": "https://irowiki.org/classic/Thief"
+    },
+    {
+      "name": "Assassin",
+      "source": "https://irowiki.org/classic/Assassin"
+    }
+  ],
+  "files": [
+    {
+      "key": "mage",
+      "group": "characters",
+      "jobId": "mage",
+      "sourceUrl": "https://irowiki.org/classic/Mage",
+      "imageSourceUrl": "https://irowiki.org/cl/images/2/20/Mage.png",
+      "path": "assets/irowiki/characters/mage-male.png",
+      "sha256": "28f9f94b3aed0542fbdf768089d18593b6fbe11633a13734a65ffd9d2be2c591",
+      "width": 118,
+      "height": 111
+    },
+    {
+      "key": "cold_bolt",
+      "group": "skills",
+      "jobId": "mage",
+      "sourceUrl": "https://irowiki.org/classic/Mage",
+      "imageSourceUrl": "https://irowiki.org/cl/images/c/c9/Cold_Bolt.png",
+      "path": "assets/irowiki/skills/cold_bolt.png",
+      "sha256": "e1808b4dce26aabc02903d1db27e8fa0eaf9af64d276e3ba8eb5c4f33ba99ab5",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "fire_ball",
+      "group": "skills",
+      "jobId": "mage",
+      "sourceUrl": "https://irowiki.org/classic/Mage",
+      "imageSourceUrl": "https://irowiki.org/cl/images/d/d6/Fire_Ball.png",
+      "path": "assets/irowiki/skills/fire_ball.png",
+      "sha256": "b2f7a60c40d2d0647b28a8602d9c2975b2248c443c142c26eb8f90dccd69dd60",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "fire_bolt",
+      "group": "skills",
+      "jobId": "mage",
+      "sourceUrl": "https://irowiki.org/classic/Mage",
+      "imageSourceUrl": "https://irowiki.org/cl/images/e/e7/Fire_Bolt.png",
+      "path": "assets/irowiki/skills/fire_bolt.png",
+      "sha256": "8af7c8f4d915129d6e7160a47c53a315b56cbbd0a5133450c142b7ded0d3e1ae",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "fire_wall",
+      "group": "skills",
+      "jobId": "mage",
+      "sourceUrl": "https://irowiki.org/classic/Mage",
+      "imageSourceUrl": "https://irowiki.org/cl/images/8/8b/Fire_Wall.png",
+      "path": "assets/irowiki/skills/fire_wall.png",
+      "sha256": "8272c59b964f10d64c8e9ff14a9fda35ba09c83237b7d471f1a5fad4e10d5f55",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "frost_diver",
+      "group": "skills",
+      "jobId": "mage",
+      "sourceUrl": "https://irowiki.org/classic/Mage",
+      "imageSourceUrl": "https://irowiki.org/cl/images/c/c1/Frost_Diver.png",
+      "path": "assets/irowiki/skills/frost_diver.png",
+      "sha256": "bf7778b3b9251567e13d9552a127348aa7a703596c180e590d6d756401b5b06e",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "increase_sp_recovery",
+      "group": "skills",
+      "jobId": "mage",
+      "sourceUrl": "https://irowiki.org/classic/Mage",
+      "imageSourceUrl": "https://irowiki.org/cl/images/0/0d/Increase_SP_Recovery.png",
+      "path": "assets/irowiki/skills/increase_sp_recovery.png",
+      "sha256": "77ac2923f9cdaa8ffb14567383d100711bdd6a0f022cf3d734a79da8ca805587",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "lightning_bolt",
+      "group": "skills",
+      "jobId": "mage",
+      "sourceUrl": "https://irowiki.org/classic/Mage",
+      "imageSourceUrl": "https://irowiki.org/cl/images/f/fd/Lightning_Bolt.png",
+      "path": "assets/irowiki/skills/lightning_bolt.png",
+      "sha256": "debc464f1e38655ffa822fbfc80ddc6003def9d50daf1a47ab449dd620d8b635",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "napalm_beat",
+      "group": "skills",
+      "jobId": "mage",
+      "sourceUrl": "https://irowiki.org/classic/Mage",
+      "imageSourceUrl": "https://irowiki.org/cl/images/5/54/Napalm_Beat.png",
+      "path": "assets/irowiki/skills/napalm_beat.png",
+      "sha256": "bcbb6cbee09371bc93fd2c70513c1f1f2eff038fb1333459bb61be19917b7e30",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "safety_wall",
+      "group": "skills",
+      "jobId": "mage",
+      "sourceUrl": "https://irowiki.org/classic/Mage",
+      "imageSourceUrl": "https://irowiki.org/cl/images/b/bb/Safety_Wall.png",
+      "path": "assets/irowiki/skills/safety_wall.png",
+      "sha256": "4dbbe776c054305b2ec33fdcb14a4f25113eb29ff6bc30d50a4fe031c77ca1c9",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "sight",
+      "group": "skills",
+      "jobId": "mage",
+      "sourceUrl": "https://irowiki.org/classic/Mage",
+      "imageSourceUrl": "https://irowiki.org/cl/images/5/53/Sight.png",
+      "path": "assets/irowiki/skills/sight.png",
+      "sha256": "098405d162aaf7ec4d9c13cd9b1fd259800bf7ebde5a3bc0dbbc650a36563911",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "soul_strike",
+      "group": "skills",
+      "jobId": "mage",
+      "sourceUrl": "https://irowiki.org/classic/Mage",
+      "imageSourceUrl": "https://irowiki.org/cl/images/f/fc/Soul_Strike.png",
+      "path": "assets/irowiki/skills/soul_strike.png",
+      "sha256": "bbebc2bf93909762d66d80f6965fa273bf7525937bf66fb03ebc7d76bcef6c4a",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "stone_curse",
+      "group": "skills",
+      "jobId": "mage",
+      "sourceUrl": "https://irowiki.org/classic/Mage",
+      "imageSourceUrl": "https://irowiki.org/cl/images/e/ec/Stone_Curse.png",
+      "path": "assets/irowiki/skills/stone_curse.png",
+      "sha256": "05bfcb57aead8f1ed144f5a5a6ef3c78a5a14aa693c9f09780c703c052e368ed",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "thunderstorm",
+      "group": "skills",
+      "jobId": "mage",
+      "sourceUrl": "https://irowiki.org/classic/Mage",
+      "imageSourceUrl": "https://irowiki.org/cl/images/7/7a/Thunderstorm.png",
+      "path": "assets/irowiki/skills/thunderstorm.png",
+      "sha256": "a1f5bab18a427d44ec2fb87cce289b34b124baec13a49ecc59882fab50fc5195",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "energy_coat",
+      "group": "skills",
+      "jobId": "mage",
+      "sourceUrl": "https://irowiki.org/classic/Mage",
+      "imageSourceUrl": "https://irowiki.org/cl/images/d/d1/Energy_Coat.png",
+      "path": "assets/irowiki/skills/energy_coat.png",
+      "sha256": "9cc38f47789aa7501298075265ba02a01d5611d7f6fe8db8e90d395be28e431f",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "wizard",
+      "group": "characters",
+      "jobId": "wizard",
+      "sourceUrl": "https://irowiki.org/classic/Wizard",
+      "imageSourceUrl": "https://irowiki.org/cl/images/c/c7/Wizard.png",
+      "path": "assets/irowiki/characters/wizard-male.png",
+      "sha256": "accc71d0f0e48906095526039f23e89fac8fea74cf4e4b56eee363667c6530e6",
+      "width": 118,
+      "height": 111
+    },
+    {
+      "key": "earth_spike",
+      "group": "skills",
+      "jobId": "wizard",
+      "sourceUrl": "https://irowiki.org/classic/Wizard",
+      "imageSourceUrl": "https://irowiki.org/cl/images/7/70/Earth_Spike.png",
+      "path": "assets/irowiki/skills/earth_spike.png",
+      "sha256": "806fbdf170bebffa62967203ff060936185027025d6194f19b96f01421a433aa",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "fire_pillar",
+      "group": "skills",
+      "jobId": "wizard",
+      "sourceUrl": "https://irowiki.org/classic/Wizard",
+      "imageSourceUrl": "https://irowiki.org/cl/images/b/b8/Fire_Pillar.png",
+      "path": "assets/irowiki/skills/fire_pillar.png",
+      "sha256": "913aad5427052ee7bee6bc2c59a9c100af5b5552328af786742486c788ebb666",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "frost_nova",
+      "group": "skills",
+      "jobId": "wizard",
+      "sourceUrl": "https://irowiki.org/classic/Wizard",
+      "imageSourceUrl": "https://irowiki.org/cl/images/4/46/Frost_Nova.png",
+      "path": "assets/irowiki/skills/frost_nova.png",
+      "sha256": "09208e4730a967f61f88392d7715e4dad219bb28a2edb1a09a66f3f29bef92ae",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "heavens_drive",
+      "group": "skills",
+      "jobId": "wizard",
+      "sourceUrl": "https://irowiki.org/classic/Wizard",
+      "imageSourceUrl": "https://irowiki.org/cl/images/c/ce/Heaven%27s_Drive.png",
+      "path": "assets/irowiki/skills/heavens_drive.png",
+      "sha256": "a44f03db944ac67e3cf1966bc8abf0b29d7ad9b63feefc691aa902749e2054b8",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "ice_wall",
+      "group": "skills",
+      "jobId": "wizard",
+      "sourceUrl": "https://irowiki.org/classic/Wizard",
+      "imageSourceUrl": "https://irowiki.org/cl/images/7/76/Ice_Wall.png",
+      "path": "assets/irowiki/skills/ice_wall.png",
+      "sha256": "35b374abc87d86230c30595ab27c4258d1892b5433356971a17af3ae0175df6d",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "jupitel_thunder",
+      "group": "skills",
+      "jobId": "wizard",
+      "sourceUrl": "https://irowiki.org/classic/Wizard",
+      "imageSourceUrl": "https://irowiki.org/cl/images/7/7d/Jupitel_Thunder.png",
+      "path": "assets/irowiki/skills/jupitel_thunder.png",
+      "sha256": "c98e303ef31ddaa3b9fc6e3770220da88d0bbdda45767242269f9f94c268cd7e",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "lord_of_vermilion",
+      "group": "skills",
+      "jobId": "wizard",
+      "sourceUrl": "https://irowiki.org/classic/Wizard",
+      "imageSourceUrl": "https://irowiki.org/cl/images/4/42/Lord_of_Vermilion.png",
+      "path": "assets/irowiki/skills/lord_of_vermilion.png",
+      "sha256": "1c8dc4ac925e4de37cb069de3af6be51a6282f3f603f1773d04df919f9abb04c",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "meteor_storm",
+      "group": "skills",
+      "jobId": "wizard",
+      "sourceUrl": "https://irowiki.org/classic/Wizard",
+      "imageSourceUrl": "https://irowiki.org/cl/images/3/33/Meteor_Storm.png",
+      "path": "assets/irowiki/skills/meteor_storm.png",
+      "sha256": "b9aa462fe154bdf059a9c310e102e48dafd1b50cd78e0f4502f6ee2cd39e030b",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "quagmire",
+      "group": "skills",
+      "jobId": "wizard",
+      "sourceUrl": "https://irowiki.org/classic/Wizard",
+      "imageSourceUrl": "https://irowiki.org/cl/images/d/da/Quagmire.png",
+      "path": "assets/irowiki/skills/quagmire.png",
+      "sha256": "d3365934c7586f9c50993d65fd582dd721caba9a85c6cfe686a405fd948ccec7",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "sense",
+      "group": "skills",
+      "jobId": "wizard",
+      "sourceUrl": "https://irowiki.org/classic/Wizard",
+      "imageSourceUrl": "https://irowiki.org/cl/images/0/01/Sense.png",
+      "path": "assets/irowiki/skills/sense.png",
+      "sha256": "0ded88e4ae16d2d48cd923c08093b749c62f4d001037255b2d352a6bdcca650e",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "sightrasher",
+      "group": "skills",
+      "jobId": "wizard",
+      "sourceUrl": "https://irowiki.org/classic/Wizard",
+      "imageSourceUrl": "https://irowiki.org/cl/images/2/20/Sightrasher.png",
+      "path": "assets/irowiki/skills/sightrasher.png",
+      "sha256": "6c70fd9170dde455cdf8267e719a08c1a5dbb34d8307881b987cc710212428fa",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "storm_gust",
+      "group": "skills",
+      "jobId": "wizard",
+      "sourceUrl": "https://irowiki.org/classic/Wizard",
+      "imageSourceUrl": "https://irowiki.org/cl/images/0/09/Storm_Gust.png",
+      "path": "assets/irowiki/skills/storm_gust.png",
+      "sha256": "6f73d003632edd9c8e5e04f074111d74c1ce92149afa6c87d4a5bbf1aa29b820",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "water_ball",
+      "group": "skills",
+      "jobId": "wizard",
+      "sourceUrl": "https://irowiki.org/classic/Wizard",
+      "imageSourceUrl": "https://irowiki.org/cl/images/6/6a/Water_Ball.png",
+      "path": "assets/irowiki/skills/water_ball.png",
+      "sha256": "be78ea193a83f76b6cbd9d514c8714b1508f8434bc4f648eaf18d4749cf516d7",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "fire_ivy",
+      "group": "skills",
+      "jobId": "wizard",
+      "sourceUrl": "https://irowiki.org/classic/Wizard",
+      "imageSourceUrl": "https://irowiki.org/cl/images/c/c8/Fire_Ivy.png",
+      "path": "assets/irowiki/skills/fire_ivy.png",
+      "sha256": "8d5d7c291956f420483c2a64601aaf9e5a63f5f473eb90c5d5a53d2cdbed26b7",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "sight_blaster",
+      "group": "skills",
+      "jobId": "wizard",
+      "sourceUrl": "https://irowiki.org/classic/Wizard",
+      "imageSourceUrl": "https://irowiki.org/cl/images/d/da/Sight_Blaster.png",
+      "path": "assets/irowiki/skills/sight_blaster.png",
+      "sha256": "671d92fcdfa7f781bcc2d1fc44e97b2cc1589bfd8ff80a424ec3fb89459feab7",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "thief",
+      "group": "characters",
+      "jobId": "thief",
+      "sourceUrl": "https://irowiki.org/classic/Thief",
+      "imageSourceUrl": "https://irowiki.org/cl/images/f/fc/Thief.png",
+      "path": "assets/irowiki/characters/thief-male.png",
+      "sha256": "03066819f0c21bea663678126f2cfd9ba9a92c74bfae235e051c8982f6854cb1",
+      "width": 118,
+      "height": 111
+    },
+    {
+      "key": "detoxify",
+      "group": "skills",
+      "jobId": "thief",
+      "sourceUrl": "https://irowiki.org/classic/Thief",
+      "imageSourceUrl": "https://irowiki.org/cl/images/3/33/Detoxify.png",
+      "path": "assets/irowiki/skills/detoxify.png",
+      "sha256": "3b132ee7e7d4eff74d4ae7384f1a56fd685081db8c6e2d89f54206efe0221cc3",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "double_attack",
+      "group": "skills",
+      "jobId": "thief",
+      "sourceUrl": "https://irowiki.org/classic/Thief",
+      "imageSourceUrl": "https://irowiki.org/cl/images/f/f1/Double_Attack.png",
+      "path": "assets/irowiki/skills/double_attack.png",
+      "sha256": "ed655b340cc486e0c509e5693b9362c11880839df8976da32f1a4604b9ed6a7d",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "envenom",
+      "group": "skills",
+      "jobId": "thief",
+      "sourceUrl": "https://irowiki.org/classic/Thief",
+      "imageSourceUrl": "https://irowiki.org/cl/images/1/17/Envenom.png",
+      "path": "assets/irowiki/skills/envenom.png",
+      "sha256": "d9a59d3d20a514faae116b00a364278e1ef3c32298396d5cc1039e42e524ef12",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "hiding",
+      "group": "skills",
+      "jobId": "thief",
+      "sourceUrl": "https://irowiki.org/classic/Thief",
+      "imageSourceUrl": "https://irowiki.org/cl/images/9/97/Hiding.png",
+      "path": "assets/irowiki/skills/hiding.png",
+      "sha256": "a530fc057adb49f560ea9659b7302b70e29fb66c1ba247f1d25b72d16c101d03",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "improve_dodge",
+      "group": "skills",
+      "jobId": "thief",
+      "sourceUrl": "https://irowiki.org/classic/Thief",
+      "imageSourceUrl": "https://irowiki.org/cl/images/8/88/Improve_Dodge.png",
+      "path": "assets/irowiki/skills/improve_dodge.png",
+      "sha256": "8d611ee0ed67edc0cdd9ae936a13ce2273943cdae872aa07e553e9bfd1e2dfce",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "steal",
+      "group": "skills",
+      "jobId": "thief",
+      "sourceUrl": "https://irowiki.org/classic/Thief",
+      "imageSourceUrl": "https://irowiki.org/cl/images/9/92/Steal.png",
+      "path": "assets/irowiki/skills/steal.png",
+      "sha256": "b90e62d67af78983087f1a495684f28edf6bcac8ae60507a712e84bcd7dbf6a1",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "back_slide",
+      "group": "skills",
+      "jobId": "thief",
+      "sourceUrl": "https://irowiki.org/classic/Thief",
+      "imageSourceUrl": "https://irowiki.org/cl/images/9/95/Back_Slide.png",
+      "path": "assets/irowiki/skills/back_slide.png",
+      "sha256": "9f652ff0574ce53bfba910223324e58b9f960b94ec33aac9b3691dd467a4e32f",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "find_stone",
+      "group": "skills",
+      "jobId": "thief",
+      "sourceUrl": "https://irowiki.org/classic/Thief",
+      "imageSourceUrl": "https://irowiki.org/cl/images/1/19/Find_Stone.png",
+      "path": "assets/irowiki/skills/find_stone.png",
+      "sha256": "8a58bd138e463fcb7ecef67b5469344251f4f5abe33d8b13a44f45624e54c43f",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "sand_attack",
+      "group": "skills",
+      "jobId": "thief",
+      "sourceUrl": "https://irowiki.org/classic/Thief",
+      "imageSourceUrl": "https://irowiki.org/cl/images/b/b3/Sand_Attack.png",
+      "path": "assets/irowiki/skills/sand_attack.png",
+      "sha256": "5475c4d5723e9a7f144b96cd56b8952f4c2035993f9d4699e69347ba6e8b31d0",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "stone_fling",
+      "group": "skills",
+      "jobId": "thief",
+      "sourceUrl": "https://irowiki.org/classic/Thief",
+      "imageSourceUrl": "https://irowiki.org/cl/images/4/4f/Stone_Fling.png",
+      "path": "assets/irowiki/skills/stone_fling.png",
+      "sha256": "b33214a437f9aa5ee8d11f9f9967b26ec5076fc0ee9c46933ecebfa3e97a6d86",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "assassin",
+      "group": "characters",
+      "jobId": "assassin",
+      "sourceUrl": "https://irowiki.org/classic/Assassin",
+      "imageSourceUrl": "https://irowiki.org/cl/images/6/69/Assassin.png",
+      "path": "assets/irowiki/characters/assassin-male.png",
+      "sha256": "b1a9377e7dde5dee62e09a2a57eeec8946bd54a569e1f0e898e2cd1e369994f7",
+      "width": 118,
+      "height": 111
+    },
+    {
+      "key": "cloaking",
+      "group": "skills",
+      "jobId": "assassin",
+      "sourceUrl": "https://irowiki.org/classic/Assassin",
+      "imageSourceUrl": "https://irowiki.org/cl/images/6/60/Cloaking.png",
+      "path": "assets/irowiki/skills/cloaking.png",
+      "sha256": "8139d3011264cdd41d9d97c4240e73948068ab245772153856fb40a94ada77e5",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "enchant_poison",
+      "group": "skills",
+      "jobId": "assassin",
+      "sourceUrl": "https://irowiki.org/classic/Assassin",
+      "imageSourceUrl": "https://irowiki.org/cl/images/6/68/Enchant_Poison.png",
+      "path": "assets/irowiki/skills/enchant_poison.png",
+      "sha256": "20cd623769676b8def0324c244457b6a3d953f61c5d7fc3c7bbe5a6124e1ed1b",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "grimtooth",
+      "group": "skills",
+      "jobId": "assassin",
+      "sourceUrl": "https://irowiki.org/classic/Assassin",
+      "imageSourceUrl": "https://irowiki.org/cl/images/f/f7/Grimtooth.png",
+      "path": "assets/irowiki/skills/grimtooth.png",
+      "sha256": "c6079cbc264ddaf131ca3289acb60cc87b624df21a977374a6a917b6b8d73701",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "katar_mastery",
+      "group": "skills",
+      "jobId": "assassin",
+      "sourceUrl": "https://irowiki.org/classic/Assassin",
+      "imageSourceUrl": "https://irowiki.org/cl/images/9/9a/Katar_Mastery.png",
+      "path": "assets/irowiki/skills/katar_mastery.png",
+      "sha256": "f8d7595b6fafa4ea9278ec7bdb4446208e291a8be372c5e4b3ad402ac6d01a33",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "righthand_mastery",
+      "group": "skills",
+      "jobId": "assassin",
+      "sourceUrl": "https://irowiki.org/classic/Assassin",
+      "imageSourceUrl": "https://irowiki.org/cl/images/c/ce/Righthand_Mastery.png",
+      "path": "assets/irowiki/skills/righthand_mastery.png",
+      "sha256": "0745e2d75e68e6b9a6064b6b74f05c9dadd980683ef6e3fc604047891a9ea19a",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "lefthand_mastery",
+      "group": "skills",
+      "jobId": "assassin",
+      "sourceUrl": "https://irowiki.org/classic/Assassin",
+      "imageSourceUrl": "https://irowiki.org/cl/images/4/44/Lefthand_Mastery.png",
+      "path": "assets/irowiki/skills/lefthand_mastery.png",
+      "sha256": "c52e1171e874eb63d78d821aa320ce57f126040ce43a5c28161cb4b388a483d8",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "poison_react",
+      "group": "skills",
+      "jobId": "assassin",
+      "sourceUrl": "https://irowiki.org/classic/Assassin",
+      "imageSourceUrl": "https://irowiki.org/cl/images/0/05/Poison_React.png",
+      "path": "assets/irowiki/skills/poison_react.png",
+      "sha256": "0d82c28244c1f1645aa89c8fb357107eca8a43f73503af74fbc77db5c7bce8bb",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "sonic_blow",
+      "group": "skills",
+      "jobId": "assassin",
+      "sourceUrl": "https://irowiki.org/classic/Assassin",
+      "imageSourceUrl": "https://irowiki.org/cl/images/7/78/Sonic_Blow.png",
+      "path": "assets/irowiki/skills/sonic_blow.png",
+      "sha256": "11eb939f3d98f850faf0dc0ba9336fb136aed6e1206f7ee7886389bf99962d65",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "venom_dust",
+      "group": "skills",
+      "jobId": "assassin",
+      "sourceUrl": "https://irowiki.org/classic/Assassin",
+      "imageSourceUrl": "https://irowiki.org/cl/images/f/f7/Venom_Dust.png",
+      "path": "assets/irowiki/skills/venom_dust.png",
+      "sha256": "7d637ca36edd488eba09bdd8d11cf7523ed0b4a5e955e77025538c9340bac8d7",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "venom_splasher",
+      "group": "skills",
+      "jobId": "assassin",
+      "sourceUrl": "https://irowiki.org/classic/Assassin",
+      "imageSourceUrl": "https://irowiki.org/cl/images/f/f6/Venom_Splasher.png",
+      "path": "assets/irowiki/skills/venom_splasher.png",
+      "sha256": "a7a3b4c393adeaf8c3d6059d61190687f87b37ccb4eb9f7f5a9339ed1faf564e",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "sonic_acceleration",
+      "group": "skills",
+      "jobId": "assassin",
+      "sourceUrl": "https://irowiki.org/classic/Assassin",
+      "imageSourceUrl": "https://irowiki.org/cl/images/f/f1/Sonic_Acceleration.png",
+      "path": "assets/irowiki/skills/sonic_acceleration.png",
+      "sha256": "07d531ff90b2ad5436d7742d673e91cad5323d71ae338786e861960a72152e47",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "venom_knife",
+      "group": "skills",
+      "jobId": "assassin",
+      "sourceUrl": "https://irowiki.org/classic/Assassin",
+      "imageSourceUrl": "https://irowiki.org/cl/images/0/0c/Venom_Knife.png",
+      "path": "assets/irowiki/skills/venom_knife.png",
+      "sha256": "14be969a658bcc507646e539ee39967e791e7e4aa6ce9a2edfbe90b88216fd06",
+      "width": 24,
+      "height": 24
+    }
+  ],
+  "skills": [
+    {
+      "key": "back_slide",
+      "name": "back slide",
+      "jobId": "thief",
+      "source": "https://irowiki.org/classic/Back_Slide",
+      "tables": [
+        "Back Slide Type: Active Skill Levels: 1 SP Cost: 7 Cast Time: None Cast Delay: ASPD Based Target: Self Knock Back: 5 cells cells Prerequisites In order to gain this skill, the player has to complete a quest."
+      ]
+    },
+    {
+      "key": "cloaking",
+      "name": "cloaking",
+      "jobId": "assassin",
+      "source": "https://irowiki.org/classic/Cloaking",
+      "tables": [
+        "Cloaking Type: Active Skill Levels: 10 (Fixed) SP Cost: 15 Cast Time: None Cast Delay: None Duration: SP depletion, or player is revealed Target: Self Prerequisites (Thief) Hiding Lv. 2"
+      ]
+    },
+    {
+      "key": "cold_bolt",
+      "name": "cold bolt",
+      "jobId": "mage",
+      "source": "https://irowiki.org/classic/Cold_Bolt",
+      "tables": [
+        "Cold Bolt Type: Offensive Skill Levels: 10 (selectable) SP Cost: (10 + (Skill Level*2)) Cast Time: (Skill Level*0.7) seconds Cast Delay: (.8 + (Skill Level*.2)) seconds Target: Foe Range: Magic Property: Water Prerequisites None"
+      ]
+    },
+    {
+      "key": "detoxify",
+      "name": "detoxify",
+      "jobId": "thief",
+      "source": "https://irowiki.org/classic/Detoxify",
+      "tables": [
+        "Detoxify Type: Supportive Skill Levels: 1 SP Cost: 10 Cast Time: None Cast Delay: ASPD Based Target: Self, Players, Monsters Prerequisites (Thief & Super Novice) Envenom Lv. 3"
+      ]
+    },
+    {
+      "key": "double_attack",
+      "name": "double attack",
+      "jobId": "thief",
+      "source": "https://irowiki.org/classic/Double_Attack",
+      "tables": [
+        "Double Attack Type: Passive Skill Levels: 10 Prerequisites None"
+      ]
+    },
+    {
+      "key": "earth_spike",
+      "name": "earth spike",
+      "jobId": "wizard",
+      "source": "https://irowiki.org/classic/Earth_Spike",
+      "tables": [
+        "Earth Spike Type: Offensive Skill Levels: 5 Selectable SP Cost: 10 + 2*Skill Level Cast Time: 0.7*Skill Level Cast Delay: 0.8 seconds Target: Foe Range: Magic Property: Earth Prerequisites (Mage) Stone Curse Lv. 1, (Sage) Endow Quake Lv. 1"
+      ]
+    },
+    {
+      "key": "enchant_poison",
+      "name": "enchant poison",
+      "jobId": "assassin",
+      "source": "https://irowiki.org/classic/Enchant_Poison",
+      "tables": [
+        "Enchant Poison Type: Supportive Skill Levels: 10 (Fixed) SP Cost: 20 Cast Time: None Cast Delay: 1 second Duration: (15 + (15*Skill level)) seconds Target: Self, Party Members Property: Poison Status: Poison Prerequisites (Thief) Envenom Lv. 1"
+      ]
+    },
+    {
+      "key": "energy_coat",
+      "name": "energy coat",
+      "jobId": "mage",
+      "source": "https://irowiki.org/classic/Energy_Coat",
+      "tables": [
+        "Energy Coat Type: Supportive Skill Levels: 1 SP Cost: 30 Cast Time: 5 seconds Cast Delay: None Duration: 300 seconds Target: Self Prerequisites In order to gain this skill, the player has to complete a quest."
+      ]
+    },
+    {
+      "key": "envenom",
+      "name": "envenom",
+      "jobId": "thief",
+      "source": "https://irowiki.org/classic/Envenom",
+      "tables": [
+        "Envenom Type: Offensive Skill Levels: 10 (Fixed) SP Cost: 12 Cast Time: None Cast Delay: ASPD Based Target: Enemy Range: Melee Status: Poison Prerequisites None"
+      ]
+    },
+    {
+      "key": "find_stone",
+      "name": "find stone",
+      "jobId": "thief",
+      "source": "https://irowiki.org/classic/Find_Stone",
+      "tables": [
+        "Find Stone Type: Active Skill Levels: 1 SP Cost: 2 Cast Time: 0.5 seconds Cast Delay: ASPD Based Target: Ground Prerequisites In order to gain this skill, the player has to complete a quest."
+      ]
+    },
+    {
+      "key": "fire_ball",
+      "name": "fire ball",
+      "jobId": "mage",
+      "source": "https://irowiki.org/classic/Fire_Ball",
+      "tables": [
+        "Fire Ball Type: Offensive Skill Levels: 10 (Fixed) SP Cost: 25 Cast Time: (1~5) 1.5 seconds (6~10) 1 second Cast Delay: (1~5) 1.5 seconds (6~10) 1 second Target: Enemy Property: Fire Prerequisites (Mage & Super Novice) Fire Bolt Lvl. 4"
+      ]
+    },
+    {
+      "key": "fire_bolt",
+      "name": "fire bolt",
+      "jobId": "mage",
+      "source": "https://irowiki.org/classic/Fire_Bolt",
+      "tables": [
+        "Fire Bolt Type: Offensive Skill Levels: 10 (Selectable) SP Cost: (10 + (Skill level*2)) Cast Time: (Skill level*.7) seconds Cast Delay: (.8 + (Skill level*.2) seconds Target: Foe Range: Magic Property: Fire Prerequisites None"
+      ]
+    },
+    {
+      "key": "fire_ivy",
+      "name": "fire ivy",
+      "jobId": "wizard",
+      "source": "https://irowiki.org/classic/Fire_Ivy",
+      "tables": [
+        "Fire Ivy Type: Offensive Skill Levels: 10 SP Cost: (10+Skill Level*2) Cast Time: Unknown Cast Delay: Unknown Duration: Unknown Target: Ground Area of Effect: Unknown Property: Fire Prerequisites Unknown"
+      ]
+    },
+    {
+      "key": "fire_pillar",
+      "name": "fire pillar",
+      "jobId": "wizard",
+      "source": "https://irowiki.org/classic/Fire_Pillar",
+      "tables": [
+        "Fire Pillar Type: Offensive Skill Levels: 10 (Selectable) SP Cost: 75 Cast Time: (3.3 - (Skill level*.3)) seconds Cast Delay: 1 second Target: Ground Property: Fire Catalyst: Blue Gemstone (Level 6+ only) Prerequisites (Mage) Fire Wall Lv. 1"
+      ]
+    },
+    {
+      "key": "fire_wall",
+      "name": "fire wall",
+      "jobId": "mage",
+      "source": "https://irowiki.org/classic/Fire_Wall",
+      "tables": [
+        "Fire Wall Type: Offensive Skill Levels: 10 Non-Selectable SP Cost: 40 Cast Time: 2.15 - 0.15 seconds per level Cast Delay: Negligible Duration: 4 seconds + 1.0 second per level; 2 hits + 1 per level Target: Ground Range: Magic Knock Back: Yes cells Area of Effect: 1x3 Property: Fire Prerequisites (Mage & Super Novice) Fire Bolt Lv. 4, Fire Ball Lv. 5, Sight Lv. 1,"
+      ]
+    },
+    {
+      "key": "frost_diver",
+      "name": "frost diver",
+      "jobId": "mage",
+      "source": "https://irowiki.org/classic/Frost_Diver",
+      "tables": [
+        "Frost Diver Type: Offensive Skill Levels: 10 (Fixed) SP Cost: (26 - Skill level) Cast Time: 0.8 seconds Cast Delay: 1.5 seconds Target: Enemy Property: Water Status: Frozen Prerequisites (Mage & Super Novice) Cold Bolt Lv. 5"
+      ]
+    },
+    {
+      "key": "frost_nova",
+      "name": "frost nova",
+      "jobId": "wizard",
+      "source": "https://irowiki.org/classic/Frost_Nova",
+      "tables": [
+        "Frost Nova Type: Offensive Skill Levels: 10 (Fixed) SP Cost: (47 - (Skill level*2)) Cast Time: 6~4 seconds Cast Delay: 1 second Target: Self Area of Effect: 5x5 Property: Water Status: Frozen Prerequisites (Mage) Frost Diver Lv. 1, (Wizard) Ice Wall Lv. 1"
+      ]
+    },
+    {
+      "key": "grimtooth",
+      "name": "grimtooth",
+      "jobId": "assassin",
+      "source": "https://irowiki.org/classic/Grimtooth",
+      "tables": [
+        "Grimtooth Type: Offensive Skill Levels: 5 (Fixed) SP Cost: 3 Cast Time: None Cast Delay: ASPD Based Target: Enemy Range: 2 + Skill Level cells Area of Effect: 3x3 Weapon: Katar Prerequisites (Assassin) Cloaking Lv. 2, Sonic Blow Lv. 5"
+      ]
+    },
+    {
+      "key": "heavens_drive",
+      "name": "heavens drive",
+      "jobId": "wizard",
+      "source": "https://irowiki.org/classic/Heaven's_Drive",
+      "tables": [
+        "Heaven's Drive Type: Offensive Skill Levels: 5 Selectable SP Cost: (24 + (Skill Level*2)) Cast Time: 1 second*Skill Level Cast Delay: 1 seconds Target: Ground Range: Magic Area of Effect: 5x5 Property: Earth Prerequisites (Wizard) Earth Spike Lv. 3; (Sage) Earth Spike Lv. 1"
+      ]
+    },
+    {
+      "key": "hiding",
+      "name": "hiding",
+      "jobId": "thief",
+      "source": "https://irowiki.org/classic/Hiding",
+      "tables": [
+        "Hiding Type: Active Skill Levels: 10 (Fixed) SP Cost: Cast: 10 Use: 1 SP / (Skill Level+4) seconds Cast Time: None Cast Delay: N/A Duration: (Skill level*30) seconds Target: Self Prerequisites (Thief & Super Novice) Steal Lv. 5"
+      ]
+    },
+    {
+      "key": "ice_wall",
+      "name": "ice wall",
+      "jobId": "wizard",
+      "source": "https://irowiki.org/classic/Ice_Wall",
+      "tables": [
+        "Ice Wall Type: Active Skill Levels: 10 (Fixed) SP Cost: 20 Cast Time: None Cast Delay: ASPD Based Duration: (Skill Level Durability/50) seconds Target: Ground Prerequisites (Mage) Frost Diver Lv. 1, Stone Curse Lv. 1"
+      ]
+    },
+    {
+      "key": "improve_dodge",
+      "name": "improve dodge",
+      "jobId": "thief",
+      "source": "https://irowiki.org/classic/Improve_Dodge",
+      "tables": [
+        "Improve Dodge Type: Passive Skill Levels: 10 Prerequisites None"
+      ]
+    },
+    {
+      "key": "increase_sp_recovery",
+      "name": "increase sp recovery",
+      "jobId": "mage",
+      "source": "https://irowiki.org/classic/Increase_SP_Recovery",
+      "tables": [
+        "Increase SP Recovery Type: Passive Skill Levels: 10 Prerequisites None"
+      ]
+    },
+    {
+      "key": "jupitel_thunder",
+      "name": "jupitel thunder",
+      "jobId": "wizard",
+      "source": "https://irowiki.org/classic/Jupitel_Thunder",
+      "tables": [
+        "Jupitel Thunder Type: Offensive Skill Levels: 10 (Selectable) SP Cost: (17 + (Skill Level*3)) Cast Time: (2 + (Skill level*.5)) seconds Cast Delay: None Target: Enemy Property: Wind Prerequisites (Mage) Lightning Bolt Lv. 1, Napalm Beat Lv. 1"
+      ]
+    },
+    {
+      "key": "katar_mastery",
+      "name": "katar mastery",
+      "jobId": "assassin",
+      "source": "https://irowiki.org/classic/Katar_Mastery",
+      "tables": [
+        "Katar Mastery Type: Passive Skill Levels: 10 Weapon: Katar Prerequisites None"
+      ]
+    },
+    {
+      "key": "lefthand_mastery",
+      "name": "lefthand mastery",
+      "jobId": "assassin",
+      "source": "https://irowiki.org/classic/Lefthand_Mastery",
+      "tables": [
+        "Lefthand Mastery Type: Passive Skill Levels: 5 Prerequisites (Assassin) Righthand Mastery Lv. 2"
+      ]
+    },
+    {
+      "key": "lightning_bolt",
+      "name": "lightning bolt",
+      "jobId": "mage",
+      "source": "https://irowiki.org/classic/Lightning_Bolt",
+      "tables": [
+        "Lightening Bolt Type: Offensive Skill Levels: 10 (Selectable) SP Cost: (10 + (Skill level*2)) Cast Time: (Skill level*.7) seconds Cast Delay: (.8 + (Skill level*.2) seconds Target: Foe Range: Magic Property: Wind Prerequisites None"
+      ]
+    },
+    {
+      "key": "lord_of_vermilion",
+      "name": "lord of vermilion",
+      "jobId": "wizard",
+      "source": "https://irowiki.org/classic/Lord_of_Vermilion",
+      "tables": [
+        "Lord of Vermilion Type: Offensive Skill Levels: 10 Selectable SP Cost: 56 + 4*level Cast Time: 15.5-0.5*level seconds Cast Delay: 5 seconds Duration: 4 seconds Target: Ground Range: Magic Area of Effect: 11x11 Property: Wind Status: Blind Prerequisites (Wizard) Jupitel Thunder Lv. 5, (Mage) Thunderstorm Lv. 1"
+      ]
+    },
+    {
+      "key": "meteor_storm",
+      "name": "meteor storm",
+      "jobId": "wizard",
+      "source": "https://irowiki.org/classic/Meteor_Storm",
+      "tables": [
+        "Meteor Storm Type: Offensive Skill Levels: 10 (Selectable) SP Cost: Special (See Table) Cast Time: Unknown Cast Delay: 2 seconds + 0.5 second per level Duration: 2 seconds + 0.5 second per level Target: Ground Range: Magic Area of Effect: 7x7 Property: Fire Status: Stun Prerequisites (Wizard) Sightrasher Lv. 2, (Mage) Thunderstorm Lv. 1"
+      ]
+    },
+    {
+      "key": "napalm_beat",
+      "name": "napalm beat",
+      "jobId": "mage",
+      "source": "https://irowiki.org/classic/Napalm_Beat",
+      "tables": [
+        "Napalm Beat Type: Offensive Skill Levels: 10 (Fixed) SP Cost: (1~3) 9 (4~6) 12 (7~9) 15 (10) 18 Cast Time: 1 ~ .5 seconds Cast Delay: 1 second Target: Enemy Range: Magic Property: Ghost Prerequisites None"
+      ]
+    },
+    {
+      "key": "poison_react",
+      "name": "poison react",
+      "jobId": "assassin",
+      "source": "https://irowiki.org/classic/Poison_React",
+      "tables": [
+        "Poison React Type: Active Skill Levels: 10 (Fixed) SP Cost: (1~8) (20 + (Skill level*5)) (9~10) 45 Cast Time: None Duration: (1~9) (15 + (Skill level*5)) seconds (10) 60 seconds Target: Self Range: Melee Property: Poison Prerequisites (Assassin) Enchant Poison Lv. 3"
+      ]
+    },
+    {
+      "key": "quagmire",
+      "name": "quagmire",
+      "jobId": "wizard",
+      "source": "https://irowiki.org/classic/Quagmire",
+      "tables": [
+        "Quagmire Type: Active Skill Levels: 5 (Fixed) Cast Time: None Cast Delay: 1 second Target: Ground Range: Magic Area of Effect: 5 x 5 Prerequisites (Wizard) Heaven's Drive Lv. 1"
+      ]
+    },
+    {
+      "key": "righthand_mastery",
+      "name": "righthand mastery",
+      "jobId": "assassin",
+      "source": "https://irowiki.org/classic/Righthand_Mastery",
+      "tables": [
+        "Righthand Mastery Type: Passive Skill Levels: 5 Prerequisites None"
+      ]
+    },
+    {
+      "key": "safety_wall",
+      "name": "safety wall",
+      "jobId": "mage",
+      "source": "https://irowiki.org/classic/Safety_Wall",
+      "tables": [
+        "Safety Wall Type: Supportive Skill Levels: 10 (Selectable) Cast Time: (1~7) (4.5 - (Skill Level*.5)) seconds (7~10) 1 second Cast Delay: None Duration: (Skill Level*5) seconds Target: Ground Area of Effect: 1 x 1 Catalyst: Blue Gemstone Prerequisites (Mage & Super Novice) Napalm Beat Lv. 7, Soul Strike Lv. 5; (Priest) Aspersio Lv. 4, Sanctuary Lv. 3"
+      ]
+    },
+    {
+      "key": "sand_attack",
+      "name": "sand attack",
+      "jobId": "thief",
+      "source": "https://irowiki.org/classic/Sand_Attack",
+      "tables": [
+        "Sand Attack Type: Offensive Skill Levels: 1 SP Cost: 9 Cast Time: None Target: Enemy Property: Earth Prerequisites In order to gain this skill, the player has to complete a quest."
+      ]
+    },
+    {
+      "key": "sense",
+      "name": "sense",
+      "jobId": "wizard",
+      "source": "https://irowiki.org/classic/Sense",
+      "tables": [
+        "Sense Type: Active Skill Levels: 1 SP Cost: 10 Cast Time: None Cast Delay: None Target: Foe Prerequisites None"
+      ]
+    },
+    {
+      "key": "sight",
+      "name": "sight",
+      "jobId": "mage",
+      "source": "https://irowiki.org/classic/Sight",
+      "tables": [
+        "Sight Type: Active Skill Levels: 1 SP Cost: 10 Cast Time: None Cast Delay: None Target: Self Area of Effect: 7x7 Prerequisites None"
+      ]
+    },
+    {
+      "key": "sight_blaster",
+      "name": "sight blaster",
+      "jobId": "wizard",
+      "source": "https://irowiki.org/classic/Sight_Blaster",
+      "tables": [
+        "Sight Blaster Type: Offensive Skill Levels: 1 SP Cost: 40 Cast Time: .7 seconds Cast Delay: None Duration: 120 seconds Target: Self Property: Fire Prerequisites In order to gain this skill, the player has to complete a quest."
+      ]
+    },
+    {
+      "key": "sightrasher",
+      "name": "sightrasher",
+      "jobId": "wizard",
+      "source": "https://irowiki.org/classic/Sightrasher",
+      "tables": [
+        "Sightrasher Type: Offensive Skill Levels: 10 (Selectable) SP Cost: (33 + (Skill Level*2)) Cast Time: .5 seconds Cast Delay: 2 seconds Knock Back: N/A cells Property: Fire Prerequisites (Mage) Sight Lv. 1, Lightning Bolt Lv. 1"
+      ]
+    },
+    {
+      "key": "sonic_acceleration",
+      "name": "sonic acceleration",
+      "jobId": "assassin",
+      "source": "https://irowiki.org/classic/Sonic_Acceleration",
+      "tables": [
+        "Sonic Acceleration Type: Passive Skill Levels: 1 Weapon: Katar Prerequisites In order to gain this skill, the player has to complete a quest."
+      ]
+    },
+    {
+      "key": "sonic_blow",
+      "name": "sonic blow",
+      "jobId": "assassin",
+      "source": "https://irowiki.org/classic/Sonic_Blow",
+      "tables": [
+        "Sonic Blow Type: Offensive Skill Levels: 10 (Selectable) SP Cost: (14 + (Skill level * 2)) Cast Time: None Cast Delay: 2 seconds Target: Enemy Range: Melee Status: Stun Weapon: Katar Prerequisites (Assassin) Katar Mastery Lv. 4"
+      ]
+    },
+    {
+      "key": "soul_strike",
+      "name": "soul strike",
+      "jobId": "mage",
+      "source": "https://irowiki.org/classic/Soul_Strike",
+      "tables": [
+        "Soul Strike Type: Offensive Skill Levels: 10 (Selectable) SP Cost: 18 ~ 42 Cast Time: 0.5 seconds Cast Delay: (1~9) (1 + (Skill level*.2)) seconds (10) 2.7 seconds Target: Enemy Range: Magic Property: Ghost Prerequisites (Mage & Super Novice) Napalm Beat Lv. 4"
+      ]
+    },
+    {
+      "key": "steal",
+      "name": "steal",
+      "jobId": "thief",
+      "source": "https://irowiki.org/classic/Steal",
+      "tables": [
+        "Steal Type: Active Skill Levels: 10 (Fixed) SP Cost: 10 Cast Time: None Cast Delay: 1 second Target: Monsters Range: Melee Prerequisites None"
+      ]
+    },
+    {
+      "key": "stone_curse",
+      "name": "stone curse",
+      "jobId": "mage",
+      "source": "https://irowiki.org/classic/Stone_Curse",
+      "tables": [
+        "Stone Curse Type: Active Skill Levels: 10 (Fixed) SP Cost: (26 - (Skill Level)) Cast Time: 1 second Cast Delay: ASPD Based Target: Enemy Status: Stone Catalyst: 1 Red Gemstone (Varies) Prerequisites None"
+      ]
+    },
+    {
+      "key": "stone_fling",
+      "name": "stone fling",
+      "jobId": "thief",
+      "source": "https://irowiki.org/classic/Stone_Fling",
+      "tables": [
+        "Stone Fling Type: Offensive Skill Levels: 1 SP Cost: 2 Cast Time: None Cast Delay: ASPD Based Target: Enemy Range: 7 cells cells Status: Stun, Blind Catalyst: 1 Stone Prerequisites In order to gain this skill, the player has to complete a quest."
+      ]
+    },
+    {
+      "key": "storm_gust",
+      "name": "storm gust",
+      "jobId": "wizard",
+      "source": "https://irowiki.org/classic/Storm_Gust",
+      "tables": [
+        "Storm Gust Type: Offensive Skill Levels: 10 Selectable SP Cost: 78 Cast Time: (5+Skill Lvl) seconds Cast Delay: 5 seconds Duration: 5 seconds Target: Ground Range: Magic Knock Back: Yes cells Area of Effect: 9x9 Property: Water Status: Frozen Prerequisites (Wizard) Jupitel Thunder Lv. 3, (Mage) Frost Diver Lv. 1"
+      ]
+    },
+    {
+      "key": "thunderstorm",
+      "name": "thunderstorm",
+      "jobId": "mage",
+      "source": "https://irowiki.org/classic/Thunderstorm",
+      "tables": [
+        "Thunderstorm Type: Offensive Skill Levels: 10 (Selectable) SP Cost: (24 + (Skill level*5) Cast Time: (Skill level) seconds Cast Delay: 2 seconds Target: Ground Area of Effect: 5x5 Property: Wind Prerequisites (Mage & Super Novice) Lightning Bolt Lv. 4"
+      ]
+    },
+    {
+      "key": "venom_dust",
+      "name": "venom dust",
+      "jobId": "assassin",
+      "source": "https://irowiki.org/classic/Venom_Dust",
+      "tables": [
+        "Venom Dust Type: Active Skill Levels: 10 (Fixed) SP Cost: 20 Cast Time: None Cast Delay: None Duration: (Skill level*5) seconds Target: Ground Range: Melee Area of Effect: 2x2 Status: Poison Catalyst: 1 Red Gemstone Prerequisites (Assassin) Enchant Poison Lv. 5"
+      ]
+    },
+    {
+      "key": "venom_knife",
+      "name": "venom knife",
+      "jobId": "assassin",
+      "source": "https://irowiki.org/classic/Venom_Knife",
+      "tables": [
+        "Venom Knife Type: Offensive Skill Levels: 1 SP Cost: 15 Cast Delay: ASPD Target: Foe Range: 10 cells cells Status: Poison Catalyst: 1 Venom Knife Prerequisites In order to gain this skill, the player has to complete a quest."
+      ]
+    },
+    {
+      "key": "venom_splasher",
+      "name": "venom splasher",
+      "jobId": "assassin",
+      "source": "https://irowiki.org/classic/Venom_Splasher",
+      "tables": [
+        "Venom Splasher Type: Offensive Skill Levels: 10 (Selectable) SP Cost: (10 + (Skill level*2)) Cast Time: 1 second Cast Delay: ASPD Target: Enemy Range: Melee Property: Poison Catalyst: 1 Red Gemstone Prerequisites (Assassin) Poison React Lv. 5, Venom Dust Lv. 5"
+      ]
+    },
+    {
+      "key": "water_ball",
+      "name": "water ball",
+      "jobId": "wizard",
+      "source": "https://irowiki.org/classic/Water_Ball",
+      "tables": [
+        "Water Ball Type: Offensive Skill Levels: 5 (Selectable) SP Cost: (Skill level*5) Cast Time: (Skill level) seconds Cast Delay: Animation Target: Enemy Range: Magic Property: Water Prerequisites (Mage) Cold Bolt Lv. 1, Lightning Bolt Lv. 1"
+      ]
+    }
+  ]
+}

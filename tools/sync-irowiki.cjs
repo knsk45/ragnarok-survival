@@ -155,7 +155,9 @@ const iconPages = [
   const characters = [{key:"knight_peco_male", group:"characters", path:mount.spriteUrl, sourceUrl:mount.source, imageSourceUrl:mount.imageSource}];
   const hunterSnapshot = path.join(root,"data/hunter-sources.json");
   const hunterFiles = fs.existsSync(hunterSnapshot) ? JSON.parse(fs.readFileSync(hunterSnapshot,"utf8")).files : [];
-  const files = [...monsters, ...skills, ...buffs, ...items, ...characters, ...hunterFiles];
+  const adventurerSnapshot = path.join(root,"data/casters-rogues-sources.json");
+  const adventurerFiles = fs.existsSync(adventurerSnapshot) ? JSON.parse(fs.readFileSync(adventurerSnapshot,"utf8")).files : [];
+  const files = [...monsters, ...skills, ...buffs, ...items, ...characters, ...hunterFiles, ...adventurerFiles];
   if (process.argv.includes("--download"))
     await parallel(files, async (file) => {
       const target = path.join(root, file.path);

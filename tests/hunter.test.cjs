@@ -2,14 +2,14 @@ const test=require('node:test'),assert=require('node:assert/strict');
 const {boot}=require('./helpers.cjs');
 function hunter(){const b=boot();b.g.selectCharacter('hunter_male');return b;}
 function disableSkills(g,w){for(const d of w.RS_DATABASE.skills)g.state.skillEnabled[d.id]=false;}
-test('start menu unlocks only Knight/Hunter and prevents changing an active run',()=>{
+test('start menu unlocks four reviewed branches and prevents changing an active run',()=>{
  const{g,w,dom}=boot();
- assert.equal(w.document.querySelector('[data-class-id="wizard"]').disabled,true);
- assert.equal(w.document.querySelectorAll('.class-card:not(:disabled)').length,2);
+ assert.equal(w.document.querySelector('[data-class-id="sage"]').disabled,true);
+ assert.equal(w.document.querySelectorAll('.class-card:not(:disabled)').length,4);
  w.document.querySelector('[data-class-id="hunter"]').click();
  assert.equal(g.state.characterId,'hunter_male');
  assert.equal(w.document.querySelector('#selectedPath').textContent,'Novice → Archer → Hunter');
- assert.equal(g.selectCharacter('wizard_male'),false);
+ assert.equal(g.selectCharacter('sage_male'),false);
  g.start();assert.equal(g.selectCharacter('knight_male'),false);
  dom.window.close();
 });

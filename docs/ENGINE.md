@@ -1,10 +1,12 @@
 # Ragnarok Survival — foundation
 
-## Актуальная версия: 0.12.0
+## Актуальная версия: 0.13.0
+
+Добавлены Novice → Mage → Wizard и Novice → Thief → Assassin. Четыре ветки доступны в стартовом меню. Новые деревья и профили — `data/adventurers.js`, исполнитель магии/ядов/скрытности — `engine/adventurers.js`. Оригинальные ресурсы и метаданные — `data/casters-rogues-sources.json`. Подробности и адаптации Survivor: [RELEASE-0.13.0.md](RELEASE-0.13.0.md).
 
 Добавлены 35 обычных монстров отдельным слоем `data/monster-expansion.js`; всего 48 обычных видов и 17 боссов. Фильтр, исходные параметры, хеши PNG и очередь ещё не добавленных записей сохранены в `data/monster-expansion.json`. Подробности: [RELEASE-0.12.0.md](RELEASE-0.12.0.md).
 
-Каталог Classic-профессий и две доступные ветки находятся в `data/classes.js`: Novice → Swordman → Knight и Novice → Archer → Hunter. Остальные профессии видны в стартовом меню, но закрыты. Навыки Hunter — `data/hunter.js`, исполнение — `engine/hunter.js`, таблица элементов — `data/elements.js`. Правила подключения новой ветки и ограничения адаптации: [RELEASE-0.11.0.md](RELEASE-0.11.0.md).
+Каталог Classic-профессий и ветки Knight/Hunter находятся в `data/classes.js`; Wizard/Assassin регистрируются в `data/adventurers.js`. Остальные профессии видны в стартовом меню, но закрыты. Навыки Hunter — `data/hunter.js`, исполнение — `engine/hunter.js`, таблица элементов — `data/elements.js`. Правила подключения новой ветки и ограничения адаптации: [RELEASE-0.11.0.md](RELEASE-0.11.0.md).
 
 Прогрессия экипировки с B70 находится в `data/equipment.js`; внешний вид Knight верхом выбирается через `RS_CHARACTERS.knight_male.mountedVisual` при изученном Riding. Подробности и границы проверки баланса: [RELEASE-0.10.0.md](RELEASE-0.10.0.md).
 
