@@ -33,10 +33,10 @@ async function suite(engine,name){
   await page.locator('#startBtn').click();
   await page.keyboard.press('ArrowRight');
   await page.waitForFunction(()=>window.RS_TEST.state.t>.3);
+  await page.screenshot({path:path.join(root,'test-results',name+'-payon-'+width+'x'+height+'.png')});
   await page.locator('#pauseBtn').click();
   assert.equal(await page.evaluate(()=>window.RS_TEST.state.mapId),'pay_fild08');
   assert(await page.evaluate(()=>{const g=window.RS_TEST;return g.terrain.free(g.player.x,g.player.y)&&g.enemies().every(e=>g.terrain.free(e.x,e.y));}));
-  await page.screenshot({path:path.join(root,'test-results',name+'-payon-'+width+'x'+height+'.png')});
   await page.screenshot({path:path.join(root,'test-results',name+'-'+width+'x'+height+'.png')});
   assert.deepEqual(errors,[]);await page.close();console.log(name+' '+width+'×'+height+' passed');
  }}finally{await browser.close();}
