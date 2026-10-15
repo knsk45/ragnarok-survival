@@ -389,10 +389,15 @@ button:disabled {
   text-align: center;
   font-size: 28px !important;
 }
-#pauseHint {
+#pauseHint,
+#experienceRates {
   text-align: center;
   font-size: 12px;
   margin: 8px 0;
+}
+#experienceRates {
+  color: #ffd66b;
+  font-weight: 700;
 }
 #resume {
   flex: 0 0 auto;

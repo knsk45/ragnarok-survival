@@ -54,7 +54,7 @@
     $("fatalReload").onclick = () => location.reload();
     try {
       RSStorage.log(localStorage, {
-        version: "0.8.0",
+        version: "0.8.1",
         time: new Date().toISOString(),
         message: message + detail,
         stack: error?.stack || "",
@@ -649,9 +649,10 @@
     applyBuff(ids[Math.floor(Math.random() * ids.length)]);
   }
   function xp(n, jobAmount = 0) {
-    awardJobXp(jobAmount);
+    const rates = DB.settings.experienceRates;
+    awardJobXp(jobAmount * rates.job);
     if (S.lvl >= 99) return;
-    S.xp += Math.max(0, n || 0);
+    S.xp += Math.max(0, n || 0) * rates.base;
     while (S.xp >= S.need && S.lvl < 99) {
       S.xp -= S.need;
       S.lvl++;
@@ -2056,6 +2057,11 @@
         .join("");
   }
   function setupPauseTabs() {
+    const rates = DB.settings.experienceRates;
+    const rateInfo = document.createElement("p");
+    rateInfo.id = "experienceRates";
+    rateInfo.textContent = `Base EXP ×${rates.base} · Job EXP ×${rates.job}`;
+    $("pauseHint").after(rateInfo);
     const tabs = document.createElement("div");
     tabs.className = "pause-tabs";
     tabs.setAttribute("role", "tablist");

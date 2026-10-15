@@ -82,7 +82,7 @@ test("each normal or elite death emits full, separate canonical Base/Job rewards
   }
   dom.window.close();
 });
-test("Base and Job crystals credit independent counters with no multiplier", () => {
+test("Base and Job crystals apply configured rates exactly once to independent counters", () => {
   const { dom, g } = boot();
   g.spawn("poring");
   g.hit(g.enemies()[0], 1e9);
@@ -96,14 +96,17 @@ test("Base and Job crystals credit independent counters with no multiplier", () 
   }
   b.x = b.y = 0;
   g.update(0);
-  assert.equal(g.state.xp, 27);
+  assert.equal(g.state.xp, 135);
   assert.equal(g.state.job, 1);
   assert.equal(g.state.jobXp, 0);
   j.x = j.y = 0;
   g.update(0);
-  assert.equal(g.state.xp, 27);
-  assert.equal(g.state.job, 2);
-  assert.equal(g.state.jobXp, 10);
+  assert.equal(g.state.xp, 135);
+  assert.equal(g.state.job, 3);
+  assert.equal(g.state.jobXp, 12);
+  g.update(0);
+  assert.equal(g.state.xp, 135);
+  assert.equal(g.state.jobXp, 12);
   dom.window.close();
 });
 test("Base levels never grant Job levels, and evolution has no Base gate", () => {
@@ -142,6 +145,9 @@ test("boot, pause, settings and resume work; passive/unlearned skills absent", (
       .textContent.includes("Play Dead"),
   );
   w.document.querySelector('[data-tab="settings"]').click();
+  assert.equal(w.document.querySelector('#experienceRates').textContent,
+    'Base EXP ×5 · Job EXP ×2');
+  assert(!w.document.querySelector('#experienceRates').closest('.hide'));
   w.document.querySelector("#debugInfiniteHp").click();
   assert(g.state.debugInfiniteHp);
   w.document.querySelector("#resume").click();
