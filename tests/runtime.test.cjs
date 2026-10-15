@@ -44,7 +44,7 @@ function boot() {
   assert(w.RS_TEST, "runtime booted");
   return { dom, w, g: w.RS_TEST };
 }
-test("capped Base still allows Job EXP and MAX bars stay finite",()=>{const {dom,w,g}=boot();g.state.lvl=98;g.state.need=1252761;g.xp(1252761,0);assert.equal(g.state.lvl,99);assert.equal(w.document.querySelector('#xpText').textContent,'MAX');assert.equal(w.document.querySelector('#xp').style.width,'100%');g.state.stage='Knight';g.state.job=1;g.state.jobXp=0;g.state.jobNeed=2500;g.xp(0,2500);assert.equal(g.state.job,2);assert.equal(g.state.jobNeed,4200);assert.equal(g.state.lvl,99);dom.window.close()});
+test("capped Base still allows Job EXP and MAX bars stay finite",()=>{const {dom,w,g}=boot();g.state.lvl=98;g.state.need=1252761;g.xp(1252761,0);assert.equal(g.state.lvl,99);assert.equal(w.document.querySelector('#xpText').textContent,'MAX');assert.equal(w.document.querySelector('#xp').style.width,'100%');g.state.stage='Knight';g.state.job=1;g.state.jobXp=0;g.state.jobNeed=2500;g.xp(0,250);assert.equal(g.state.job,2);assert.equal(g.state.jobNeed,4200);assert.equal(g.state.lvl,99);dom.window.close()});
 test("disabled learned skills disappear only from the lower HUD", () => {
   const { dom, w, g } = boot();
   g.start();
@@ -96,17 +96,17 @@ test("Base and Job crystals apply configured rates exactly once to independent c
   }
   b.x = b.y = 0;
   g.update(0);
-  assert.equal(g.state.xp, 135);
+  assert.equal(g.state.xp, 540);
   assert.equal(g.state.job, 1);
   assert.equal(g.state.jobXp, 0);
   j.x = j.y = 0;
   g.update(0);
-  assert.equal(g.state.xp, 135);
-  assert.equal(g.state.job, 3);
-  assert.equal(g.state.jobXp, 12);
+  assert.equal(g.state.xp, 540);
+  assert.equal(g.state.job, 6);
+  assert.equal(g.state.jobXp, 13);
   g.update(0);
-  assert.equal(g.state.xp, 135);
-  assert.equal(g.state.jobXp, 12);
+  assert.equal(g.state.xp, 540);
+  assert.equal(g.state.jobXp, 13);
   dom.window.close();
 });
 test("Base levels never grant Job levels, and evolution has no Base gate", () => {
@@ -146,7 +146,7 @@ test("boot, pause, settings and resume work; passive/unlearned skills absent", (
   );
   w.document.querySelector('[data-tab="settings"]').click();
   assert.equal(w.document.querySelector('#experienceRates').textContent,
-    'Base EXP ×5 · Job EXP ×2');
+    'Base EXP ×20 · Job EXP ×10');
   assert(!w.document.querySelector('#experienceRates').closest('.hide'));
   w.document.querySelector("#debugInfiniteHp").click();
   assert(g.state.debugInfiniteHp);
