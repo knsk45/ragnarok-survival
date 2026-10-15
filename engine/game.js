@@ -2404,6 +2404,7 @@
       totalStats,
       shots:()=>shots,
       spawnBoss,
+      availableMonsterKeys,
       update,
       draw,
       xp,

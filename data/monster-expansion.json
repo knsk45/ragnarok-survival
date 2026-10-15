@@ -1,0 +1,3408 @@
+{
+  "retrieved": "2026-10-15",
+  "sourceFilter": "https://db.irowiki.org/db/monster-search/?search&boss=0&category=1&hp=6,45,10000&level=6,1,95&ltype=1&sort=1,1&header=10",
+  "totalMatches": 269,
+  "selectionPolicy": "35 moving, short-range monsters covering progression gaps; existing records are preserved.",
+  "selectedIds": [
+    1113,
+    1011,
+    1010,
+    1004,
+    1009,
+    1012,
+    1014,
+    1174,
+    1019,
+    1076,
+    1095,
+    1176,
+    1246,
+    1057,
+    1034,
+    1121,
+    1273,
+    1071,
+    1032,
+    1058,
+    1271,
+    1165,
+    1127,
+    1139,
+    1110,
+    1243,
+    1369,
+    1192,
+    1213,
+    1376,
+    1619,
+    1322,
+    1622,
+    1257,
+    1782
+  ],
+  "files": [
+    {
+      "id": 1113,
+      "key": "drops",
+      "name": "Drops",
+      "classification": {
+        "size": "medium",
+        "race": "plant",
+        "element": "fire",
+        "elementLevel": 1,
+        "modes": [
+          "passive",
+          "looter"
+        ]
+      },
+      "stats": {
+        "level": 2,
+        "hp": 45,
+        "atkMin": 12,
+        "atkMax": 13,
+        "def": 16,
+        "mdef": 0,
+        "baseExp": 27,
+        "jobExp": 20,
+        "aspd": 131.4,
+        "moveMs": 400,
+        "hit": 203,
+        "flee": 178,
+        "range": 1,
+        "agi": 1,
+        "vit": 1,
+        "int": 0,
+        "dex": 6,
+        "luk": 2
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1113/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1113.png",
+      "path": "assets/irowiki/monsters/1113.png",
+      "sha256": "dbd71afda6c077e480cc014d75cd60ae9daaf69978004f9f3357b89ff4fb5995",
+      "bytes": 1601,
+      "width": 41,
+      "height": 39
+    },
+    {
+      "id": 1011,
+      "key": "chonchon",
+      "name": "Chonchon",
+      "classification": {
+        "size": "small",
+        "race": "insect",
+        "element": "wind",
+        "elementLevel": 1,
+        "modes": [
+          "passive"
+        ]
+      },
+      "stats": {
+        "level": 5,
+        "hp": 57,
+        "atkMin": 11,
+        "atkMax": 14,
+        "def": 27,
+        "mdef": 0,
+        "baseExp": 45,
+        "jobExp": 36,
+        "aspd": 146.2,
+        "moveMs": 200,
+        "hit": 209,
+        "flee": 183,
+        "range": 1,
+        "agi": 4,
+        "vit": 4,
+        "int": 0,
+        "dex": 8,
+        "luk": 5
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1011/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1011.png",
+      "path": "assets/irowiki/monsters/1011.png",
+      "sha256": "7a1f0eba1986e38cb88a5d82663881a6c9c04df274b80f5c285288ca72e22824",
+      "bytes": 4898,
+      "width": 37,
+      "height": 33
+    },
+    {
+      "id": 1010,
+      "key": "willow",
+      "name": "Willow",
+      "classification": {
+        "size": "medium",
+        "race": "plant",
+        "element": "earth",
+        "elementLevel": 1,
+        "modes": [
+          "passive"
+        ]
+      },
+      "stats": {
+        "level": 8,
+        "hp": 91,
+        "atkMin": 13,
+        "atkMax": 18,
+        "def": 38,
+        "mdef": 2,
+        "baseExp": 63,
+        "jobExp": 47,
+        "aspd": 116.4,
+        "moveMs": 200,
+        "hit": 211,
+        "flee": 190,
+        "range": 1,
+        "agi": 3,
+        "vit": 8,
+        "int": 5,
+        "dex": 12,
+        "luk": 5
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1010/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1010.png",
+      "path": "assets/irowiki/monsters/1010.png",
+      "sha256": "8ae1db1f772a9d5a15320f264e24bf05af6f06575c861873a05ba12a15d2cbed",
+      "bytes": 5834,
+      "width": 69,
+      "height": 75
+    },
+    {
+      "id": 1004,
+      "key": "hornet",
+      "name": "Hornet",
+      "classification": {
+        "size": "small",
+        "race": "insect",
+        "element": "wind",
+        "elementLevel": 1,
+        "modes": [
+          "passive"
+        ]
+      },
+      "stats": {
+        "level": 11,
+        "hp": 90,
+        "atkMin": 13,
+        "atkMax": 16,
+        "def": 7,
+        "mdef": 1,
+        "baseExp": 81,
+        "jobExp": 60,
+        "aspd": 135.4,
+        "moveMs": 150,
+        "hit": 235,
+        "flee": 187,
+        "range": 1,
+        "agi": 24,
+        "vit": 4,
+        "int": 5,
+        "dex": 6,
+        "luk": 5
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1004/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1004.png",
+      "path": "assets/irowiki/monsters/1004.png",
+      "sha256": "fd95c3ffb03d2cea3cfa9f9790df0538f9d05b24d6a787587f989e4ff105cc06",
+      "bytes": 5016,
+      "width": 36,
+      "height": 52
+    },
+    {
+      "id": 1009,
+      "key": "condor",
+      "name": "Condor",
+      "classification": {
+        "size": "medium",
+        "race": "brute",
+        "element": "wind",
+        "elementLevel": 1,
+        "modes": [
+          "passive"
+        ]
+      },
+      "stats": {
+        "level": 12,
+        "hp": 114,
+        "atkMin": 14,
+        "atkMax": 20,
+        "def": 7,
+        "mdef": 5,
+        "baseExp": 81,
+        "jobExp": 60,
+        "aspd": 142.6,
+        "moveMs": 150,
+        "hit": 219,
+        "flee": 195,
+        "range": 1,
+        "agi": 7,
+        "vit": 6,
+        "int": 0,
+        "dex": 13,
+        "luk": 5
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1009/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1009.png",
+      "path": "assets/irowiki/monsters/1009.png",
+      "sha256": "c71271eae8a5ae172f49f917d70c1b9b069502f42a739fbc95a111c4266431e5",
+      "bytes": 6069,
+      "width": 60,
+      "height": 60
+    },
+    {
+      "id": 1012,
+      "key": "roda_frog",
+      "name": "Roda Frog",
+      "classification": {
+        "size": "medium",
+        "race": "fish",
+        "element": "water",
+        "elementLevel": 1,
+        "modes": [
+          "passive"
+        ]
+      },
+      "stats": {
+        "level": 13,
+        "hp": 160,
+        "atkMin": 19,
+        "atkMax": 23,
+        "def": 12,
+        "mdef": 5,
+        "baseExp": 90,
+        "jobExp": 68,
+        "aspd": 99.2,
+        "moveMs": 200,
+        "hit": 219,
+        "flee": 197,
+        "range": 1,
+        "agi": 6,
+        "vit": 4,
+        "int": 0,
+        "dex": 14,
+        "luk": 9
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1012/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1012.png",
+      "path": "assets/irowiki/monsters/1012.png",
+      "sha256": "e629aaa2d321faa068e99923805a36b31d184431c68a8e1d98b546ea2c583ca3",
+      "bytes": 1464,
+      "width": 44,
+      "height": 53
+    },
+    {
+      "id": 1014,
+      "key": "spore",
+      "name": "Spore",
+      "classification": {
+        "size": "medium",
+        "race": "plant",
+        "element": "water",
+        "elementLevel": 1,
+        "modes": [
+          "passive"
+        ]
+      },
+      "stats": {
+        "level": 18,
+        "hp": 280,
+        "atkMin": 25,
+        "atkMax": 33,
+        "def": 12,
+        "mdef": 10,
+        "baseExp": 117,
+        "jobExp": 87,
+        "aspd": 106.4,
+        "moveMs": 200,
+        "hit": 223,
+        "flee": 200,
+        "range": 1,
+        "agi": 5,
+        "vit": 10,
+        "int": 0,
+        "dex": 12,
+        "luk": 0
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1014/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1014.png",
+      "path": "assets/irowiki/monsters/1014.png",
+      "sha256": "3d273b1243e1fc1f3489c97c850025c26f45194693fbffe00e74ffb4144266bf",
+      "bytes": 7408,
+      "width": 53,
+      "height": 54
+    },
+    {
+      "id": 1174,
+      "key": "stainer",
+      "name": "Stainer",
+      "classification": {
+        "size": "small",
+        "race": "insect",
+        "element": "wind",
+        "elementLevel": 1,
+        "modes": [
+          "passive"
+        ]
+      },
+      "stats": {
+        "level": 21,
+        "hp": 365,
+        "atkMin": 65,
+        "atkMax": 74,
+        "def": 22,
+        "mdef": 25,
+        "baseExp": 126,
+        "jobExp": 143,
+        "aspd": 115.6,
+        "moveMs": 200,
+        "hit": 231,
+        "flee": 230,
+        "range": 1,
+        "agi": 10,
+        "vit": 24,
+        "int": 0,
+        "dex": 39,
+        "luk": 15
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1174/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1174.png",
+      "path": "assets/irowiki/monsters/1174.png",
+      "sha256": "d853cf6a9401dc7c0bb79e93747dbd1de6924c420eafc1b3231b48799edf13e4",
+      "bytes": 831,
+      "width": 22,
+      "height": 20
+    },
+    {
+      "id": 1019,
+      "key": "peco_peco",
+      "name": "Peco Peco",
+      "classification": {
+        "size": "large",
+        "race": "brute",
+        "element": "fire",
+        "elementLevel": 1,
+        "modes": [
+          "passive"
+        ]
+      },
+      "stats": {
+        "level": 25,
+        "hp": 446,
+        "atkMin": 76,
+        "atkMax": 83,
+        "def": 48,
+        "mdef": 0,
+        "baseExp": 162,
+        "jobExp": 183,
+        "aspd": 121.8,
+        "moveMs": 200,
+        "hit": 235,
+        "flee": 223,
+        "range": 1,
+        "agi": 10,
+        "vit": 13,
+        "int": 5,
+        "dex": 28,
+        "luk": 5
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1019/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1019.png",
+      "path": "assets/irowiki/monsters/1019.png",
+      "sha256": "2f978895c2de4ec6ab55368f9730dab6113cdd2ad25735844c738c9dc51ed86a",
+      "bytes": 6602,
+      "width": 64,
+      "height": 90
+    },
+    {
+      "id": 1076,
+      "key": "skeleton",
+      "name": "Skeleton",
+      "classification": {
+        "size": "medium",
+        "race": "undead",
+        "element": "undead",
+        "elementLevel": 1,
+        "modes": [
+          "passive"
+        ]
+      },
+      "stats": {
+        "level": 27,
+        "hp": 612,
+        "atkMin": 78,
+        "atkMax": 102,
+        "def": 21,
+        "mdef": 2,
+        "baseExp": 162,
+        "jobExp": 183,
+        "aspd": 88.6,
+        "moveMs": 200,
+        "hit": 242,
+        "flee": 216,
+        "range": 1,
+        "agi": 15,
+        "vit": 30,
+        "int": 5,
+        "dex": 19,
+        "luk": 1
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1076/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1076.png",
+      "path": "assets/irowiki/monsters/1076.png",
+      "sha256": "3e120d6b071901aa2ae1d18ce1bb5ba97cbd5ee232a93893fd1b7af6b1b2fbab",
+      "bytes": 10015,
+      "width": 79,
+      "height": 91
+    },
+    {
+      "id": 1095,
+      "key": "andre",
+      "name": "Andre",
+      "classification": {
+        "size": "small",
+        "race": "insect",
+        "element": "earth",
+        "elementLevel": 1,
+        "modes": [
+          "passive",
+          "looter"
+        ]
+      },
+      "stats": {
+        "level": 33,
+        "hp": 724,
+        "atkMin": 51,
+        "atkMax": 72,
+        "def": 55,
+        "mdef": 16,
+        "baseExp": 216,
+        "jobExp": 243,
+        "aspd": 135.6,
+        "moveMs": 300,
+        "hit": 253,
+        "flee": 227,
+        "range": 1,
+        "agi": 20,
+        "vit": 40,
+        "int": 10,
+        "dex": 24,
+        "luk": 10
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1095/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1095.png",
+      "path": "assets/irowiki/monsters/1095.png",
+      "sha256": "ed172e60ee7e080647d399f464706fbe24343b327553cfd4a863f1493a4baa6e",
+      "bytes": 3362,
+      "width": 49,
+      "height": 36
+    },
+    {
+      "id": 1176,
+      "key": "vitata",
+      "name": "Vitata",
+      "classification": {
+        "size": "small",
+        "race": "insect",
+        "element": "earth",
+        "elementLevel": 1,
+        "modes": [
+          "passive"
+        ]
+      },
+      "stats": {
+        "level": 35,
+        "hp": 756,
+        "atkMin": 68,
+        "atkMax": 86,
+        "def": 44,
+        "mdef": 12,
+        "baseExp": 234,
+        "jobExp": 264,
+        "aspd": 111.6,
+        "moveMs": 300,
+        "hit": 246,
+        "flee": 226,
+        "range": 1,
+        "agi": 11,
+        "vit": 24,
+        "int": 20,
+        "dex": 21,
+        "luk": 5
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1176/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1176.png",
+      "path": "assets/irowiki/monsters/1176.png",
+      "sha256": "e530f623c7375ef062188e64d48e858ecb52c76f77993813b34c60420a4aba38",
+      "bytes": 2964,
+      "width": 44,
+      "height": 35
+    },
+    {
+      "id": 1246,
+      "key": "cookie_red",
+      "name": "Cookie (Red)",
+      "classification": {
+        "size": "small",
+        "race": "demi-human",
+        "element": "holy",
+        "elementLevel": 2,
+        "modes": [
+          "passive"
+        ]
+      },
+      "stats": {
+        "level": 37,
+        "hp": 733,
+        "atkMin": 70,
+        "atkMax": 105,
+        "def": 48,
+        "mdef": 36,
+        "baseExp": 282,
+        "jobExp": 317,
+        "aspd": 137.6,
+        "moveMs": 400,
+        "hit": 253,
+        "flee": 232,
+        "range": 1,
+        "agi": 16,
+        "vit": 30,
+        "int": 20,
+        "dex": 25,
+        "luk": 5
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1246/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1246.png",
+      "path": "assets/irowiki/monsters/1246.png",
+      "sha256": "e8cb27929ae2445ed1c3c84fea52f6ef8e37e7e0241bb8d4b57f777dc3d0fc63",
+      "bytes": 3823,
+      "width": 30,
+      "height": 55
+    },
+    {
+      "id": 1057,
+      "key": "yoyo",
+      "name": "Yoyo",
+      "classification": {
+        "size": "small",
+        "race": "brute",
+        "element": "earth",
+        "elementLevel": 1,
+        "modes": [
+          "passive",
+          "looter"
+        ]
+      },
+      "stats": {
+        "level": 38,
+        "hp": 898,
+        "atkMin": 63,
+        "atkMax": 74,
+        "def": 40,
+        "mdef": 0,
+        "baseExp": 270,
+        "jobExp": 305,
+        "aspd": 147.3,
+        "moveMs": 200,
+        "hit": 249,
+        "flee": 227,
+        "range": 1,
+        "agi": 11,
+        "vit": 34,
+        "int": 20,
+        "dex": 19,
+        "luk": 10
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1057/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1057.png",
+      "path": "assets/irowiki/monsters/1057.png",
+      "sha256": "4fff00a35c8455211c792e2e1783151d56f570075efd3fa91860cc4a0ece9e81",
+      "bytes": 2210,
+      "width": 33,
+      "height": 36
+    },
+    {
+      "id": 1034,
+      "key": "thara_frog",
+      "name": "Thara Frog",
+      "classification": {
+        "size": "medium",
+        "race": "fish",
+        "element": "water",
+        "elementLevel": 2,
+        "modes": [
+          "passive"
+        ]
+      },
+      "stats": {
+        "level": 40,
+        "hp": 1157,
+        "atkMin": 73,
+        "atkMax": 103,
+        "def": 37,
+        "mdef": 17,
+        "baseExp": 311,
+        "jobExp": 350,
+        "aspd": 99.2,
+        "moveMs": 200,
+        "hit": 250,
+        "flee": 240,
+        "range": 1,
+        "agi": 10,
+        "vit": 10,
+        "int": 18,
+        "dex": 30,
+        "luk": 2
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1034/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1034.png",
+      "path": "assets/irowiki/monsters/1034.png",
+      "sha256": "40ff42d32a4cc86b443a5b95d887e9a6c803841f48973ecc1ae86095c7f949cc",
+      "bytes": 1464,
+      "width": 44,
+      "height": 53
+    },
+    {
+      "id": 1121,
+      "key": "giearth",
+      "name": "Giearth",
+      "classification": {
+        "size": "small",
+        "race": "demon",
+        "element": "earth",
+        "elementLevel": 1,
+        "modes": [
+          "passive"
+        ]
+      },
+      "stats": {
+        "level": 42,
+        "hp": 1118,
+        "atkMin": 70,
+        "atkMax": 85,
+        "def": 52,
+        "mdef": 16,
+        "baseExp": 315,
+        "jobExp": 354,
+        "aspd": 107.6,
+        "moveMs": 200,
+        "hit": 261,
+        "flee": 240,
+        "range": 1,
+        "agi": 19,
+        "vit": 30,
+        "int": 10,
+        "dex": 28,
+        "luk": 15
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1121/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1121.png",
+      "path": "assets/irowiki/monsters/1121.png",
+      "sha256": "2e08c90fb421f93bc08288d32de6b0d412470d18364c433d017d33d310eefe91",
+      "bytes": 7690,
+      "width": 102,
+      "height": 49
+    },
+    {
+      "id": 1273,
+      "key": "orc_lady",
+      "name": "Orc Lady",
+      "classification": {
+        "size": "medium",
+        "race": "demi-human",
+        "element": "earth",
+        "elementLevel": 2,
+        "modes": [
+          "aggressive"
+        ]
+      },
+      "stats": {
+        "level": 45,
+        "hp": 1520,
+        "atkMin": 77,
+        "atkMax": 110,
+        "def": 83,
+        "mdef": 17,
+        "baseExp": 380,
+        "jobExp": 435,
+        "aspd": 147.5,
+        "moveMs": 200,
+        "hit": 256,
+        "flee": 272,
+        "range": 1,
+        "agi": 11,
+        "vit": 28,
+        "int": 10,
+        "dex": 57,
+        "luk": 5
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1273/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1273.png",
+      "path": "assets/irowiki/monsters/1273.png",
+      "sha256": "e781631ff71573b56ad3c5bc5323395c647326f9c99cf1ba09a4aeeeca25dc48",
+      "bytes": 15544,
+      "width": 76,
+      "height": 90
+    },
+    {
+      "id": 1071,
+      "key": "pirate_skeleton",
+      "name": "Pirate Skeleton",
+      "classification": {
+        "size": "medium",
+        "race": "undead",
+        "element": "undead",
+        "elementLevel": 1,
+        "modes": [
+          "aggressive"
+        ]
+      },
+      "stats": {
+        "level": 48,
+        "hp": 1411,
+        "atkMin": 105,
+        "atkMax": 125,
+        "def": 53,
+        "mdef": 20,
+        "baseExp": 369,
+        "jobExp": 414,
+        "aspd": 112.3,
+        "moveMs": 200,
+        "hit": 273,
+        "flee": 248,
+        "range": 1,
+        "agi": 25,
+        "vit": 25,
+        "int": 15,
+        "dex": 30,
+        "luk": 10
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1071/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1071.png",
+      "path": "assets/irowiki/monsters/1071.png",
+      "sha256": "d6175394c6860918f00008aa65f31ec44bfd3a0206b3daca399b60729e9e6255",
+      "bytes": 4419,
+      "width": 46,
+      "height": 90
+    },
+    {
+      "id": 1032,
+      "key": "verit",
+      "name": "Verit",
+      "classification": {
+        "size": "medium",
+        "race": "undead",
+        "element": "undead",
+        "elementLevel": 1,
+        "modes": [
+          "passive",
+          "looter"
+        ]
+      },
+      "stats": {
+        "level": 52,
+        "hp": 1944,
+        "atkMin": 139,
+        "atkMax": 159,
+        "def": 63,
+        "mdef": 10,
+        "baseExp": 414,
+        "jobExp": 467,
+        "aspd": 76.6,
+        "moveMs": 250,
+        "hit": 256,
+        "flee": 228,
+        "range": 1,
+        "agi": 4,
+        "vit": 25,
+        "int": 10,
+        "dex": 6,
+        "luk": 5
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1032/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1032.png",
+      "path": "assets/irowiki/monsters/1032.png",
+      "sha256": "fbd35900f132c1ca86ae6de321bff02bf92fdc4cdf12a6d2e6eb1e9d5b9676d4",
+      "bytes": 11111,
+      "width": 69,
+      "height": 68
+    },
+    {
+      "id": 1058,
+      "key": "metaller",
+      "name": "Metaller",
+      "classification": {
+        "size": "medium",
+        "race": "insect",
+        "element": "fire",
+        "elementLevel": 1,
+        "modes": [
+          "passive",
+          "looter"
+        ]
+      },
+      "stats": {
+        "level": 55,
+        "hp": 1687,
+        "atkMin": 196,
+        "atkMax": 237,
+        "def": 72,
+        "mdef": 12,
+        "baseExp": 450,
+        "jobExp": 507,
+        "aspd": 114.6,
+        "moveMs": 200,
+        "hit": 279,
+        "flee": 277,
+        "range": 1,
+        "agi": 24,
+        "vit": 10,
+        "int": 0,
+        "dex": 52,
+        "luk": 31
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1058/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1058.png",
+      "path": "assets/irowiki/monsters/1058.png",
+      "sha256": "247f64723bdf3a4e775deaaf183e93822b763bdf862069c153b8a48a851ff13c",
+      "bytes": 19365,
+      "width": 62,
+      "height": 117
+    },
+    {
+      "id": 1271,
+      "key": "alligator",
+      "name": "Alligator",
+      "classification": {
+        "size": "medium",
+        "race": "brute",
+        "element": "water",
+        "elementLevel": 1,
+        "modes": [
+          "passive"
+        ]
+      },
+      "stats": {
+        "level": 57,
+        "hp": 2430,
+        "atkMin": 158,
+        "atkMax": 195,
+        "def": 62,
+        "mdef": 30,
+        "baseExp": 486,
+        "jobExp": 548,
+        "aspd": 145,
+        "moveMs": 200,
+        "hit": 305,
+        "flee": 267,
+        "range": 1,
+        "agi": 48,
+        "vit": 24,
+        "int": 15,
+        "dex": 40,
+        "luk": 26
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1271/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1271.png",
+      "path": "assets/irowiki/monsters/1271.png",
+      "sha256": "45e5560a032efd6d66dc14c96fa938a54ec629eddc0ea4ec633916732128d348",
+      "bytes": 6731,
+      "width": 87,
+      "height": 77
+    },
+    {
+      "id": 1165,
+      "key": "sandman",
+      "name": "Sandman",
+      "classification": {
+        "size": "medium",
+        "race": "formless",
+        "element": "earth",
+        "elementLevel": 3,
+        "modes": [
+          "aggressive"
+        ]
+      },
+      "stats": {
+        "level": 61,
+        "hp": 2887,
+        "atkMin": 164,
+        "atkMax": 220,
+        "def": 126,
+        "mdef": 24,
+        "baseExp": 626,
+        "jobExp": 705,
+        "aspd": 116.4,
+        "moveMs": 250,
+        "hit": 269,
+        "flee": 265,
+        "range": 1,
+        "agi": 8,
+        "vit": 55,
+        "int": 15,
+        "dex": 34,
+        "luk": 25
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1165/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1165.png",
+      "path": "assets/irowiki/monsters/1165.png",
+      "sha256": "14bfbd1e6578207c79a0182ca94c86051f59933c6c44ccbf94eae37fcb15e260",
+      "bytes": 3538,
+      "width": 50,
+      "height": 65
+    },
+    {
+      "id": 1127,
+      "key": "hode",
+      "name": "Hode",
+      "classification": {
+        "size": "medium",
+        "race": "brute",
+        "element": "earth",
+        "elementLevel": 2,
+        "modes": [
+          "passive"
+        ]
+      },
+      "stats": {
+        "level": 63,
+        "hp": 2676,
+        "atkMin": 179,
+        "atkMax": 224,
+        "def": 91,
+        "mdef": 24,
+        "baseExp": 632,
+        "jobExp": 710,
+        "aspd": 126,
+        "moveMs": 200,
+        "hit": 279,
+        "flee": 265,
+        "range": 1,
+        "agi": 16,
+        "vit": 42,
+        "int": 5,
+        "dex": 32,
+        "luk": 40
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1127/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1127.png",
+      "path": "assets/irowiki/monsters/1127.png",
+      "sha256": "f4dfca32b8d60e746122e5ea3d790d5a62a785668f43a81c1b7059fc5bab7554",
+      "bytes": 3731,
+      "width": 54,
+      "height": 31
+    },
+    {
+      "id": 1139,
+      "key": "mantis",
+      "name": "Mantis",
+      "classification": {
+        "size": "medium",
+        "race": "insect",
+        "element": "earth",
+        "elementLevel": 1,
+        "modes": [
+          "aggressive"
+        ]
+      },
+      "stats": {
+        "level": 65,
+        "hp": 2719,
+        "atkMin": 187,
+        "atkMax": 218,
+        "def": 90,
+        "mdef": 0,
+        "baseExp": 594,
+        "jobExp": 669,
+        "aspd": 123.6,
+        "moveMs": 200,
+        "hit": 298,
+        "flee": 281,
+        "range": 1,
+        "agi": 33,
+        "vit": 24,
+        "int": 5,
+        "dex": 46,
+        "luk": 15
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1139/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1139.png",
+      "path": "assets/irowiki/monsters/1139.png",
+      "sha256": "873b4ced35c094616cb8ec71ed93afe5aa9a6d8331043d69127361e35ff80ac4",
+      "bytes": 11310,
+      "width": 42,
+      "height": 80
+    },
+    {
+      "id": 1110,
+      "key": "dokebi",
+      "name": "Dokebi",
+      "classification": {
+        "size": "small",
+        "race": "demon",
+        "element": "shadow",
+        "elementLevel": 1,
+        "modes": [
+          "passive"
+        ]
+      },
+      "stats": {
+        "level": 68,
+        "hp": 2820,
+        "atkMin": 333,
+        "atkMax": 363,
+        "def": 85,
+        "mdef": 20,
+        "baseExp": 675,
+        "jobExp": 759,
+        "aspd": 142.2,
+        "moveMs": 250,
+        "hit": 324,
+        "flee": 304,
+        "range": 1,
+        "agi": 56,
+        "vit": 35,
+        "int": 20,
+        "dex": 66,
+        "luk": 25
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1110/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1110.png",
+      "path": "assets/irowiki/monsters/1110.png",
+      "sha256": "021ee6699ddc86b1f3af5dd784cb3e86afb0cbdf63c3b97caf430fc10e1a0342",
+      "bytes": 5093,
+      "width": 42,
+      "height": 60
+    },
+    {
+      "id": 1243,
+      "key": "sasquatch",
+      "name": "Sasquatch",
+      "classification": {
+        "size": "large",
+        "race": "brute",
+        "element": "neutral",
+        "elementLevel": 3,
+        "modes": [
+          "aggressive"
+        ]
+      },
+      "stats": {
+        "level": 72,
+        "hp": 3163,
+        "atkMin": 293,
+        "atkMax": 323,
+        "def": 101,
+        "mdef": 28,
+        "baseExp": 765,
+        "jobExp": 860,
+        "aspd": 137,
+        "moveMs": 300,
+        "hit": 307,
+        "flee": 313,
+        "range": 1,
+        "agi": 35,
+        "vit": 60,
+        "int": 10,
+        "dex": 71,
+        "luk": 20
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1243/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1243.png",
+      "path": "assets/irowiki/monsters/1243.png",
+      "sha256": "d7ffa20f4b742575984b4d7acb011d7a957a70dcf881e491fdad11bba51c3258",
+      "bytes": 13609,
+      "width": 78,
+      "height": 112
+    },
+    {
+      "id": 1369,
+      "key": "grand_peco",
+      "name": "Grand Peco",
+      "classification": {
+        "size": "large",
+        "race": "brute",
+        "element": "fire",
+        "elementLevel": 2,
+        "modes": [
+          "passive"
+        ]
+      },
+      "stats": {
+        "level": 75,
+        "hp": 3150,
+        "atkMin": 348,
+        "atkMax": 404,
+        "def": 95,
+        "mdef": 30,
+        "baseExp": 887,
+        "jobExp": 998,
+        "aspd": 127,
+        "moveMs": 165,
+        "hit": 320,
+        "flee": 306,
+        "range": 2,
+        "agi": 45,
+        "vit": 50,
+        "int": 23,
+        "dex": 61,
+        "luk": 25
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1369/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1369.png",
+      "path": "assets/irowiki/monsters/1369.png",
+      "sha256": "d2168f4c3773abd20186ce0afcea97a2b4a1940e390e0c7fe699a9e981bb1d6b",
+      "bytes": 47048,
+      "width": 90,
+      "height": 93
+    },
+    {
+      "id": 1192,
+      "key": "wraith",
+      "name": "Wraith",
+      "classification": {
+        "size": "large",
+        "race": "undead",
+        "element": "undead",
+        "elementLevel": 4,
+        "modes": [
+          "aggressive"
+        ]
+      },
+      "stats": {
+        "level": 77,
+        "hp": 5168,
+        "atkMin": 369,
+        "atkMax": 430,
+        "def": 80,
+        "mdef": 40,
+        "baseExp": 1190,
+        "jobExp": 1191,
+        "aspd": 109.2,
+        "moveMs": 300,
+        "hit": 303,
+        "flee": 338,
+        "range": 1,
+        "agi": 26,
+        "vit": 30,
+        "int": 55,
+        "dex": 91,
+        "luk": 5
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1192/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1192.png",
+      "path": "assets/irowiki/monsters/1192.png",
+      "sha256": "364501331efc4659fd00c7a30c42828d59a8b5fb4253de92e7a4b12626b40733",
+      "bytes": 19206,
+      "width": 94,
+      "height": 125
+    },
+    {
+      "id": 1213,
+      "key": "high_orc",
+      "name": "High Orc",
+      "classification": {
+        "size": "large",
+        "race": "demi-human",
+        "element": "fire",
+        "elementLevel": 2,
+        "modes": [
+          "aggressive"
+        ]
+      },
+      "stats": {
+        "level": 81,
+        "hp": 4193,
+        "atkMin": 428,
+        "atkMax": 478,
+        "def": 101,
+        "mdef": 45,
+        "baseExp": 1099,
+        "jobExp": 1158,
+        "aspd": 125,
+        "moveMs": 150,
+        "hit": 297,
+        "flee": 334,
+        "range": 1,
+        "agi": 16,
+        "vit": 40,
+        "int": 31,
+        "dex": 83,
+        "luk": 20
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1213/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1213.png",
+      "path": "assets/irowiki/monsters/1213.png",
+      "sha256": "ef9cf39e8ff63203f121129d980f08802e6368144e2b5156dc33f3f47762b17f",
+      "bytes": 12203,
+      "width": 67,
+      "height": 98
+    },
+    {
+      "id": 1376,
+      "key": "harpy",
+      "name": "Harpy",
+      "classification": {
+        "size": "medium",
+        "race": "demon",
+        "element": "wind",
+        "elementLevel": 3,
+        "modes": [
+          "aggressive"
+        ]
+      },
+      "stats": {
+        "level": 83,
+        "hp": 4423,
+        "atkMin": 340,
+        "atkMax": 381,
+        "def": 69,
+        "mdef": 44,
+        "baseExp": 1201,
+        "jobExp": 1349,
+        "aspd": 151.4,
+        "moveMs": 155,
+        "hit": 322,
+        "flee": 378,
+        "range": 1,
+        "agi": 39,
+        "vit": 50,
+        "int": 31,
+        "dex": 125,
+        "luk": 12
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1376/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1376.png",
+      "path": "assets/irowiki/monsters/1376.png",
+      "sha256": "de50856db9f81bfe87d98de14e6d6cea8667ead00e86a86a74b90d46722e49fa",
+      "bytes": 14346,
+      "width": 118,
+      "height": 146
+    },
+    {
+      "id": 1619,
+      "key": "porcellio",
+      "name": "Porcellio",
+      "classification": {
+        "size": "small",
+        "race": "insect",
+        "element": "earth",
+        "elementLevel": 3,
+        "modes": [
+          "passive",
+          "looter"
+        ]
+      },
+      "stats": {
+        "level": 85,
+        "hp": 5544,
+        "atkMin": 293,
+        "atkMax": 346,
+        "def": 79,
+        "mdef": 37,
+        "baseExp": 1294,
+        "jobExp": 1455,
+        "aspd": 164,
+        "moveMs": 150,
+        "hit": 333,
+        "flee": 329,
+        "range": 1,
+        "agi": 48,
+        "vit": 28,
+        "int": 40,
+        "dex": 74,
+        "luk": 30
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1619/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1619.png",
+      "path": "assets/irowiki/monsters/1619.png",
+      "sha256": "5ccdbd44eeaba726c4393d59598b21a56be4517dd539b0c4420634d44126ddf8",
+      "bytes": 423,
+      "width": 39,
+      "height": 35
+    },
+    {
+      "id": 1322,
+      "key": "spring_rabbit",
+      "name": "Spring Rabbit",
+      "classification": {
+        "size": "medium",
+        "race": "brute",
+        "element": "earth",
+        "elementLevel": 2,
+        "modes": [
+          "passive",
+          "looter"
+        ]
+      },
+      "stats": {
+        "level": 88,
+        "hp": 6684,
+        "atkMin": 317,
+        "atkMax": 357,
+        "def": 108,
+        "mdef": 42,
+        "baseExp": 1341,
+        "jobExp": 1509,
+        "aspd": 144,
+        "moveMs": 160,
+        "hit": 354,
+        "flee": 316,
+        "range": 1,
+        "agi": 66,
+        "vit": 35,
+        "int": 30,
+        "dex": 58,
+        "luk": 5
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1322/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1322.png",
+      "path": "assets/irowiki/monsters/1322.png",
+      "sha256": "976638d6dfe662f945b25d8bca530c4cf265fea080e6c9d38f352856741b1e10",
+      "bytes": 4540,
+      "width": 53,
+      "height": 86
+    },
+    {
+      "id": 1622,
+      "key": "teddy_bear",
+      "name": "Teddy Bear",
+      "classification": {
+        "size": "small",
+        "race": "formless",
+        "element": "neutral",
+        "elementLevel": 3,
+        "modes": [
+          "aggressive"
+        ]
+      },
+      "stats": {
+        "level": 91,
+        "hp": 7238,
+        "atkMin": 482,
+        "atkMax": 544,
+        "def": 106,
+        "mdef": 39,
+        "baseExp": 1350,
+        "jobExp": 1799,
+        "aspd": 161,
+        "moveMs": 200,
+        "hit": 372,
+        "flee": 343,
+        "range": 1,
+        "agi": 81,
+        "vit": 66,
+        "int": 20,
+        "dex": 82,
+        "luk": 44
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1622/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1622.png",
+      "path": "assets/irowiki/monsters/1622.png",
+      "sha256": "f72d152fd6fe03a6cfc8ad7ce6e0ffabc74f2467ff3b144611967a05f84da7a6",
+      "bytes": 504,
+      "width": 30,
+      "height": 44
+    },
+    {
+      "id": 1257,
+      "key": "injustice",
+      "name": "Injustice",
+      "classification": {
+        "size": "medium",
+        "race": "undead",
+        "element": "shadow",
+        "elementLevel": 2,
+        "modes": [
+          "aggressive"
+        ]
+      },
+      "stats": {
+        "level": 95,
+        "hp": 7952,
+        "atkMin": 447,
+        "atkMax": 563,
+        "def": 76,
+        "mdef": 31,
+        "baseExp": 1574,
+        "jobExp": 1997,
+        "aspd": 161.5,
+        "moveMs": 400,
+        "hit": 354,
+        "flee": 353,
+        "range": 1,
+        "agi": 59,
+        "vit": 58,
+        "int": 65,
+        "dex": 88,
+        "luk": 50
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1257/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1257.png",
+      "path": "assets/irowiki/monsters/1257.png",
+      "sha256": "f402893f67c8e166c95c0116e8a4931ab4b15a2788e552611dc8c0023ebbc1e5",
+      "bytes": 31476,
+      "width": 53,
+      "height": 115
+    },
+    {
+      "id": 1782,
+      "key": "roween",
+      "name": "Roween",
+      "classification": {
+        "size": "medium",
+        "race": "brute",
+        "element": "wind",
+        "elementLevel": 1,
+        "modes": [
+          "passive",
+          "looter"
+        ]
+      },
+      "stats": {
+        "level": 95,
+        "hp": 7385,
+        "atkMin": 588,
+        "atkMax": 623,
+        "def": 73,
+        "mdef": 33,
+        "baseExp": 1691,
+        "jobExp": 1902,
+        "aspd": 158,
+        "moveMs": 200,
+        "hit": 377,
+        "flee": 373,
+        "range": 1,
+        "agi": 82,
+        "vit": 55,
+        "int": 45,
+        "dex": 108,
+        "luk": 25
+      },
+      "group": "monsters",
+      "sourceUrl": "https://db.irowiki.org/db/monster-info/1782/",
+      "imageSourceUrl": "https://db.irowiki.org/image/monster/1782.png",
+      "path": "assets/irowiki/monsters/1782.png",
+      "sha256": "0ee38ad9f0ef1de84c6352a4ef84c60007f5e2d70722cdec649a1225427ce574",
+      "bytes": 2827,
+      "width": 56,
+      "height": 79
+    }
+  ],
+  "candidates": [
+    {
+      "id": 1002,
+      "name": "Poring",
+      "level": 1,
+      "hp": 60,
+      "selected": false
+    },
+    {
+      "id": 1113,
+      "name": "Drops",
+      "level": 2,
+      "hp": 45,
+      "selected": true
+    },
+    {
+      "id": 1063,
+      "name": "Lunatic",
+      "level": 3,
+      "hp": 55,
+      "selected": false
+    },
+    {
+      "id": 1062,
+      "name": "Santa Poring",
+      "level": 3,
+      "hp": 69,
+      "selected": false
+    },
+    {
+      "id": 1008,
+      "name": "Pupa",
+      "level": 4,
+      "hp": 66,
+      "selected": false
+    },
+    {
+      "id": 1011,
+      "name": "Chonchon",
+      "level": 5,
+      "hp": 57,
+      "selected": true
+    },
+    {
+      "id": 1007,
+      "name": "Fabre",
+      "level": 6,
+      "hp": 72,
+      "selected": false
+    },
+    {
+      "id": 1047,
+      "name": "Peco Peco Egg",
+      "level": 7,
+      "hp": 75,
+      "selected": false
+    },
+    {
+      "id": 1010,
+      "name": "Willow",
+      "level": 8,
+      "hp": 91,
+      "selected": true
+    },
+    {
+      "id": 1049,
+      "name": "Picky",
+      "level": 9,
+      "hp": 95,
+      "selected": false
+    },
+    {
+      "id": 1050,
+      "name": "Picky (Shell)",
+      "level": 10,
+      "hp": 89,
+      "selected": false
+    },
+    {
+      "id": 1004,
+      "name": "Hornet",
+      "level": 11,
+      "hp": 90,
+      "selected": true
+    },
+    {
+      "id": 1009,
+      "name": "Condor",
+      "level": 12,
+      "hp": 114,
+      "selected": true
+    },
+    {
+      "id": 1020,
+      "name": "Mandragora",
+      "level": 13,
+      "hp": 156,
+      "selected": false
+    },
+    {
+      "id": 1012,
+      "name": "Roda Frog",
+      "level": 13,
+      "hp": 160,
+      "selected": true
+    },
+    {
+      "id": 1107,
+      "name": "Baby Desert Wolf",
+      "level": 14,
+      "hp": 140,
+      "selected": false
+    },
+    {
+      "id": 1167,
+      "name": "Savage Babe",
+      "level": 14,
+      "hp": 180,
+      "selected": false
+    },
+    {
+      "id": 1894,
+      "name": "Pouring",
+      "level": 15,
+      "hp": 777,
+      "selected": false
+    },
+    {
+      "id": 1052,
+      "name": "Rocker",
+      "level": 15,
+      "hp": 185,
+      "selected": false
+    },
+    {
+      "id": 1001,
+      "name": "Scorpion",
+      "level": 16,
+      "hp": 153,
+      "selected": false
+    },
+    {
+      "id": 1024,
+      "name": "Wormtail",
+      "level": 17,
+      "hp": 200,
+      "selected": false
+    },
+    {
+      "id": 1015,
+      "name": "Zombie",
+      "level": 17,
+      "hp": 234,
+      "selected": false
+    },
+    {
+      "id": 1025,
+      "name": "Boa",
+      "level": 18,
+      "hp": 217,
+      "selected": false
+    },
+    {
+      "id": 1014,
+      "name": "Spore",
+      "level": 18,
+      "hp": 280,
+      "selected": true
+    },
+    {
+      "id": 1088,
+      "name": "Vocal",
+      "level": 18,
+      "hp": 3317,
+      "selected": false
+    },
+    {
+      "id": 1094,
+      "name": "Ambernite",
+      "level": 19,
+      "hp": 340,
+      "selected": false
+    },
+    {
+      "id": 3502,
+      "name": "Scout Basilisk",
+      "level": 20,
+      "hp": 243,
+      "selected": false
+    },
+    {
+      "id": 1048,
+      "name": "Thief Bug Egg",
+      "level": 20,
+      "hp": 344,
+      "selected": false
+    },
+    {
+      "id": 1174,
+      "name": "Stainer",
+      "level": 21,
+      "hp": 365,
+      "selected": true
+    },
+    {
+      "id": 1051,
+      "name": "Thief Bug",
+      "level": 21,
+      "hp": 354,
+      "selected": false
+    },
+    {
+      "id": 1175,
+      "name": "Tarou",
+      "level": 22,
+      "hp": 420,
+      "selected": false
+    },
+    {
+      "id": 1018,
+      "name": "Creamy",
+      "level": 23,
+      "hp": 378,
+      "selected": false
+    },
+    {
+      "id": 1055,
+      "name": "Muka",
+      "level": 23,
+      "hp": 468,
+      "selected": false
+    },
+    {
+      "id": 1005,
+      "name": "Familiar",
+      "level": 24,
+      "hp": 427,
+      "selected": false
+    },
+    {
+      "id": 1103,
+      "name": "Caramel",
+      "level": 25,
+      "hp": 518,
+      "selected": false
+    },
+    {
+      "id": 1019,
+      "name": "Peco Peco",
+      "level": 25,
+      "hp": 446,
+      "selected": true
+    },
+    {
+      "id": 1245,
+      "name": "Santa Goblin",
+      "level": 25,
+      "hp": 1176,
+      "selected": false
+    },
+    {
+      "id": 1077,
+      "name": "Poison Spore",
+      "level": 26,
+      "hp": 456,
+      "selected": false
+    },
+    {
+      "id": 1076,
+      "name": "Skeleton",
+      "level": 27,
+      "hp": 612,
+      "selected": true
+    },
+    {
+      "id": 1097,
+      "name": "Ant Egg",
+      "level": 28,
+      "hp": 530,
+      "selected": false
+    },
+    {
+      "id": 1053,
+      "name": "Female Thief Bug",
+      "level": 28,
+      "hp": 531,
+      "selected": false
+    },
+    {
+      "id": 1060,
+      "name": "Bigfoot",
+      "level": 29,
+      "hp": 587,
+      "selected": false
+    },
+    {
+      "id": 1056,
+      "name": "Smokie",
+      "level": 29,
+      "hp": 591,
+      "selected": false
+    },
+    {
+      "id": 1054,
+      "name": "Male Thief Bug",
+      "level": 30,
+      "hp": 595,
+      "selected": false
+    },
+    {
+      "id": 1031,
+      "name": "Poporing",
+      "level": 30,
+      "hp": 524,
+      "selected": false
+    },
+    {
+      "id": 1105,
+      "name": "Deniro",
+      "level": 31,
+      "hp": 671,
+      "selected": false
+    },
+    {
+      "id": 1128,
+      "name": "Horn",
+      "level": 32,
+      "hp": 705,
+      "selected": false
+    },
+    {
+      "id": 1160,
+      "name": "Piere",
+      "level": 32,
+      "hp": 696,
+      "selected": false
+    },
+    {
+      "id": 1095,
+      "name": "Andre",
+      "level": 33,
+      "hp": 724,
+      "selected": true
+    },
+    {
+      "id": 2503,
+      "name": "Aged Hydra",
+      "level": 34,
+      "hp": 4270,
+      "selected": false
+    },
+    {
+      "id": 1033,
+      "name": "Elder Willow",
+      "level": 34,
+      "hp": 599,
+      "selected": false
+    },
+    {
+      "id": 1068,
+      "name": "Hydra",
+      "level": 34,
+      "hp": 854,
+      "selected": false
+    },
+    {
+      "id": 1028,
+      "name": "Soldier Skeleton",
+      "level": 34,
+      "hp": 804,
+      "selected": false
+    },
+    {
+      "id": 1185,
+      "name": "Whisper (Immobile)",
+      "level": 34,
+      "hp": 1796,
+      "selected": false
+    },
+    {
+      "id": 1265,
+      "name": "Cookie (Green)",
+      "level": 35,
+      "hp": 666,
+      "selected": false
+    },
+    {
+      "id": 1176,
+      "name": "Vitata",
+      "level": 35,
+      "hp": 756,
+      "selected": true
+    },
+    {
+      "id": 1246,
+      "name": "Cookie (Red)",
+      "level": 37,
+      "hp": 733,
+      "selected": true
+    },
+    {
+      "id": 1242,
+      "name": "Marin",
+      "level": 37,
+      "hp": 987,
+      "selected": false
+    },
+    {
+      "id": 1104,
+      "name": "Coco",
+      "level": 38,
+      "hp": 836,
+      "selected": false
+    },
+    {
+      "id": 1057,
+      "name": "Yoyo",
+      "level": 38,
+      "hp": 898,
+      "selected": true
+    },
+    {
+      "id": 1145,
+      "name": "Martin",
+      "level": 39,
+      "hp": 1056,
+      "selected": false
+    },
+    {
+      "id": 1249,
+      "name": "Myst Case",
+      "level": 39,
+      "hp": 879,
+      "selected": false
+    },
+    {
+      "id": 2512,
+      "name": "Aged Plankton",
+      "level": 40,
+      "hp": 6160,
+      "selected": false
+    },
+    {
+      "id": 1161,
+      "name": "Plankton",
+      "level": 40,
+      "hp": 1232,
+      "selected": false
+    },
+    {
+      "id": 1034,
+      "name": "Thara Frog",
+      "level": 40,
+      "hp": 1157,
+      "selected": true
+    },
+    {
+      "id": 1248,
+      "name": "Cruiser",
+      "level": 41,
+      "hp": 919,
+      "selected": false
+    },
+    {
+      "id": 2504,
+      "name": "Aged Kukre",
+      "level": 42,
+      "hp": 5555,
+      "selected": false
+    },
+    {
+      "id": 2506,
+      "name": "Aged Marina",
+      "level": 42,
+      "hp": 6045,
+      "selected": false
+    },
+    {
+      "id": 1250,
+      "name": "Chepet",
+      "level": 42,
+      "hp": 4950,
+      "selected": false
+    },
+    {
+      "id": 1121,
+      "name": "Giearth",
+      "level": 42,
+      "hp": 1118,
+      "selected": true
+    },
+    {
+      "id": 1070,
+      "name": "Kukre",
+      "level": 42,
+      "hp": 1111,
+      "selected": false
+    },
+    {
+      "id": 1141,
+      "name": "Marina",
+      "level": 42,
+      "hp": 1209,
+      "selected": false
+    },
+    {
+      "id": 1073,
+      "name": "Crab",
+      "level": 43,
+      "hp": 1233,
+      "selected": false
+    },
+    {
+      "id": 1629,
+      "name": "Hill Wind (Spear)",
+      "level": 43,
+      "hp": 2870,
+      "selected": false
+    },
+    {
+      "id": 1686,
+      "name": "Orc Baby",
+      "level": 43,
+      "hp": 1122,
+      "selected": false
+    },
+    {
+      "id": 1124,
+      "name": "Goblin (Axe)",
+      "level": 44,
+      "hp": 930,
+      "selected": false
+    },
+    {
+      "id": 1123,
+      "name": "Goblin (Flail)",
+      "level": 44,
+      "hp": 931,
+      "selected": false
+    },
+    {
+      "id": 1023,
+      "name": "Orc Warrior",
+      "level": 44,
+      "hp": 1434,
+      "selected": false
+    },
+    {
+      "id": 1169,
+      "name": "Skel Worker",
+      "level": 44,
+      "hp": 1240,
+      "selected": false
+    },
+    {
+      "id": 2515,
+      "name": "Aged Vadon",
+      "level": 45,
+      "hp": 6260,
+      "selected": false
+    },
+    {
+      "id": 1391,
+      "name": "Galapago",
+      "level": 45,
+      "hp": 1221,
+      "selected": false
+    },
+    {
+      "id": 1273,
+      "name": "Orc Lady",
+      "level": 45,
+      "hp": 1520,
+      "selected": true
+    },
+    {
+      "id": 1066,
+      "name": "Vadon",
+      "level": 45,
+      "hp": 1252,
+      "selected": false
+    },
+    {
+      "id": 1013,
+      "name": "Wolf",
+      "level": 45,
+      "hp": 1219,
+      "selected": false
+    },
+    {
+      "id": 1064,
+      "name": "Megalodon",
+      "level": 46,
+      "hp": 1335,
+      "selected": false
+    },
+    {
+      "id": 1179,
+      "name": "Whisper",
+      "level": 46,
+      "hp": 1109,
+      "selected": false
+    },
+    {
+      "id": 2508,
+      "name": "Aged Marse",
+      "level": 47,
+      "hp": 7280,
+      "selected": false
+    },
+    {
+      "id": 1100,
+      "name": "Argos",
+      "level": 47,
+      "hp": 1005,
+      "selected": false
+    },
+    {
+      "id": 1111,
+      "name": "Drainliar",
+      "level": 47,
+      "hp": 1162,
+      "selected": false
+    },
+    {
+      "id": 1212,
+      "name": "Iron Fist",
+      "level": 47,
+      "hp": 4221,
+      "selected": false
+    },
+    {
+      "id": 1144,
+      "name": "Marse",
+      "level": 47,
+      "hp": 1456,
+      "selected": false
+    },
+    {
+      "id": 1317,
+      "name": "Seal",
+      "level": 47,
+      "hp": 1371,
+      "selected": false
+    },
+    {
+      "id": 2501,
+      "name": "Aged Cornutus",
+      "level": 48,
+      "hp": 7250,
+      "selected": false
+    },
+    {
+      "id": 1214,
+      "name": "Choco",
+      "level": 48,
+      "hp": 1080,
+      "selected": false
+    },
+    {
+      "id": 1067,
+      "name": "Cornutus",
+      "level": 48,
+      "hp": 1450,
+      "selected": false
+    },
+    {
+      "id": 1122,
+      "name": "Goblin (Dagger)",
+      "level": 48,
+      "hp": 1058,
+      "selected": false
+    },
+    {
+      "id": 1071,
+      "name": "Pirate Skeleton",
+      "level": 48,
+      "hp": 1411,
+      "selected": true
+    },
+    {
+      "id": 1254,
+      "name": "Raggler",
+      "level": 48,
+      "hp": 1148,
+      "selected": false
+    },
+    {
+      "id": 1392,
+      "name": "Rotar Zairo",
+      "level": 48,
+      "hp": 1088,
+      "selected": false
+    },
+    {
+      "id": 1323,
+      "name": "Sea Otter",
+      "level": 48,
+      "hp": 1820,
+      "selected": false
+    },
+    {
+      "id": 1042,
+      "name": "Steel Chonchon",
+      "level": 48,
+      "hp": 1199,
+      "selected": false
+    },
+    {
+      "id": 1125,
+      "name": "Goblin (Hammer)",
+      "level": 49,
+      "hp": 1494,
+      "selected": false
+    },
+    {
+      "id": 1151,
+      "name": "Myst",
+      "level": 49,
+      "hp": 1223,
+      "selected": false
+    },
+    {
+      "id": 1016,
+      "name": "Archer Skeleton",
+      "level": 50,
+      "hp": 1646,
+      "selected": false
+    },
+    {
+      "id": 1266,
+      "name": "Aster",
+      "level": 50,
+      "hp": 1509,
+      "selected": false
+    },
+    {
+      "id": 1074,
+      "name": "Shellfish",
+      "level": 50,
+      "hp": 1680,
+      "selected": false
+    },
+    {
+      "id": 2507,
+      "name": "Aged Marine Sphere",
+      "level": 51,
+      "hp": 9620,
+      "selected": false
+    },
+    {
+      "id": 1142,
+      "name": "Marine Sphere",
+      "level": 51,
+      "hp": 1924,
+      "selected": false
+    },
+    {
+      "id": 1153,
+      "name": "Orc Zombie",
+      "level": 51,
+      "hp": 1908,
+      "selected": false
+    },
+    {
+      "id": 2511,
+      "name": "Aged Phen",
+      "level": 52,
+      "hp": 9815,
+      "selected": false
+    },
+    {
+      "id": 1308,
+      "name": "Panzer Goblin",
+      "level": 52,
+      "hp": 1471,
+      "selected": false
+    },
+    {
+      "id": 1158,
+      "name": "Phen",
+      "level": 52,
+      "hp": 1963,
+      "selected": false
+    },
+    {
+      "id": 1032,
+      "name": "Verit",
+      "level": 52,
+      "hp": 1944,
+      "selected": true
+    },
+    {
+      "id": 1116,
+      "name": "Eggyra",
+      "level": 53,
+      "hp": 1676,
+      "selected": false
+    },
+    {
+      "id": 1138,
+      "name": "Magnolia",
+      "level": 53,
+      "hp": 1984,
+      "selected": false
+    },
+    {
+      "id": 1044,
+      "name": "Obeaune",
+      "level": 53,
+      "hp": 2158,
+      "selected": false
+    },
+    {
+      "id": 1152,
+      "name": "Orc Skeleton",
+      "level": 53,
+      "hp": 2077,
+      "selected": false
+    },
+    {
+      "id": 1177,
+      "name": "Zenorc",
+      "level": 54,
+      "hp": 1816,
+      "selected": false
+    },
+    {
+      "id": 1494,
+      "name": "Beetle King",
+      "level": 55,
+      "hp": 2061,
+      "selected": false
+    },
+    {
+      "id": 1258,
+      "name": "Goblin Archer",
+      "level": 55,
+      "hp": 1575,
+      "selected": false
+    },
+    {
+      "id": 1277,
+      "name": "Greatest General",
+      "level": 55,
+      "hp": 1575,
+      "selected": false
+    },
+    {
+      "id": 1687,
+      "name": "Grove",
+      "level": 55,
+      "hp": 2090,
+      "selected": false
+    },
+    {
+      "id": 1058,
+      "name": "Metaller",
+      "level": 55,
+      "hp": 1687,
+      "selected": true
+    },
+    {
+      "id": 1041,
+      "name": "Mummy",
+      "level": 55,
+      "hp": 2155,
+      "selected": false
+    },
+    {
+      "id": 1126,
+      "name": "Goblin (Mace)",
+      "level": 56,
+      "hp": 2342,
+      "selected": false
+    },
+    {
+      "id": 1045,
+      "name": "Marc",
+      "level": 56,
+      "hp": 2522,
+      "selected": false
+    },
+    {
+      "id": 1191,
+      "name": "Mimic",
+      "level": 56,
+      "hp": 1939,
+      "selected": false
+    },
+    {
+      "id": 1271,
+      "name": "Alligator",
+      "level": 57,
+      "hp": 2430,
+      "selected": true
+    },
+    {
+      "id": 1101,
+      "name": "Baphomet Jr.",
+      "level": 57,
+      "hp": 2035,
+      "selected": false
+    },
+    {
+      "id": 1119,
+      "name": "Frilldora",
+      "level": 57,
+      "hp": 1821,
+      "selected": false
+    },
+    {
+      "id": 1069,
+      "name": "Swordfish",
+      "level": 57,
+      "hp": 2600,
+      "selected": false
+    },
+    {
+      "id": 1146,
+      "name": "Matyr",
+      "level": 58,
+      "hp": 2087,
+      "selected": false
+    },
+    {
+      "id": 1149,
+      "name": "Minorous",
+      "level": 58,
+      "hp": 1893,
+      "selected": false
+    },
+    {
+      "id": 1313,
+      "name": "Mobster",
+      "level": 58,
+      "hp": 2253,
+      "selected": false
+    },
+    {
+      "id": 1026,
+      "name": "Munak",
+      "level": 58,
+      "hp": 2445,
+      "selected": false
+    },
+    {
+      "id": 1188,
+      "name": "Bongun",
+      "level": 59,
+      "hp": 2510,
+      "selected": false
+    },
+    {
+      "id": 1118,
+      "name": "Flora",
+      "level": 59,
+      "hp": 2301,
+      "selected": false
+    },
+    {
+      "id": 1029,
+      "name": "Isis",
+      "level": 59,
+      "hp": 2092,
+      "selected": false
+    },
+    {
+      "id": 1166,
+      "name": "Savage",
+      "level": 59,
+      "hp": 2301,
+      "selected": false
+    },
+    {
+      "id": 1108,
+      "name": "Deviace",
+      "level": 60,
+      "hp": 3135,
+      "selected": false
+    },
+    {
+      "id": 1409,
+      "name": "Dumpling Child",
+      "level": 60,
+      "hp": 2098,
+      "selected": false
+    },
+    {
+      "id": 1264,
+      "name": "Merman",
+      "level": 60,
+      "hp": 2940,
+      "selected": false
+    },
+    {
+      "id": 1036,
+      "name": "Ghoul",
+      "level": 61,
+      "hp": 2614,
+      "selected": false
+    },
+    {
+      "id": 1040,
+      "name": "Golem",
+      "level": 61,
+      "hp": 2245,
+      "selected": false
+    },
+    {
+      "id": 1165,
+      "name": "Sandman",
+      "level": 61,
+      "hp": 2887,
+      "selected": true
+    },
+    {
+      "id": 1065,
+      "name": "Strouf",
+      "level": 61,
+      "hp": 3052,
+      "selected": false
+    },
+    {
+      "id": 1114,
+      "name": "Dustiness",
+      "level": 62,
+      "hp": 2026,
+      "selected": false
+    },
+    {
+      "id": 1127,
+      "name": "Hode",
+      "level": 63,
+      "hp": 2676,
+      "selected": true
+    },
+    {
+      "id": 1035,
+      "name": "Hunter Fly",
+      "level": 63,
+      "hp": 2050,
+      "selected": false
+    },
+    {
+      "id": 1130,
+      "name": "Jakk",
+      "level": 63,
+      "hp": 2054,
+      "selected": false
+    },
+    {
+      "id": 1586,
+      "name": "Leaf Cat",
+      "level": 64,
+      "hp": 2635,
+      "selected": false
+    },
+    {
+      "id": 1170,
+      "name": "Sohee",
+      "level": 64,
+      "hp": 2875,
+      "selected": false
+    },
+    {
+      "id": 1495,
+      "name": "Stone Shooter",
+      "level": 64,
+      "hp": 2101,
+      "selected": false
+    },
+    {
+      "id": 1380,
+      "name": "Driller",
+      "level": 65,
+      "hp": 2719,
+      "selected": false
+    },
+    {
+      "id": 1139,
+      "name": "Mantis",
+      "level": 65,
+      "hp": 2719,
+      "selected": true
+    },
+    {
+      "id": 1274,
+      "name": "Megalith",
+      "level": 65,
+      "hp": 2451,
+      "selected": false
+    },
+    {
+      "id": 1186,
+      "name": "Giant Whisper",
+      "level": 66,
+      "hp": 2570,
+      "selected": false
+    },
+    {
+      "id": 1280,
+      "name": "Goblin Steamrider",
+      "level": 66,
+      "hp": 2241,
+      "selected": false
+    },
+    {
+      "id": 1381,
+      "name": "Grizzly",
+      "level": 66,
+      "hp": 2241,
+      "selected": false
+    },
+    {
+      "id": 1129,
+      "name": "Horong",
+      "level": 66,
+      "hp": 2304,
+      "selected": false
+    },
+    {
+      "id": 1279,
+      "name": "Tri Joint",
+      "level": 66,
+      "hp": 2530,
+      "selected": false
+    },
+    {
+      "id": 1499,
+      "name": "Wootan Fighter",
+      "level": 67,
+      "hp": 2327,
+      "selected": false
+    },
+    {
+      "id": 1498,
+      "name": "Wootan Shooter",
+      "level": 67,
+      "hp": 3096,
+      "selected": false
+    },
+    {
+      "id": 1415,
+      "name": "Baby Leopard",
+      "level": 68,
+      "hp": 2590,
+      "selected": false
+    },
+    {
+      "id": 2074,
+      "name": "Curupira",
+      "level": 68,
+      "hp": 3096,
+      "selected": false
+    },
+    {
+      "id": 1110,
+      "name": "Dokebi",
+      "level": 68,
+      "hp": 2820,
+      "selected": true
+    },
+    {
+      "id": 1493,
+      "name": "Dryad",
+      "level": 68,
+      "hp": 3640,
+      "selected": false
+    },
+    {
+      "id": 1278,
+      "name": "Stalactic Golem",
+      "level": 68,
+      "hp": 2590,
+      "selected": false
+    },
+    {
+      "id": 1061,
+      "name": "Nightmare",
+      "level": 69,
+      "hp": 2872,
+      "selected": false
+    },
+    {
+      "id": 1587,
+      "name": "Kraben",
+      "level": 70,
+      "hp": 2901,
+      "selected": false
+    },
+    {
+      "id": 1281,
+      "name": "Sageworm",
+      "level": 70,
+      "hp": 2872,
+      "selected": false
+    },
+    {
+      "id": 1037,
+      "name": "Side Winder",
+      "level": 70,
+      "hp": 2736,
+      "selected": false
+    },
+    {
+      "id": 2073,
+      "name": "Toucan",
+      "level": 70,
+      "hp": 3640,
+      "selected": false
+    },
+    {
+      "id": 1261,
+      "name": "Wild Rose",
+      "level": 70,
+      "hp": 2682,
+      "selected": false
+    },
+    {
+      "id": 1178,
+      "name": "Zerom",
+      "level": 70,
+      "hp": 2687,
+      "selected": false
+    },
+    {
+      "id": 1211,
+      "name": "Brilight",
+      "level": 71,
+      "hp": 2772,
+      "selected": false
+    },
+    {
+      "id": 2072,
+      "name": "Jaguar",
+      "level": 71,
+      "hp": 3914,
+      "selected": false
+    },
+    {
+      "id": 1164,
+      "name": "Requiem",
+      "level": 71,
+      "hp": 3089,
+      "selected": false
+    },
+    {
+      "id": 1400,
+      "name": "Karakasa",
+      "level": 72,
+      "hp": 3092,
+      "selected": false
+    },
+    {
+      "id": 1180,
+      "name": "Nine Tail",
+      "level": 72,
+      "hp": 2783,
+      "selected": false
+    },
+    {
+      "id": 1243,
+      "name": "Sasquatch",
+      "level": 72,
+      "hp": 3163,
+      "selected": true
+    },
+    {
+      "id": 1497,
+      "name": "Wooden Golem",
+      "level": 72,
+      "hp": 3914,
+      "selected": false
+    },
+    {
+      "id": 1368,
+      "name": "Geographer",
+      "level": 73,
+      "hp": 3866,
+      "selected": false
+    },
+    {
+      "id": 1140,
+      "name": "Marduk",
+      "level": 73,
+      "hp": 2893,
+      "selected": false
+    },
+    {
+      "id": 1584,
+      "name": "Tamruan",
+      "level": 73,
+      "hp": 3195,
+      "selected": false
+    },
+    {
+      "id": 1195,
+      "name": "Rideword",
+      "level": 74,
+      "hp": 3222,
+      "selected": false
+    },
+    {
+      "id": 1099,
+      "name": "Argiope",
+      "level": 75,
+      "hp": 3105,
+      "selected": false
+    },
+    {
+      "id": 1369,
+      "name": "Grand Peco",
+      "level": 75,
+      "hp": 3150,
+      "selected": true
+    },
+    {
+      "id": 2070,
+      "name": "Piranha",
+      "level": 75,
+      "hp": 4522,
+      "selected": false
+    },
+    {
+      "id": 1260,
+      "name": "Dark Frame",
+      "level": 76,
+      "hp": 3520,
+      "selected": false
+    },
+    {
+      "id": 1500,
+      "name": "Parasite",
+      "level": 76,
+      "hp": 3222,
+      "selected": false
+    },
+    {
+      "id": 1192,
+      "name": "Wraith",
+      "level": 77,
+      "hp": 5168,
+      "selected": true
+    },
+    {
+      "id": 1189,
+      "name": "Orc Archer",
+      "level": 78,
+      "hp": 4835,
+      "selected": false
+    },
+    {
+      "id": 2069,
+      "name": "Iara",
+      "level": 79,
+      "hp": 5890,
+      "selected": false
+    },
+    {
+      "id": 1154,
+      "name": "Pasana",
+      "level": 79,
+      "hp": 3510,
+      "selected": false
+    },
+    {
+      "id": 1156,
+      "name": "Petite (Sky)",
+      "level": 79,
+      "hp": 3556,
+      "selected": false
+    },
+    {
+      "id": 1117,
+      "name": "Evil Druid",
+      "level": 80,
+      "hp": 5149,
+      "selected": false
+    },
+    {
+      "id": 1372,
+      "name": "Goat",
+      "level": 80,
+      "hp": 3980,
+      "selected": false
+    },
+    {
+      "id": 2071,
+      "name": "Headless Mule",
+      "level": 80,
+      "hp": 6620,
+      "selected": false
+    },
+    {
+      "id": 1517,
+      "name": "Jing Guai",
+      "level": 80,
+      "hp": 5187,
+      "selected": false
+    },
+    {
+      "id": 2151,
+      "name": "Rafflesia Arnoldi",
+      "level": 80,
+      "hp": 5149,
+      "selected": false
+    },
+    {
+      "id": 1263,
+      "name": "Wind Ghost",
+      "level": 80,
+      "hp": 4008,
+      "selected": false
+    },
+    {
+      "id": 1269,
+      "name": "Clock",
+      "level": 81,
+      "hp": 5556,
+      "selected": false
+    },
+    {
+      "id": 2152,
+      "name": "Comodo",
+      "level": 81,
+      "hp": 4002,
+      "selected": false
+    },
+    {
+      "id": 1213,
+      "name": "High Orc",
+      "level": 81,
+      "hp": 4193,
+      "selected": true
+    },
+    {
+      "id": 1613,
+      "name": "Metaling",
+      "level": 81,
+      "hp": 4300,
+      "selected": false
+    },
+    {
+      "id": 1386,
+      "name": "Sleeper",
+      "level": 81,
+      "hp": 5160,
+      "selected": false
+    },
+    {
+      "id": 1880,
+      "name": "Wood Goblin",
+      "level": 81,
+      "hp": 5499,
+      "selected": false
+    },
+    {
+      "id": 1209,
+      "name": "Cramp",
+      "level": 82,
+      "hp": 3898,
+      "selected": false
+    },
+    {
+      "id": 1631,
+      "name": "Green Maiden",
+      "level": 82,
+      "hp": 3901,
+      "selected": false
+    },
+    {
+      "id": 1881,
+      "name": "Les",
+      "level": 82,
+      "hp": 6216,
+      "selected": false
+    },
+    {
+      "id": 1199,
+      "name": "Punk",
+      "level": 82,
+      "hp": 3869,
+      "selected": false
+    },
+    {
+      "id": 1276,
+      "name": "Raydric Archer",
+      "level": 82,
+      "hp": 4437,
+      "selected": false
+    },
+    {
+      "id": 1514,
+      "name": "Zhu Po Long",
+      "level": 82,
+      "hp": 3943,
+      "selected": false
+    },
+    {
+      "id": 1376,
+      "name": "Harpy",
+      "level": 83,
+      "hp": 4423,
+      "selected": true
+    },
+    {
+      "id": 1406,
+      "name": "Kapha",
+      "level": 83,
+      "hp": 5470,
+      "selected": false
+    },
+    {
+      "id": 1516,
+      "name": "Mi Gao",
+      "level": 83,
+      "hp": 5335,
+      "selected": false
+    },
+    {
+      "id": 2153,
+      "name": "Cendrawasih",
+      "level": 84,
+      "hp": 5556,
+      "selected": false
+    },
+    {
+      "id": 1884,
+      "name": "Mavka",
+      "level": 84,
+      "hp": 5421,
+      "selected": false
+    },
+    {
+      "id": 1718,
+      "name": "Novus (Yellow)",
+      "level": 84,
+      "hp": 5028,
+      "selected": false
+    },
+    {
+      "id": 1215,
+      "name": "Stem Worm",
+      "level": 84,
+      "hp": 4530,
+      "selected": false
+    },
+    {
+      "id": 2154,
+      "name": "Banaspaty",
+      "level": 85,
+      "hp": 4680,
+      "selected": false
+    },
+    {
+      "id": 1628,
+      "name": "Holden",
+      "level": 85,
+      "hp": 6228,
+      "selected": false
+    },
+    {
+      "id": 1404,
+      "name": "Miyabi Doll",
+      "level": 85,
+      "hp": 5188,
+      "selected": false
+    },
+    {
+      "id": 1216,
+      "name": "Penomena",
+      "level": 85,
+      "hp": 4589,
+      "selected": false
+    },
+    {
+      "id": 1619,
+      "name": "Porcellio",
+      "level": 85,
+      "hp": 5544,
+      "selected": true
+    },
+    {
+      "id": 1883,
+      "name": "Uzhas",
+      "level": 85,
+      "hp": 7140,
+      "selected": false
+    },
+    {
+      "id": 1102,
+      "name": "Bathory",
+      "level": 86,
+      "hp": 5242,
+      "selected": false
+    },
+    {
+      "id": 1321,
+      "name": "Dragon Tail",
+      "level": 86,
+      "hp": 4680,
+      "selected": false
+    },
+    {
+      "id": 1155,
+      "name": "Petite (Ground)",
+      "level": 86,
+      "hp": 5799,
+      "selected": false
+    },
+    {
+      "id": 1162,
+      "name": "Rafflesia",
+      "level": 86,
+      "hp": 5819,
+      "selected": false
+    },
+    {
+      "id": 1882,
+      "name": "Baba Yaga",
+      "level": 87,
+      "hp": 6498,
+      "selected": false
+    },
+    {
+      "id": 1620,
+      "name": "Noxious",
+      "level": 87,
+      "hp": 5430,
+      "selected": false
+    },
+    {
+      "id": 1402,
+      "name": "Poisonous Toad",
+      "level": 87,
+      "hp": 4876,
+      "selected": false
+    },
+    {
+      "id": 2199,
+      "name": "Siorava",
+      "level": 87,
+      "hp": 6500,
+      "selected": false
+    },
+    {
+      "id": 1621,
+      "name": "Venomous",
+      "level": 87,
+      "hp": 4770,
+      "selected": false
+    },
+    {
+      "id": 1512,
+      "name": "Yao Jun",
+      "level": 87,
+      "hp": 6996,
+      "selected": false
+    },
+    {
+      "id": 1193,
+      "name": "Alarm",
+      "level": 88,
+      "hp": 5562,
+      "selected": false
+    },
+    {
+      "id": 2155,
+      "name": "Butoijo",
+      "level": 88,
+      "hp": 7524,
+      "selected": false
+    },
+    {
+      "id": 1403,
+      "name": "Firelock Soldier",
+      "level": 88,
+      "hp": 7524,
+      "selected": false
+    },
+    {
+      "id": 1322,
+      "name": "Spring Rabbit",
+      "level": 88,
+      "hp": 6684,
+      "selected": true
+    },
+    {
+      "id": 1513,
+      "name": "Mao Guai",
+      "level": 89,
+      "hp": 5292,
+      "selected": false
+    },
+    {
+      "id": 1256,
+      "name": "Pest",
+      "level": 89,
+      "hp": 5747,
+      "selected": false
+    },
+    {
+      "id": 1197,
+      "name": "Zombie Prisoner",
+      "level": 89,
+      "hp": 8045,
+      "selected": false
+    },
+    {
+      "id": 1413,
+      "name": "Hermit Plant",
+      "level": 90,
+      "hp": 6052,
+      "selected": false
+    },
+    {
+      "id": 1131,
+      "name": "Joker",
+      "level": 90,
+      "hp": 6022,
+      "selected": false
+    },
+    {
+      "id": 1143,
+      "name": "Marionette",
+      "level": 90,
+      "hp": 7166,
+      "selected": false
+    },
+    {
+      "id": 1715,
+      "name": "Novus (Red)",
+      "level": 90,
+      "hp": 6670,
+      "selected": false
+    },
+    {
+      "id": 1314,
+      "name": "Permeter",
+      "level": 90,
+      "hp": 6575,
+      "selected": false
+    },
+    {
+      "id": 1616,
+      "name": "Pitman",
+      "level": 90,
+      "hp": 7208,
+      "selected": false
+    },
+    {
+      "id": 1270,
+      "name": "Tower Keeper",
+      "level": 90,
+      "hp": 6400,
+      "selected": false
+    },
+    {
+      "id": 1417,
+      "name": "Zipper Bear",
+      "level": 90,
+      "hp": 6620,
+      "selected": false
+    },
+    {
+      "id": 1378,
+      "name": "Demon Pungus",
+      "level": 91,
+      "hp": 6466,
+      "selected": false
+    },
+    {
+      "id": 2197,
+      "name": "Red Eruma",
+      "level": 91,
+      "hp": 9900,
+      "selected": false
+    },
+    {
+      "id": 1196,
+      "name": "Skel Prisoner",
+      "level": 91,
+      "hp": 9194,
+      "selected": false
+    },
+    {
+      "id": 1622,
+      "name": "Teddy Bear",
+      "level": 91,
+      "hp": 7238,
+      "selected": true
+    },
+    {
+      "id": 1692,
+      "name": "Breeze",
+      "level": 92,
+      "hp": 6755,
+      "selected": false
+    },
+    {
+      "id": 1377,
+      "name": "Elder",
+      "level": 92,
+      "hp": 7341,
+      "selected": false
+    },
+    {
+      "id": 1410,
+      "name": "Enchanted Peach Tree",
+      "level": 92,
+      "hp": 8777,
+      "selected": false
+    },
+    {
+      "id": 1316,
+      "name": "Solider",
+      "level": 92,
+      "hp": 8768,
+      "selected": false
+    },
+    {
+      "id": 1617,
+      "name": "Waste Stove",
+      "level": 92,
+      "hp": 7400,
+      "selected": false
+    },
+    {
+      "id": 1109,
+      "name": "Deviruchi",
+      "level": 93,
+      "hp": 8912,
+      "selected": false
+    },
+    {
+      "id": 1408,
+      "name": "Bloody Butterfly",
+      "level": 94,
+      "hp": 7030,
+      "selected": false
+    },
+    {
+      "id": 1319,
+      "name": "Freezer",
+      "level": 94,
+      "hp": 9990,
+      "selected": false
+    },
+    {
+      "id": 1627,
+      "name": "Anopheles",
+      "level": 95,
+      "hp": 7238,
+      "selected": false
+    },
+    {
+      "id": 1257,
+      "name": "Injustice",
+      "level": 95,
+      "hp": 7952,
+      "selected": true
+    },
+    {
+      "id": 1782,
+      "name": "Roween",
+      "level": 95,
+      "hp": 7385,
+      "selected": true
+    },
+    {
+      "id": 1401,
+      "name": "Shinobi",
+      "level": 95,
+      "hp": 8000,
+      "selected": false
+    },
+    {
+      "id": 1784,
+      "name": "Stapo",
+      "level": 95,
+      "hp": 8805,
+      "selected": false
+    }
+  ]
+}

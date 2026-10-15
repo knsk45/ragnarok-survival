@@ -67,6 +67,7 @@ function database() {
     "elements",
     "hunter",
     "monsters",
+    "monster-expansion",
     "bosses",
     "buffs",
     "items",
@@ -179,7 +180,7 @@ test("monster rewards and image bytes match the primary-source snapshot", () => 
       fs.readFileSync(path.join(root, "data/irowiki-snapshot.json"), "utf8"),
     ),
     crypto = require("node:crypto");
-  assert.equal(snap.files.length, 90);
+  assert.equal(snap.files.length, 125);
   for (const art of snap.files) {
     const bytes = fs.readFileSync(path.join(root, art.path));
     assert.equal(

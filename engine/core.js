@@ -138,17 +138,26 @@
       visited.add(id);
     }
     for (const id of byId.keys()) visit(id);
-    for (const m of Object.values(db.monsters))
+    const monsterIds = new Set();
+    for (const [key,m] of Object.entries(db.monsters)) {
       if (
-        !m.key ||
+        m.key !== key ||
+        !Number.isInteger(m.id) || monsterIds.has(m.id) ||
         !Number.isFinite(m.stats?.level) ||
         !(m.combat?.hp > 0) ||
         !Number.isFinite(m.combat?.atkMin) ||
-        !Number.isFinite(m.visual?.radius) ||
+        !Number.isFinite(m.combat?.atkMax) || m.combat.atkMax < m.combat.atkMin ||
+        ![m.combat?.speed,m.combat?.aspd,m.stats?.def,m.stats?.hit,m.stats?.flee].every(Number.isFinite) ||
+        !(m.combat.speed > 0) || !(m.visual?.radius > 0) ||
         !Number.isInteger(m.combat?.baseExp) ||
-        !Number.isInteger(m.combat?.jobExp)
+        !Number.isInteger(m.combat?.jobExp) || m.combat.baseExp < 0 || m.combat.jobExp < 0 ||
+        !m.visual?.spriteUrl || !m.classification?.element ||
+        !Number.isInteger(m.classification?.elementLevel) ||
+        m.classification.elementLevel < 1 || m.classification.elementLevel > 4
       )
         throw Error("Некорректный монстр: " + m.key);
+      monsterIds.add(m.id);
+    }
     return db;
   }
   function equipmentBonus(level, profile) {

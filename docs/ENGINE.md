@@ -1,6 +1,8 @@
 # Ragnarok Survival — foundation
 
-## Актуальная версия: 0.11.0
+## Актуальная версия: 0.12.0
+
+Добавлены 35 обычных монстров отдельным слоем `data/monster-expansion.js`; всего 48 обычных видов и 17 боссов. Фильтр, исходные параметры, хеши PNG и очередь ещё не добавленных записей сохранены в `data/monster-expansion.json`. Подробности: [RELEASE-0.12.0.md](RELEASE-0.12.0.md).
 
 Каталог Classic-профессий и две доступные ветки находятся в `data/classes.js`: Novice → Swordman → Knight и Novice → Archer → Hunter. Остальные профессии видны в стартовом меню, но закрыты. Навыки Hunter — `data/hunter.js`, исполнение — `engine/hunter.js`, таблица элементов — `data/elements.js`. Правила подключения новой ветки и ограничения адаптации: [RELEASE-0.11.0.md](RELEASE-0.11.0.md).
 

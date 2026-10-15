@@ -11,7 +11,7 @@ const run = promisify(execFile),
   root = path.resolve(__dirname, "..");
 const context = { window: {} };
 vm.createContext(context);
-for (const file of ["monsters", "bosses", "skills", "characters"])
+for (const file of ["sources", "monsters", "monster-expansion", "bosses", "skills", "characters"])
   vm.runInContext(
     fs.readFileSync(path.join(root, "data", file + ".js"), "utf8"),
     context,

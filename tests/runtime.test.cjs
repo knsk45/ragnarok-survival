@@ -165,9 +165,11 @@ test("all monster render branches execute without throwing (mock Canvas)", () =>
   const { dom, w, g } = boot();
   g.state.lvl = 99;
   for (const m of Object.values(w.RS_DATABASE.monsters)) {
+    g.reset();
     g.state.lvl = m.stats.level;
-    g.spawn(m.key);
+    assert(g.spawn(m.key, false, !!m.isBoss), m.key);
     const e = g.enemies().at(-1);
+    assert.equal(e.type,m.key);
     e.x = 0;
     e.y = 30;
     g.draw();
