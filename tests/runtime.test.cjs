@@ -261,6 +261,71 @@ test("no target means no mana spent; a free active skill remains visible", () =>
   );
   dom.window.close();
 });
+test("boss queue respects time, unlocks, one living boss and regular cap of three", () => {
+  const {dom,w,g}=boot();
+  g.state.t=119; g.state.lvl=99;
+  assert.equal(g.spawnBoss(),false);
+  g.state.t=120; g.state.lvl=26;
+  assert.equal(g.spawnBoss(),false);
+  g.state.lvl=27;
+  for(let i=0;i<60;i++)g.spawn();
+  assert.equal(g.spawnBoss(),true);
+  const boss=g.enemies().find(e=>e.boss);
+  assert.equal(boss.type,'toad');
+  assert.equal(boss.hp,w.RS_DATABASE.monsters.toad.combat.hp);
+  assert.equal(g.enemies().filter(e=>!e.boss).length,3);
+  assert.equal(g.spawn(),false);
+  assert.equal(g.spawnBoss(),false);
+  const regular=g.enemies().find(e=>!e.boss);
+  g.hit(regular,1e9);
+  assert.equal(g.spawn(),true);
+  assert.equal(g.spawn(),false);
+  g.state.t=800;
+  assert.equal(g.spawnBoss(),false); // No overlapping encounter even if overdue.
+  const gifts=g.gems().filter(x=>x.kind==='gift').length;
+  g.hit(boss,1e9);
+  assert.equal(g.gems().filter(x=>x.kind==='gift').length,gifts+1);
+  assert.equal(g.state.nextBoss,890);
+  g.hit(boss,1e9);
+  assert.equal(g.gems().filter(x=>x.kind==='gift').length,gifts+1);
+  assert.equal(g.spawn(),true);
+  g.state.t=889;g.state.lvl=99;
+  assert.equal(g.spawnBoss(),false);
+  g.state.t=890;
+  assert.equal(g.spawnBoss(),true);
+  assert.equal(g.enemies().find(e=>e.boss).type,'eclipse');
+  dom.window.close();
+});
+test("all seventeen bosses spawn, render, die and drop exactly one Gift Box each", () => {
+  const {dom,w,g}=boot();
+  for(const key of w.RS_DATABASE.bosses.roster){
+    g.reset();g.state.lvl=99;g.state.t=120;
+    g.state.bossesDefeated=w.RS_DATABASE.bosses.roster.filter(k=>k!==key);
+    assert(g.spawnBoss(),key);
+    const boss=g.enemies().find(e=>e.boss);
+    assert.equal(boss.type,key);
+    assert.equal(boss.max,w.RS_DATABASE.monsters[key].combat.hp);
+    assert.doesNotThrow(()=>g.draw(),key);
+    g.hit(boss,1e9);
+    assert.equal(g.gems().filter(x=>x.kind==='gift').length,1,key);
+    assert.equal(g.gems().find(x=>x.kind==='baseExp').amount,w.RS_DATABASE.monsters[key].combat.baseExp);
+    assert.equal(g.spawnBoss(),false);
+  }
+  dom.window.close();
+});
+test("boss encounter progress survives save and restore without duplication", () => {
+  const {dom,g}=boot();
+  g.start();g.state.lvl=99;g.state.t=120;g.spawnBoss();
+  g.hit(g.enemies().find(e=>e.boss),1e9);
+  g.state.t=g.state.nextBoss;g.spawnBoss();
+  const boss=g.enemies().find(e=>e.boss);boss.hp=100;
+  assert(g.saveRun());g.reset();g.restoreRun();
+  assert.deepEqual(Array.from(g.state.bossesDefeated),['toad']);
+  assert.equal(g.enemies().find(e=>e.boss).type,'eclipse');
+  assert.equal(g.enemies().find(e=>e.boss).hp,100);
+  assert.equal(g.spawnBoss(),false);
+  dom.window.close();
+});
 test("30-minute deterministic-time simulation with all classes and learned skills does not crash", () => {
   const { dom, w, g } = boot();
   g.start();

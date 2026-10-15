@@ -11,7 +11,7 @@ const run = promisify(execFile),
   root = path.resolve(__dirname, "..");
 const context = { window: {} };
 vm.createContext(context);
-for (const file of ["monsters", "skills"])
+for (const file of ["monsters", "bosses", "skills"])
   vm.runInContext(
     fs.readFileSync(path.join(root, "data", file + ".js"), "utf8"),
     context,
@@ -89,7 +89,7 @@ const iconPages = [
         (value.match(/[\d,.]+/g) || []).map((v) =>
           Number(v.replaceAll(",", "")),
         );
-      const image = doc
+      const image = ([2192, 2208].includes(m.id) ? "https://static.divine-pride.net/images/mobs/png/" + m.id + ".png" : null) || doc
         .querySelector('[style*="image/monster/"]')
         ?.getAttribute("style")
         .match(/url\(['"]?([^)'" ]+)/)?.[1];

@@ -8,9 +8,10 @@ const sourceRegistry = window.RS_SOURCES || {
 
 window.RS_DATABASE = {
   schemaVersion: "1.0.0",
-  contentVersion: 34,
-  gameVersion: "0.8.3",
+  contentVersion: 35,
+  gameVersion: "0.9.0",
   experience: window.RS_EXPERIENCE,
+  bosses: window.RS_BOSSES,
   sourceRegistry,
   sources: {
     monsterDatabase: "https://db.irowiki.org/db/",

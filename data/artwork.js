@@ -436,14 +436,15 @@ window.RS_ARTWORK = {
     },
   ],
 };
+window.RS_ARTWORK.files.push(...(window.RS_BOSS_ARTWORK || []));
 for (const art of window.RS_ARTWORK.files) {
   if (art.group === "monsters") {
     const m = window.RS_MONSTERS[art.key];
     m.visual.spriteUrl = art.path;
     m.visual.renderMode = "sprite";
     m.visual.facing = "left";
-    m.visual.provenance = "irowiki-original";
-    m.visual.renderHeight = Math.max(28, Math.min(110, art.height));
+    m.visual.provenance = art.imageSourceUrl?.includes("divine-pride") ? "divine-pride-original" : "irowiki-original";
+    m.visual.renderHeight = Math.max(28, Math.min(m.isBoss ? 160 : 110, art.height));
   }
   if (art.group === "skills") {
     const s = window.RS_SKILLS.find((v) => v.id === art.key);

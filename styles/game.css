@@ -97,6 +97,14 @@ button:disabled {
 .hud-main {
   min-width: 0;
 }
+.boss-hud {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+.boss-hud .bar {
+  margin: 0;
+  height: 20px;
+}
 .hud-main > .title,
 .hud-main > #job,
 .stat-grid,

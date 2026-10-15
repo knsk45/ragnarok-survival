@@ -6,7 +6,7 @@
     const panel = document.getElementById("fatal"),
       text = document.getElementById("fatalText");
     if (!panel || !text) return;
-    text.textContent = "Сборка 0.8.3: " + message;
+    text.textContent = "Сборка 0.9.0: " + message;
     panel.classList.remove("hide");
     document.getElementById("start")?.classList.add("hide");
     const reload = document.getElementById("fatalReload");

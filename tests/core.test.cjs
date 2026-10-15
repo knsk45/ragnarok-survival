@@ -55,6 +55,7 @@ function database() {
     "skills",
     "skill-runtime",
     "monsters",
+    "bosses",
     "buffs",
     "items",
     "artwork",
@@ -100,7 +101,7 @@ test("all scripts parse and no duplicate skill ids exist", () => {
   assert.equal(new Set(db.skills.map((s) => s.id)).size, db.skills.length);
 });
 test("spawn pool has no missing levels 1–99", () => {
-  const monsters = Object.values(database().monsters);
+  const monsters = Object.values(database().monsters).filter(m=>!m.isBoss);
   for (let l = 1; l <= 99; l++)
     assert(
       monsters.some((m) => l >= m.stats.level && l <= m.stats.level + 15),
@@ -130,13 +131,29 @@ test("canonical Renewal EXP tables have exact fixtures and totals", () => {
   for (const stage of ["Swordman", "Knight"])
     assert.equal(core.jobNeed(50, stage, e), 0);
 });
+test("boss roster matches all 17 filtered IDs and stays separate from regular monsters", () => {
+  const db=database();
+  assert.deepEqual(Array.from(db.bosses.roster,k=>db.monsters[k].id),
+    [1089,1093,1090,1091,1262,1582,1283,1096,1307,1289,1388,1120,2192,1320,1092,2208,1302]);
+  assert.equal(db.bosses.maxRegular,3);
+  let previous=0;
+  for(const key of db.bosses.roster){
+    const m=db.monsters[key];
+    assert(m.isBoss && m.stats.level>=previous);
+    previous=m.stats.level;
+    assert.equal(m.drops.giftBoxPlain,1);
+    assert(m.source.includes('/'+m.id+'/'));
+    assert(m.visual.spriteUrl.startsWith('assets/'));
+    assert(m.sourceRefs.every(ref=>db.sourceRegistry.records[ref]));
+  }
+});
 test("monster rewards and image bytes match the primary-source snapshot", () => {
   const db = database(),
     snap = JSON.parse(
       fs.readFileSync(path.join(root, "data/irowiki-snapshot.json"), "utf8"),
     ),
     crypto = require("node:crypto");
-  assert.equal(snap.files.length, 43);
+  assert.equal(snap.files.length, 60);
   for (const art of snap.files) {
     const bytes = fs.readFileSync(path.join(root, art.path));
     assert.equal(

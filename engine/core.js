@@ -81,6 +81,16 @@
       if (jobNeed(cap, stage, db.experience) !== 0)
         throw Error("Неверный Job cap");
     }
+    if (!db.bosses || !Array.isArray(db.bosses.roster) ||
+      new Set(db.bosses.roster).size !== db.bosses.roster.length ||
+      !(db.bosses.firstSpawnAt >= 0) || !(db.bosses.cooldown > 0) ||
+      !Number.isInteger(db.bosses.maxRegular) || db.bosses.maxRegular < 0)
+      throw Error("Некорректная конфигурация боссов");
+    for (const key of db.bosses.roster) {
+      const m = db.monsters[key];
+      if (!m?.isBoss || m.drops?.giftBoxPlain !== 1 || !m.visual?.spriteUrl)
+        throw Error("Некорректный босс: " + key);
+    }
     const byId = new Map(),
       states = new Set();
     for (const s of db.skills) {

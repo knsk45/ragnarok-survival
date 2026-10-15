@@ -54,7 +54,7 @@
     $("fatalReload").onclick = () => location.reload();
     try {
       RSStorage.log(localStorage, {
-        version: "0.8.3",
+        version: "0.9.0",
         time: new Date().toISOString(),
         message: message + detail,
         stack: error?.stack || "",
@@ -161,7 +161,8 @@
     oneHandQuicken: 0,
     guard: 0,
     bowlingSeen: false,
-    nextBoss: 300,
+    nextBoss: DB.bosses.firstSpawnAt,
+    bossesDefeated: [],
     inv: 0,
     attack: 0,
     special: 0,
@@ -578,7 +579,8 @@
       oneHandQuicken: 0,
       guard: 0,
       bowlingSeen: false,
-      nextBoss: 300,
+      nextBoss: DB.bosses.firstSpawnAt,
+      bossesDefeated: [],
       inv: 0,
       attack: 0,
       special: 0,
@@ -767,6 +769,7 @@
   }
   function availableMonsterKeys() {
     return Object.keys(types).filter((key) => {
+      if (types[key][8].isBoss) return false;
       let level = monsterLevel(key);
       return S.lvl >= level && S.lvl <= level + 15;
     });
@@ -781,10 +784,24 @@
     let aspd = Number(e?.aspd) || 100;
     return cl(1.95 - (aspd - 80) * 0.006, 0.82, 1.95);
   }
-  function spawn(force = null, elite = false) {
-    if (en.length >= MAX_ENEMIES) return false;
+  function activeBoss() {
+    return en.find((e) => e.boss && !e.dead && e.hp > 0);
+  }
+  function spawnBoss() {
+    if (activeBoss() || S.t < S.nextBoss) return false;
+    const key = DB.bosses.roster.find((key) =>
+      !S.bossesDefeated.includes(key) && monsterLevel(key) <= S.lvl);
+    if (!key || !spawn(key, false, true)) return false;
+    say("БОСС: " + types[key][0]);
+    return true;
+  }
+  function spawn(force = null, elite = false, boss = false) {
+    if (boss && (activeBoss() || !types[force]?.[8]?.isBoss)) return false;
+    if (!boss && (en.length >= MAX_ENEMIES ||
+      (activeBoss() && en.filter((e) => !e.boss && !e.dead).length >= DB.bosses.maxRegular)))
+      return false;
     let pos = RSCore.spawnPoint(P, W, H),
-      t = pickMonster(force),
+      t = boss ? force : pickMonster(force),
       q = types[t],
       c = q?.[8]?.combat || {},
       balance = q?.[8]?.balance || {};
@@ -806,7 +823,15 @@
       val: q[6],
       r: q[7],
       elite,
+      boss,
     });
+    if (boss) {
+      // The surrounding wave retreats without rewards, leaving the nearest three.
+      const keep = new Set(en.filter((e) => !e.boss && !e.dead)
+        .sort((a, b) => Math.hypot(a.x-P.x, a.y-P.y)-Math.hypot(b.x-P.x, b.y-P.y))
+        .slice(0, DB.bosses.maxRegular));
+      en = en.filter((e) => e.boss || keep.has(e));
+    }
     return true;
   }
   function nearest(max = 9999) {
@@ -905,6 +930,11 @@
     burst(e.x, e.y, crit ? "#ffe36b" : "#ffe4a1", crit ? 5 : 2);
     if (RSCore.removeDead(en, e)) {
       S.kills++;
+      if (e.boss) {
+        if (!S.bossesDefeated.includes(e.type)) S.bossesDefeated.push(e.type);
+        S.nextBoss = S.t + DB.bosses.cooldown;
+        say("Босс побеждён: " + types[e.type][0]);
+      }
       const reward = types[e.type][8].combat;
       gems.push({
         x: e.x - 8,
@@ -922,9 +952,9 @@
         monsterId: types[e.type][8].id,
         life: 45,
       });
-      if (Math.random() < 0.035)
+      if (!e.boss && Math.random() < 0.035)
         gems.push({ x: e.x, y: e.y, v: 0, heart: true, life: 16 });
-      if (Math.random() < ITEM_DEFS.giftBoxPlain.dropChance)
+      if (Math.random() < (e.boss ? types[e.type][8].drops.giftBoxPlain : ITEM_DEFS.giftBoxPlain.dropChance))
         gems.push({
           x: e.x,
           y: e.y,
@@ -1041,12 +1071,7 @@
     }
     runEnabledSpecial();
     if (S.debugInfiniteSp) S.sp = S.spMax;
-    if (S.t >= S.nextBoss) {
-      if (spawn(null, true)) {
-        say("ОПАСНОСТЬ: ЭЛИТНЫЙ МОНСТР");
-        S.nextBoss += 300;
-      }
-    }
+    spawnBoss();
     S.spawn -= dt;
     if (S.spawn <= 0) {
       spawn();
@@ -1320,7 +1345,7 @@
     x.beginPath();
     x.ellipse(0, r * 0.78, r * 1.08, r * 0.32, 0, 0, TAU);
     x.fill();
-    if (e.elite) {
+    if (e.elite || e.boss) {
       x.strokeStyle = "#ff536c";
       x.lineWidth = 3;
       x.beginPath();
@@ -1345,7 +1370,7 @@
               : drawMissingMonster;
       renderer(q, r);
     }
-    if (e.elite) {
+    if (e.elite || e.boss) {
       x.fillStyle = "#0009";
       x.fillRect(-r * 1.25, -r - 11, r * 2.5, 4);
       x.fillStyle = "#ff536c";
@@ -1668,6 +1693,13 @@
     $("sp").style.width = cl(S.sp / S.spMax, 0, 1) * 100 + "%";
     $("time").textContent = time(S.t);
     $("kills").textContent = S.kills;
+    const boss = activeBoss();
+    $("bossHud").classList.toggle("hide", !boss);
+    if (boss) {
+      $("bossName").textContent = types[boss.type][0];
+      $("bossHpText").textContent = Math.ceil(Math.max(0, boss.hp)) + "/" + boss.max;
+      $("bossHp").style.width = cl(boss.hp / boss.max, 0, 1) * 100 + "%";
+    }
     let legend = document.querySelector(".hud-side .legend");
     if (legend) legend.textContent = S.stage + " · Base 99 / Job 50";
     let q = totalStats();
@@ -1900,6 +1932,8 @@
     if (s && s.removeAllRanges) s.removeAllRanges();
   }
   function saveRun() {
+    const query = new URLSearchParams(location.search);
+    if (query.has("test") && query.has("scene")) return false;
     if (!S.run || S.end) return false;
     try {
       return RSStorage.save(localStorage, {
@@ -1959,6 +1993,7 @@
     S.effects = S.effects || {};
     S.metrics = S.metrics || { damage: {}, casts: {}, spSpent: 0, taken: 0 };
     S.jobCapPrompted = S.jobCapPrompted || {};
+    S.bossesDefeated = Array.isArray(S.bossesDefeated) ? S.bossesDefeated : [];
     Object.assign(P, saved.player);
     en = (saved.enemies || [])
       .filter(
@@ -2246,6 +2281,7 @@
       gems: () => gems,
       hit,
       spawn,
+      spawnBoss,
       update,
       draw,
       xp,
