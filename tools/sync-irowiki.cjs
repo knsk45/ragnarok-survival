@@ -11,7 +11,7 @@ const run = promisify(execFile),
   root = path.resolve(__dirname, "..");
 const context = { window: {} };
 vm.createContext(context);
-for (const file of ["monsters", "bosses", "skills"])
+for (const file of ["monsters", "bosses", "skills", "characters"])
   vm.runInContext(
     fs.readFileSync(path.join(root, "data", file + ".js"), "utf8"),
     context,
@@ -151,7 +151,9 @@ const iconPages = [
       path: "assets/irowiki/items/644.png",
     },
   ];
-  const files = [...monsters, ...skills, ...buffs, ...items];
+  const mount = context.window.RS_CHARACTERS.knight_male.mountedVisual;
+  const characters = [{key:"knight_peco_male", group:"characters", path:mount.spriteUrl, sourceUrl:mount.source, imageSourceUrl:mount.imageSource}];
+  const files = [...monsters, ...skills, ...buffs, ...items, ...characters];
   if (process.argv.includes("--download"))
     await parallel(files, async (file) => {
       const target = path.join(root, file.path);

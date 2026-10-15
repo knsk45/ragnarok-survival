@@ -31,8 +31,10 @@ function boot() {
     bottom: 660,
   });
   w.requestAnimationFrame = () => 1;
+  const images = [];
   w.Image = class {
     constructor() {
+      images.push(this);
       this.complete = false;
       this.naturalWidth = 0;
     }
@@ -42,7 +44,7 @@ function boot() {
   for (const script of html.matchAll(/<script>([\s\S]*?)<\/script>/g))
     w.eval(script[1]);
   assert(w.RS_TEST, "runtime booted");
-  return { dom, w, g: w.RS_TEST };
+  return { dom, w, g: w.RS_TEST, images, canvas };
 }
 test("capped Base still allows Job EXP and MAX bars stay finite",()=>{const {dom,w,g}=boot();g.state.lvl=98;g.state.need=1252761;g.xp(1252761,0);assert.equal(g.state.lvl,99);assert.equal(w.document.querySelector('#xpText').textContent,'MAX');assert.equal(w.document.querySelector('#xp').style.width,'100%');g.state.stage='Knight';g.state.job=1;g.state.jobXp=0;g.state.jobNeed=2500;g.xp(0,250);assert.equal(g.state.job,2);assert.equal(g.state.jobNeed,4200);assert.equal(g.state.lvl,99);dom.window.close()});
 test("disabled learned skills disappear only from the lower HUD", () => {
@@ -259,6 +261,55 @@ test("no target means no mana spent; a free active skill remains visible", () =>
       .querySelector("#pauseActiveSkills")
       .textContent.includes("Charge Attack"),
   );
+  dom.window.close();
+});
+test("equipment recalculation is idempotent and survives save/restore", () => {
+  const {dom,w,g}=boot();
+  g.start();g.state.stage='Knight';g.state.job=50;
+  g.xp(w.RS_DATABASE.experience.base.slice(1,99).reduce((a,b)=>a+b,0)/25,0);
+  const before=[g.state.atkMin,g.state.atkMax,g.state.hit,g.state.armor];
+  assert(g.state.atkMin>1700);
+  g.recalc();g.recalc();
+  assert.deepEqual([g.state.atkMin,g.state.atkMax,g.state.hit,g.state.armor],before);
+  assert(g.saveRun());g.reset();g.restoreRun();
+  assert.deepEqual([g.state.atkMin,g.state.atkMax,g.state.hit,g.state.armor],before);
+  dom.window.close();
+});
+test("late bosses can be defeated with basic attacks without spending SP", () => {
+  for(const [level,key,limit] of [[81,'maya_purple',170],[99,'wild_rider',90],[99,'dark_illusion',70]]){
+    const {dom,w,g}=boot();let seed=12345;
+    w.Math.random=()=>((seed=(seed*1664525+1013904223)>>>0)/4294967296);
+    g.start();g.state.stage='Knight';g.state.job=50;
+    g.xp(w.RS_DATABASE.experience.base.slice(1,level).reduce((a,b)=>a+b,0)/25,0);
+    g.state.spawn=1e9;g.state.nextBoss=1e9;g.state.debugInfiniteHp=true;
+    for(const skill of w.RS_DATABASE.skills)g.state.skillEnabled[skill.id]=false;
+    assert(g.spawn(key,false,true));
+    const boss=g.enemies().find(e=>e.boss);
+    boss.x=g.player.x+35;boss.y=g.player.y;boss.speed=0;
+    let elapsed=0;
+    while(!boss.dead&&elapsed<limit){g.update(.1);elapsed+=.1}
+    assert(boss.dead,key+' within '+limit+' seconds of continuous melee');
+    assert.equal(g.state.metrics.spSpent,0);
+    dom.window.close();
+  }
+});
+test("learning Riding selects the mounted sprite only for Knight, including after restore", () => {
+  const {dom,w,g,images,canvas}=boot();const calls=[];
+  canvas.drawImage=(...args)=>calls.push(args);
+  const mount=images.find(i=>i.src==='assets/irowiki/characters/knight-peco-male.png');
+  mount.complete=true;mount.naturalWidth=mount.naturalHeight=150;
+  g.start();g.state.stage='Knight';g.state.job=2;g.state.endure=1;g.state.skillPoints=1;
+  g.pause();
+  const card=[...w.document.querySelectorAll('#pauseCards button')].find(b=>b.querySelector('strong').textContent.trim()==='Peco Peco Ride');
+  assert(card && !card.disabled);
+  g.draw();assert(!calls.some(a=>a[0]===mount));
+  card.click();assert.equal(g.state.peco,1);
+  calls.length=0;g.draw();
+  assert(calls.some(a=>a[0]===mount&&a[1]===38&&a[3]===69&&a[4]===113));
+  assert(g.saveRun());g.reset();g.restoreRun();
+  calls.length=0;g.draw();assert(calls.some(a=>a[0]===mount));
+  g.state.stage='Swordman';calls.length=0;g.draw();
+  assert(!calls.some(a=>a[0]===mount));
   dom.window.close();
 });
 test("boss queue respects time, unlocks, one living boss and regular cap of three", () => {

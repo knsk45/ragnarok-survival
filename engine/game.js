@@ -54,7 +54,7 @@
     $("fatalReload").onclick = () => location.reload();
     try {
       RSStorage.log(localStorage, {
-        version: "0.9.0",
+        version: "0.10.0",
         time: new Date().toISOString(),
         message: message + detail,
         stack: error?.stack || "",
@@ -180,13 +180,16 @@
     "data:image/png;base64,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";
   const noviceSprite = new Image(),
     swordmanSprite = new Image(),
-    knightSprite = new Image();
+    knightSprite = new Image(),
+    pecoKnightSprite = new Image();
   noviceSprite.src = NOVICE_SPRITE_DATA;
   swordmanSprite.src = SWORDMAN_SPRITE_DATA;
   knightSprite.src = KNIGHT_SPRITE_DATA;
+  pecoKnightSprite.src = DB.characters.knight_male.mountedVisual.spriteUrl;
   noviceSprite.onload =
     swordmanSprite.onload =
     knightSprite.onload =
+    pecoKnightSprite.onload =
       () => {
         if (typeof draw === "function") draw();
       };
@@ -424,6 +427,8 @@
     return base;
   }
   function recalc(full = false) {
+    S.gear = RSCore.equipmentBonus(S.lvl,
+      DB.equipment.profiles[DB.characters.knight_male.equipmentProfileId]);
     let q = totalStats(),
       oldMax = S.max || 100,
       oldSp = S.spMax || 40,
@@ -436,7 +441,7 @@
         S.swordMastery * 4 +
         S.twohandMastery * 4 +
         S.spearMastery * 4 +
-        buffSum("atk");
+        buffSum("atk") + S.gear.weaponAtk;
     if (S.berserk && S.hp < S.max * 0.25) baseAtk *= 1.25;
     S.atkMin = Math.max(1, Math.floor(baseAtk * 0.9));
     S.atkMax = Math.max(S.atkMin + 1, Math.ceil(baseAtk * 1.1 + q.str * 0.08));
@@ -451,9 +456,9 @@
     );
     S.spMax = 48 + q.int * 2;
     S.armor =
-      Math.floor(q.vit / 10) + (S.effects?.endure?.expires > S.t ? 5 : 0);
+      Math.floor(q.vit / 10) + (S.effects?.endure?.expires > S.t ? 5 : 0) + S.gear.defense;
     S.crit = Math.min(0.85, 0.02 + q.luk * 0.003 + (quick ? 0.05 : 0));
-    S.hit = 175 + S.lvl + q.dex + Math.floor(q.luk / 3) + buffSum("hit");
+    S.hit = 175 + S.lvl + q.dex + Math.floor(q.luk / 3) + buffSum("hit") + S.gear.hit;
     S.flee = 100 + S.lvl + q.agi + Math.floor(q.luk / 5);
     S.perfect = Math.min(0.2, Math.floor(q.luk / 10) * 0.01);
     S.move = (125 + q.agi * 0.75 + S.peco * 15) * (1 + buffSum("moveRate"));
@@ -892,7 +897,7 @@
     return 70 + ((l - 1) * 70) / 9;
   }
   function skillCast(name) {
-    skillTexts.push({ x: P.x, y: P.y - 74, text: name, life: 0.72, m: 0.72 });
+    skillTexts.push({ x: P.x, y: P.y - (S.stage === "Knight" && S.peco > 0 ? 100 : 74), text: name, life: 0.72, m: 0.72 });
   }
   function special() {
     return RSSkills.cast({
@@ -1229,19 +1234,25 @@
     x.beginPath();
     x.ellipse(X, Y + 18, 23, 8, 0, 0, TAU);
     x.fill();
+    const mount = DB.characters.knight_male.mountedVisual;
+    const mounted = S.stage === "Knight" && S[mount.stateKey] > 0;
     let sprite =
-      S.stage === "Knight"
+      mounted && pecoKnightSprite.complete && pecoKnightSprite.naturalWidth
+        ? pecoKnightSprite
+        : S.stage === "Knight"
         ? knightSprite
         : S.stage === "Swordman"
           ? swordmanSprite
           : noviceSprite;
     if (sprite.complete && sprite.naturalWidth) {
-      let h = 86,
-        w = (h * sprite.naturalWidth) / sprite.naturalHeight;
+      const riding = sprite === pecoKnightSprite;
+      const rect = riding ? mount.sourceRect : {x:0,y:0,width:sprite.naturalWidth,height:sprite.naturalHeight};
+      let h = riding ? mount.renderHeight : 86,
+        w = (h * rect.width) / rect.height;
       x.save();
       x.translate(X, Y);
       x.scale(flip, 1);
-      x.drawImage(sprite, -w / 2, -h * 0.78, w, h);
+      x.drawImage(sprite, rect.x, rect.y, rect.width, rect.height, -w / 2, -h * 0.78, w, h);
       x.restore();
     } else {
       x.save();
@@ -2070,6 +2081,11 @@
         ["Base / Job", S.lvl + " / " + S.job],
         ["ATK", S.atkMin + "–" + S.atkMax],
         ["Защита", S.armor],
+        ["Экипировка", S.gear.name],
+        ["Бонус оружия", "+" + S.gear.weaponAtk + " ATK"],
+        ["Бонус точности", "+" + S.gear.hit + " HIT"],
+        ["Бонус брони", "+" + S.gear.defense + " DEF"],
+        ["Верхом", S.stage === "Knight" && S.peco > 0 ? "Peco Peco" : "Нет"],
         ["HIT / FLEE", S.hit + " / " + S.flee],
         ["Критический шанс", Math.round(S.crit * 100) + "%"],
         ["Интервал атаки", S.rate.toFixed(2) + " сек."],

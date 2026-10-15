@@ -81,6 +81,16 @@
       if (jobNeed(cap, stage, db.experience) !== 0)
         throw Error("Неверный Job cap");
     }
+    for (const character of Object.values(db.characters || {})) {
+      const profile = db.equipment?.profiles?.[character.equipmentProfileId];
+      if (!profile?.milestones?.length) throw Error("Не загружен профиль экипировки");
+      let previous = -1;
+      for (const row of profile.milestones) {
+        if (!(row.level > previous) || ![row.weaponAtk,row.hit,row.defense].every(v=>Number.isFinite(v)&&v>=0))
+          throw Error("Некорректная прогрессия экипировки");
+        previous = row.level;
+      }
+    }
     if (!db.bosses || !Array.isArray(db.bosses.roster) ||
       new Set(db.bosses.roster).size !== db.bosses.roster.length ||
       !(db.bosses.firstSpawnAt >= 0) || !(db.bosses.cooldown > 0) ||
@@ -137,7 +147,26 @@
         throw Error("Некорректный монстр: " + m.key);
     return db;
   }
+  function equipmentBonus(level, profile) {
+    const rows = profile?.milestones || [];
+    const zero = { weaponAtk: 0, hit: 0, defense: 0, name: "Без автоматической экипировки" };
+    if (!rows.length || !Number.isFinite(level) || level < rows[0].level) return zero;
+    let low = rows[0], high = low;
+    for (const row of rows) {
+      if (row.level <= level) low = row;
+      if (row.level >= level) { high = row; break; }
+      high = row;
+    }
+    const t = high.level > low.level ? clamp((level-low.level)/(high.level-low.level),0,1) : 0;
+    return {
+      weaponAtk: Math.round(low.weaponAtk+(high.weaponAtk-low.weaponAtk)*t),
+      hit: Math.round(low.hit+(high.hit-low.hit)*t),
+      defense: Math.round(low.defense+(high.defense-low.defense)*t),
+      name: low.name,
+    };
+  }
   const api = {
+    equipmentBonus,
     clamp,
     contains,
     removeDead,

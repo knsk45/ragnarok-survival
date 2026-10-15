@@ -436,7 +436,7 @@ window.RS_ARTWORK = {
     },
   ],
 };
-window.RS_ARTWORK.files.push(...(window.RS_BOSS_ARTWORK || []));
+window.RS_ARTWORK.files.push(...(window.RS_BOSS_ARTWORK || []), {"key": "knight_peco_male", "group": "characters", "path": "assets/irowiki/characters/knight-peco-male.png", "sourceUrl": "https://irowiki.org/wiki/Peco_Peco_Ride", "imageSourceUrl": "https://irowiki.org/w/images/3/33/Knight-Peco.png", "sha256": "f78ddbddcc9377742498778bc53989dab97850bae78ab941e4b71312f5c57691", "width": 150, "height": 150});
 for (const art of window.RS_ARTWORK.files) {
   if (art.group === "monsters") {
     const m = window.RS_MONSTERS[art.key];

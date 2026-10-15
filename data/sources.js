@@ -12,6 +12,14 @@ window.RS_SOURCES = {
     rule: "Use the most specific source available for a record; keep prototype values explicitly marked.",
   },
   records: {
+    irowiki_peco_ride: {
+      id: 'irowiki_peco_ride', type: 'skill', authority: 'reference',
+      title: 'Peco Peco Ride', url: 'https://irowiki.org/wiki/Peco_Peco_Ride'
+    },
+    irowiki_knight_mounted: {
+      id: 'irowiki_knight_mounted', type: 'sprite', authority: 'reference',
+      title: 'Male Knight mounted on Peco Peco', url: 'https://irowiki.org/wiki/File:Knight-Peco.png'
+    },
     irowiki_classes: {
       id: "irowiki_classes",
       type: "class-index",

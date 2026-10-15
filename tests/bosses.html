@@ -2,9 +2,9 @@
 <html lang="ru">
 <meta charset="utf-8"><title>Ragnarok — проверка боссов</title>
 <style>body{margin:12px;background:#18222c;color:#fff;font:14px Arial}header{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}select,button{font:inherit;padding:8px}iframe{width:390px;height:660px;border:1px solid #788999;border-radius:10px}p{max-width:600px;font-size:12px;color:#c6d0df}</style>
-<header><label>Босс <select id="boss"></select></label><button id="show" disabled>Показать босса</button><label>Экран <select id="size"><option value="390,660">390 × 660</option><option value="320,480">320 × 480</option><option value="844,390">844 × 390</option></select></label></header>
+<header><label>Босс <select id="boss"></select></label><label>Base <select id="base"><option>70</option><option>80</option><option>90</option><option selected>99</option></select></label><label>Персонаж <select id="riding"><option value="0">Knight пешком</option><option value="1" selected>Knight на Peco Peco</option></select></label><button id="show" disabled>Показать босса</button><label>Экран <select id="size"><option value="390,660">390 × 660</option><option value="320,480">320 × 480</option><option value="844,390">844 × 390</option></select></label></header>
 <p>Тестовая сцена: оригинальный Canvas игры, неизменённые спрайты и HP. Симуляция заморожена после одного кадра. Эта страница не изменяет сохранённый забег.</p>
-<iframe id="preview" src="../index.html?test=1&amp;scene=1" title="Тестовая сцена босса"></iframe>
+<iframe id="preview" src="../index.html?test=1&amp;scene=1&amp;v=0.10.0" title="Тестовая сцена босса"></iframe>
 <script>
 const preview=document.getElementById('preview'),selector=document.getElementById('boss');
 preview.onload=()=>{
@@ -16,7 +16,12 @@ preview.onload=()=>{
 document.getElementById('size').onchange=e=>{const [width,height]=e.target.value.split(',');preview.style.width=width+'px';preview.style.height=height+'px'};
 document.getElementById('show').onclick=()=>{
   const g=preview.contentWindow.RS_TEST;
-  g.reset();g.start();g.state.lvl=99;g.state.t=120;g.state.nextBoss=1e9;
+  g.reset();g.start();g.state.stage='Knight';g.state.job=50;
+  const db=preview.contentWindow.RS_DATABASE;
+  const level=Number(document.getElementById('base').value);
+  g.xp(db.experience.base.slice(1,level).reduce((a,b)=>a+b,0)/db.settings.experienceRates.base,0);
+  g.state.peco=Number(document.getElementById('riding').value);g.recalc(true);
+  g.state.t=120;g.state.nextBoss=1e9;
   g.state.debugInfiniteHp=true;g.state.debugInfiniteSp=true;g.state.spawn=100;
   for(let i=0;i<3;i++)g.spawn();
   g.spawn(selector.value,false,true);

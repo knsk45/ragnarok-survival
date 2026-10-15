@@ -51,6 +51,7 @@ function database() {
     "characters",
     "progression",
     "experience",
+    "equipment",
     "builds",
     "skills",
     "skill-runtime",
@@ -131,6 +132,20 @@ test("canonical Renewal EXP tables have exact fixtures and totals", () => {
   for (const stage of ["Swordman", "Knight"])
     assert.equal(core.jobNeed(50, stage, e), 0);
 });
+test("automatic equipment starts at B70, grows monotonically and caps at B99", () => {
+  const profile=database().equipment.profiles.knight_auto_gear;
+  for(let level=1;level<70;level++)assert.equal(core.equipmentBonus(level,profile).weaponAtk,0);
+  let previous={weaponAtk:0,hit:0,defense:0};
+  for(let level=70;level<=99;level++){
+    const gear=core.equipmentBonus(level,profile);
+    for(const field of ['weaponAtk','hit','defense'])assert(gear[field]>previous[field]);
+    previous=gear;
+  }
+  assert.equal(core.equipmentBonus(80,profile).weaponAtk,900);
+  assert.equal(core.equipmentBonus(99,profile).hit,140);
+  assert.equal(core.equipmentBonus(99,profile).defense,150);
+  assert.deepEqual(core.equipmentBonus(999,profile),core.equipmentBonus(99,profile));
+});
 test("boss roster matches all 17 filtered IDs and stays separate from regular monsters", () => {
   const db=database();
   assert.deepEqual(Array.from(db.bosses.roster,k=>db.monsters[k].id),
@@ -153,7 +168,7 @@ test("monster rewards and image bytes match the primary-source snapshot", () => 
       fs.readFileSync(path.join(root, "data/irowiki-snapshot.json"), "utf8"),
     ),
     crypto = require("node:crypto");
-  assert.equal(snap.files.length, 60);
+  assert.equal(snap.files.length, 61);
   for (const art of snap.files) {
     const bytes = fs.readFileSync(path.join(root, art.path));
     assert.equal(

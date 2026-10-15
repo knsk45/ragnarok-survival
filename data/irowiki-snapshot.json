@@ -1386,6 +1386,16 @@
       "bytes": 28740,
       "width": 170,
       "height": 214
+    },
+    {
+      "key": "knight_peco_male",
+      "group": "characters",
+      "path": "assets/irowiki/characters/knight-peco-male.png",
+      "sourceUrl": "https://irowiki.org/wiki/Peco_Peco_Ride",
+      "imageSourceUrl": "https://irowiki.org/w/images/3/33/Knight-Peco.png",
+      "sha256": "f78ddbddcc9377742498778bc53989dab97850bae78ab941e4b71312f5c57691",
+      "width": 150,
+      "height": 150
     }
   ],
   "bossFilter": "https://db.irowiki.org/db/monster-search/?search&boss=1&category=1&hp=3,100000,0&level=3,100,&ltype=1&sort=1,1&header=10"
