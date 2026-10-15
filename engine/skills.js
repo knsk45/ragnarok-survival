@@ -95,8 +95,8 @@
             target.stunnedUntil = S.t + SKILL_BY_ID.fatal_blow.runtime.duration;
           if (r.knockback) {
             let a = Math.atan2(target.y - P.y, target.x - P.x);
-            target.x += Math.cos(a) * r.knockback;
-            target.y += Math.sin(a) * r.knockback;
+            if(ctx.moveEntity)ctx.moveEntity(target,Math.cos(a)*r.knockback,Math.sin(a)*r.knockback);
+            else {target.x+=Math.cos(a)*r.knockback;target.y+=Math.sin(a)*r.knockback;}
           }
         } else if (r.kind === "projectile") {
           let a = Math.atan2(target.y - P.y, target.x - P.x);

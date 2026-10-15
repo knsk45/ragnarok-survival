@@ -1,4 +1,5 @@
 (function(root){
+ const move=(ctx,o,dx,dy)=>ctx.moveEntity?ctx.moveEntity(o,dx,dy):(o.x+=dx,o.y+=dy);
  'use strict';
  const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y),magicJobs=['Mage','Wizard'];
  const colors={fire:'#ff9861',water:'#8cdeff',wind:'#d3b2ff',earth:'#c1b279',ghost:'#d4ddff',poison:'#a5e478',neutral:'#faf0cd'};
@@ -57,7 +58,7 @@
   for(const e of victims){
    hurt(ctx,e,c.power*mult,id,d.element,true);
    if(freeze&&Math.random()<freeze)status(ctx,e,'freeze',2+l*.3);
-   if(knock&&!e.boss&&!e.dead){const a=Math.atan2(e.y-P.y,e.x-P.x);e.x+=Math.cos(a)*knock;e.y+=Math.sin(a)*knock;}
+   if(knock&&!e.boss&&!e.dead){const a=Math.atan2(e.y-P.y,e.x-P.x);move(ctx,e,Math.cos(a)*knock,Math.sin(a)*knock);}
   }
   visual(ctx,id,origin,r||28,d.element);
  }
@@ -80,7 +81,7 @@
  function cast(ctx,d){
   const S=ctx.state,P=ctx.player,l=S[d.stateKey],a=d.runtime.action,id=d.id;
   if(S.pendingClassCast||S.classCastReady>S.t)return false;
-  const list=ctx.enemies().filter(e=>!e.dead&&dist(e,P)<=(d.runtime.range||320)+e.r&&(!d.element||root.RSCore.elementMultiplier(d.element,classification(ctx,e))>0));
+  const list=ctx.enemies().filter(e=>!e.dead&&(!ctx.lineOfSight||ctx.lineOfSight(P,e))&&dist(e,P)<=(d.runtime.range||320)+e.r&&(!d.element||root.RSCore.elementMultiplier(d.element,classification(ctx,e))>0));
   list.sort((a,b)=>(S.tactics?.focusBoss?Number(b.boss)-Number(a.boss):0)||dist(a,P)-dist(b,P));const target=list[0];if(!target)return false;
   if(a==='waterBall'||a==='stoneSupply')return false;
   if((a==='sonic'||a==='grim')&&S.weaponStyle==='dual')return false;
@@ -114,7 +115,7 @@
   else if(a==='hide'||a==='cloak'){
    S.effects[a==='hide'?'hiding':'cloaking']={expires:S.t+2+l*.35,level:l};
   }else if(a==='slide'){
-   const angle=Math.atan2(P.y-target.y,P.x-target.x);P.x+=Math.cos(angle)*80;P.y+=Math.sin(angle)*80;
+   const angle=Math.atan2(P.y-target.y,P.x-target.x);move(ctx,P,Math.cos(angle)*80,Math.sin(angle)*80);
    visual(ctx,id,P,40,'ghost');
   }else if(a==='detox')S.poisonedUntil=0;
   else if(a==='stone')status(ctx,target,'stone',2+l*.4);
@@ -174,7 +175,7 @@
  function update(ctx,dt){
   const S=ctx.state;
   if(S.effects.sightBlaster?.expires>S.t){
-   const e=ctx.nearest(60);if(e){hurt(ctx,e,S.matk,'sight_blaster','fire',true);if(!e.boss&&!e.dead){const a=Math.atan2(e.y-ctx.player.y,e.x-ctx.player.x);e.x+=Math.cos(a)*60;e.y+=Math.sin(a)*60;}delete S.effects.sightBlaster;visual(ctx,'sight_blaster',ctx.player,65,'fire');}
+   const e=ctx.nearest(60);if(e){hurt(ctx,e,S.matk,'sight_blaster','fire',true);if(!e.boss&&!e.dead){const a=Math.atan2(e.y-ctx.player.y,e.x-ctx.player.x);move(ctx,e,Math.cos(a)*60,Math.sin(a)*60);}delete S.effects.sightBlaster;visual(ctx,'sight_blaster',ctx.player,65,'fire');}
   }
   if(S.pendingClassCast?.finishesAt<=S.t){const c=S.pendingClassCast;S.pendingClassCast=null;resolve(ctx,c);}
   for(const e of [...ctx.enemies()]){
@@ -190,7 +191,7 @@
     if(f.id==='ice_wall'){if(!e.boss)e.rootedUntil=S.t+.3;continue;}
     if(f.id==='venom_dust'){poison(ctx,e,f.l);continue;}
     hurt(ctx,e,f.damage,f.id,f.element,true);
-    if(f.id==='fire_wall'&&!e.boss&&!e.dead){const a=Math.atan2(e.y-f.y,e.x-f.x);e.x+=Math.cos(a)*20;e.y+=Math.sin(a)*20;}
+    if(f.id==='fire_wall'&&!e.boss&&!e.dead){const a=Math.atan2(e.y-f.y,e.x-f.x);move(ctx,e,Math.cos(a)*20,Math.sin(a)*20);}
     if(f.id==='storm_gust'){e.gustHits=(e.gustHits||0)+1;if(e.gustHits%3===0)status(ctx,e,'freeze',2);}
     if(f.id==='meteor_storm'&&Math.random()<.03*f.l)status(ctx,e,'stun',1.5);
    }

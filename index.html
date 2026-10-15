@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- 0.14.0: combat fixes, tactics, presets, monster AI and verified deployment -->
+<!-- 0.15.0: combat fixes, tactics, presets, monster AI and verified deployment -->
 <html lang="ru">
   <head>
     <meta charset="utf-8" />
@@ -8,43 +8,45 @@
       content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
     />
     <title>Ragnarok Survival — prototype</title>
-    <script src="data/version.js?v=0.14.0"></script>
-    <script src="engine/bootstrap.js?v=0.14.0"></script>
-    <script src="data/sources.js?v=0.14.0"></script>
-    <script src="data/stats.js?v=0.14.0"></script>
-    <script src="data/jobs.js?v=0.14.0"></script>
-    <script src="data/characters.js?v=0.14.0"></script>
-    <script src="data/progression.js?v=0.14.0"></script>
-    <script src="data/experience.js?v=0.14.0"></script>
-    <script src="data/equipment.js?v=0.14.0"></script>
-    <script src="data/builds.js?v=0.14.0"></script>
-    <script src="data/skills.js?v=0.14.0"></script>
-    <script src="data/skill-runtime.js?v=0.14.0"></script>
-    <script src="data/classes.js?v=0.14.0"></script>
-    <script src="data/elements.js?v=0.14.0"></script>
-    <script src="data/hunter.js?v=0.14.0"></script>
-    <script src="data/adventurers.js?v=0.14.0"></script>
-    <script src="data/presets.js?v=0.14.0"></script>
-    <script src="engine/core.js?v=0.14.0"></script>
-    <script src="engine/skills.js?v=0.14.0"></script>
-    <script src="engine/hunter.js?v=0.14.0"></script>
-    <script src="engine/adventurers.js?v=0.14.0"></script>
-    <script src="engine/storage.js?v=0.14.0"></script>
-    <script src="engine/clock.js?v=0.14.0"></script>
-    <script src="engine/combat-policy.js?v=0.14.0"></script>
-    <script src="engine/insights.js?v=0.14.0"></script>
-    <script src="engine/interface.js?v=0.14.0"></script>
-    <script src="engine/monster-ai.js?v=0.14.0"></script>
-    <script src="data/monsters.js?v=0.14.0"></script>
-    <script src="data/monster-expansion.js?v=0.14.0"></script>
-    <script src="data/bosses.js?v=0.14.0"></script>
-    <script src="data/buffs.js?v=0.14.0"></script>
-    <script src="data/items.js?v=0.14.0"></script>
-    <script src="data/artwork.js?v=0.14.0"></script>
-    <script src="data/adventurer-artwork.js?v=0.14.0"></script>
-    <script src="data/assets.js?v=0.14.0"></script>
-    <script src="data/database.js?v=0.14.0"></script>
-    <link rel="stylesheet" href="styles/game.css?v=0.14.0" />
+    <script src="data/version.js?v=0.15.0"></script>
+    <script src="engine/bootstrap.js?v=0.15.0"></script>
+    <script src="data/sources.js?v=0.15.0"></script>
+    <script src="data/stats.js?v=0.15.0"></script>
+    <script src="data/jobs.js?v=0.15.0"></script>
+    <script src="data/characters.js?v=0.15.0"></script>
+    <script src="data/progression.js?v=0.15.0"></script>
+    <script src="data/experience.js?v=0.15.0"></script>
+    <script src="data/equipment.js?v=0.15.0"></script>
+    <script src="data/builds.js?v=0.15.0"></script>
+    <script src="data/skills.js?v=0.15.0"></script>
+    <script src="data/skill-runtime.js?v=0.15.0"></script>
+    <script src="data/classes.js?v=0.15.0"></script>
+    <script src="data/elements.js?v=0.15.0"></script>
+    <script src="data/hunter.js?v=0.15.0"></script>
+    <script src="data/adventurers.js?v=0.15.0"></script>
+    <script src="data/presets.js?v=0.15.0"></script>
+    <script src="engine/core.js?v=0.15.0"></script>
+    <script src="engine/skills.js?v=0.15.0"></script>
+    <script src="engine/hunter.js?v=0.15.0"></script>
+    <script src="engine/adventurers.js?v=0.15.0"></script>
+    <script src="engine/storage.js?v=0.15.0"></script>
+    <script src="data/maps.js?v=0.15.0"></script>
+    <script src="engine/world.js?v=0.15.0"></script>
+    <script src="engine/clock.js?v=0.15.0"></script>
+    <script src="engine/combat-policy.js?v=0.15.0"></script>
+    <script src="engine/insights.js?v=0.15.0"></script>
+    <script src="engine/interface.js?v=0.15.0"></script>
+    <script src="engine/monster-ai.js?v=0.15.0"></script>
+    <script src="data/monsters.js?v=0.15.0"></script>
+    <script src="data/monster-expansion.js?v=0.15.0"></script>
+    <script src="data/bosses.js?v=0.15.0"></script>
+    <script src="data/buffs.js?v=0.15.0"></script>
+    <script src="data/items.js?v=0.15.0"></script>
+    <script src="data/artwork.js?v=0.15.0"></script>
+    <script src="data/adventurer-artwork.js?v=0.15.0"></script>
+    <script src="data/assets.js?v=0.15.0"></script>
+    <script src="data/database.js?v=0.15.0"></script>
+    <link rel="stylesheet" href="styles/game.css?v=0.15.0" />
   </head>
   <body>
     <main id="app">
@@ -129,6 +131,8 @@
           <div id="characterChoices" class="character-choices" aria-label="Ветки профессий"></div>
           <p id="selectedPath"></p>
           <p id="characterHint" class="muted"></p>
+          <label for="mapChoice">Локация</label>
+          <select id="mapChoice"><option value="pay_fild08">Payon Forest 08 · лес и препятствия</option><option value="arena">Тренировочная арена · без препятствий</option></select>
           <button id="startBtn" class="start">НАЧАТЬ ЗАБЕГ</button>
         </div>
       </div>
@@ -176,6 +180,6 @@
         </div>
       </div>
     </main>
-    <script src="engine/game.js?v=0.14.0"></script>
+    <script src="engine/game.js?v=0.15.0"></script>
   </body>
 </html>

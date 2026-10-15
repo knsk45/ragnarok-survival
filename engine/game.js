@@ -161,6 +161,13 @@
     spawn: 0,
   };
   const P = { x: 0, y: 0, dir: 0 };
+  const terrain=RSWorld.create(RS_MAPS.pay_fild08);
+  S.mapId=new URLSearchParams(location.search).has('test')?'arena':'pay_fild08';
+  const moveEntity=(o,dx,dy)=>terrain.move(o,dx,dy,7);
+  function selectMap(id){
+    if(S.run||!['arena','pay_fild08'].includes(id))return false;
+    S.mapId=id;Object.assign(P,terrain.activate(id==='pay_fild08'));renderStartMenu();draw();return true;
+  }
   function character() { return DB.characters[S.characterId || "knight_male"]; }
   function selectedPreset(){return window.RS_PRESETS[S.buildPreset];}
   function buildName(){return selectedPreset()?.name||DB.builds[character().buildId].name;}
@@ -586,7 +593,7 @@
     unlockQuestSkillsForStage();
     autoAllocateStats();
     recalc(true);
-    P.x = P.y = 0;
+    Object.assign(P,terrain.activate(S.mapId==='pay_fild08'));
     en = [];
     shots = [];
     gems = [];
@@ -627,6 +634,7 @@
     return count;
   }
   function renderStartMenu(){
+    $('mapChoice').value=S.mapId;
     const box=$('characterChoices'),group=$('classGroup').value;
     box.innerHTML='';
     const entries=DB.classCatalog.filter(c=>c.group===group).sort((a,b)=>Number(b.enabled)-Number(a.enabled));
@@ -799,6 +807,10 @@
       balance = q?.[8]?.balance || {};
     if (!q || ![3, 4, 5, 6, 7].every((i) => Number.isFinite(q[i])))
       return false;
+    if(terrain.enabled()){
+      pos=terrain.spawnPoint(P,W,H,7);
+      if(!pos)return false;
+    }
     en.push({
       id: eid++,
       type: t,
@@ -827,11 +839,11 @@
     return true;
   }
   function nearest(max = 9999) {
-    if(S.tactics?.focusBoss){const boss=en.find(e=>e.boss&&!e.dead&&Math.hypot(e.x-P.x,e.y-P.y)<max);if(boss)return boss;}
+    if(S.tactics?.focusBoss){const boss=en.find(e=>e.boss&&!e.dead&&Math.hypot(e.x-P.x,e.y-P.y)<max);if(boss&&terrain.line(P,boss,0,true))return boss;}
     let z = null,
       d0 = max;
     en.forEach((e) => {
-      if (e.dead) return;
+      if (e.dead||!terrain.line(P,e,0,true)) return;
       let d = Math.hypot(P.x - e.x, P.y - e.y);
       if (d < d0) {
         z = e;
@@ -902,6 +914,8 @@
   }
   function special() {
     return RSSkills.cast({
+      moveEntity,
+      lineOfSight:(a,b)=>terrain.line(a,b,0,true),
       state: S,
       definitions: SKILL_DEFS,
       enemies: ()=>en,
@@ -929,7 +943,7 @@
     return special();
   }
   function dropGift(e){gems.push({x:e.x,y:e.y,kind:'gift',itemId:644,life:30});}
-  function hunterContext(){return {state:S,player:P,enemies:()=>en,stats:totalStats,shots,types,hit,burst,skillCast,useSp,nearest,recalc,say,dropGift,byId:SKILL_BY_ID};}
+  function hunterContext(){return {moveEntity,lineOfSight:(a,b)=>terrain.line(a,b,0,true),state:S,player:P,enemies:()=>en,stats:totalStats,shots,types,hit,burst,skillCast,useSp,nearest,recalc,say,dropGift,byId:SKILL_BY_ID};}
   function damagePlayer(e,multiplier=1,attack='Контактная атака',melee=true){
     if(S.inv>0||S.effects.playDead?.expires>S.t)return;
     let taken=Math.max(1,Math.round(rnd(e.atkMin,e.atkMax)*(e.damageScale??1)*multiplier-S.armor));
@@ -1062,7 +1076,7 @@
     S.t += dt;
     RSHunter.update(hunterContext(),dt);
     RSAdventurers.update(hunterContext(),dt);
-    RSMonsterAI.update({state:S,player:P,enemies:()=>en,sees:e=>RSAdventurers.seesPlayer(hunterContext(),e),hurt:damagePlayer},dt);
+    RSMonsterAI.update({moveEntity,lineOfSight:(a,b)=>terrain.line(a,b,0,true),state:S,player:P,enemies:()=>en,sees:e=>RSAdventurers.seesPlayer(hunterContext(),e),hurt:damagePlayer},dt);
     if(!S.run)return;
     if(S.debugInfiniteHp||S.debugInfiniteSp)S.metrics.assisted=true;
     S.metrics.spRegen = S.metrics.spRegen || 0;
@@ -1098,8 +1112,7 @@
     let ease = 1 - Math.exp(-dt * 12);
     S.movePower += (m.power - S.movePower) * ease;
     const cloakSpeed=S.effects.cloaking?.expires>S.t ? .5+.05*(S.effects.cloaking.level||1) : 1;
-    P.x += m.x * S.move * cloakSpeed * S.movePower * dt;
-    P.y += m.y * S.move * cloakSpeed * S.movePower * dt;
+    moveEntity(P,m.x * S.move * cloakSpeed * S.movePower * dt,m.y * S.move * cloakSpeed * S.movePower * dt);
     if (m.power > 0.01) P.dir = Math.atan2(m.y, m.x);
     S.attack -= dt;
     if (S.attack <= 0 && !(S.effects.playDead?.expires > S.t)) {
@@ -1125,11 +1138,11 @@
       if(!(e.rootedUntil>S.t)){
         const slow=e.quagmireUntil>S.t?(e.boss ? .8 : Math.max(.3,1-.1*e.quagmireLevel)):1;
         const movement=RSMonsterAI.moveScale(e,P,S.t);
-        e.x += (dx / d) * e.speed * dt * slow * movement;
-        e.y += (dy / d) * e.speed * dt * slow * movement;
+        const route=terrain.direction(e,P);
+        moveEntity(e,route.x*e.speed*dt*slow*movement,route.y*e.speed*dt*slow*movement);
       }
       if (
-        d < e.r + 18 &&
+        d < e.r + 18 && terrain.line(e,P,0,true) &&
         S.inv <= 0 &&
         e.attackCooldown <= 0 &&
         !(S.effects.playDead?.expires > S.t)
@@ -1159,7 +1172,7 @@
       p.x += p.vx * dt;
       p.y += p.vy * dt;
       p.life -= dt;
-      if (p.life <= 0) {
+      if (p.life <= 0||!terrain.line({x:previousX,y:previousY},p,0,true)) {
         shots.splice(shots.indexOf(p), 1);
         continue;
       }
@@ -1182,8 +1195,7 @@
             f.hit.add(e.id);
             hit(e, f.dmg, false, f.skillId);
             if (f.knockback && !e.dead) {
-              e.x += Math.cos(f.a) * f.knockback;
-              e.y += Math.sin(f.a) * f.knockback;
+              moveEntity(e,Math.cos(f.a)*f.knockback,Math.sin(f.a)*f.knockback);
             }
           }
         }
@@ -1311,6 +1323,7 @@
   }
   function draw() {
     x.clearRect(0, 0, W, H);
+    if(!terrain.draw(x,P,W,H)){
     let tile = 64,
       sx = Math.floor((P.x - W / 2) / tile) - 1,
       ex = Math.floor((P.x + W / 2) / tile) + 1,
@@ -1331,6 +1344,7 @@
           x.fillRect(s.x + 15, s.y + 10, 50, 35);
         }
       }
+    }
     for (let g of gems)
       if (g && Number.isFinite(g.x) && Number.isFinite(g.y)) gem(g);
     for (let e of en)
@@ -1362,6 +1376,7 @@
     RSMonsterAI.draw(hunterContext(),x,screen);
     RSInsights.effectBadges(hunterContext(),x,screen);
     player();
+    terrain.minimap(x,P,W,H);
   }
   function poringShape(r) {
     x.beginPath();
@@ -1958,13 +1973,15 @@
   }
   function snapshotRestore(saved) {
     reset(saved.state.characterId || 'knight_male');
+    S.mapId=saved.state.mapId==='pay_fild08'?'pay_fild08':'arena';
+    terrain.activate(S.mapId==='pay_fild08');
     Object.assign(S, saved.state, {characterId:saved.state.characterId||'knight_male',run: false, pause: false, end: false });
     S.cooldowns = S.cooldowns || {};
     S.effects = S.effects || {};
     S.metrics = S.metrics || { damage: {}, casts: {}, spSpent: 0, taken: 0 };
     S.jobCapPrompted = S.jobCapPrompted || {};
     S.bossesDefeated = Array.isArray(S.bossesDefeated) ? S.bossesDefeated : [];
-    Object.assign(P, saved.player);
+    Object.assign(P, saved.player);terrain.safe(P,7,true);
     en = (saved.enemies || [])
       .filter(
         (e) =>
@@ -1980,6 +1997,7 @@
     const validVisual=o=>o&&Number.isFinite(o.x)&&Number.isFinite(o.y)&&Number.isFinite(o.life)&&o.life>0;
     shots=(saved.shots||[]).filter(o=>validVisual(o)&&Number.isFinite(o.vx)&&Number.isFinite(o.vy)&&Number.isFinite(o.dmg)).slice(0,300).map(o=>({...o,hit:o.hit instanceof Set?o.hit:new Set(o.hit||[])}));
     fx=(saved.combatEffects||[]).filter(o=>validVisual(o)&&Number.isFinite(o.dmg)).slice(0,100).map(o=>({...o,hit:o.hit instanceof Set?o.hit:new Set(o.hit||[])}));
+    if(terrain.enabled())for(const e of en)terrain.safe(e,7,true);
     eid = saved.eid || 10000;
     recalc();
     syncDebugControls();
@@ -2210,6 +2228,7 @@
   resizeCanvas();
   reset();
   $('classGroup').onchange=renderStartMenu;
+  $('mapChoice').onchange=()=>selectMap($('mapChoice').value);
   renderStartMenu();
   setupSaveButton();
   updateXpText();
@@ -2223,6 +2242,9 @@
       gems: () => gems,
       hit,
       spawn,
+      selectMap,
+      terrain,
+      moveEntity,
       selectCharacter,
       selectWeaponStyle,
       selectPreset,

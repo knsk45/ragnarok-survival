@@ -1,4 +1,5 @@
 (function(root){
+ const move=(ctx,o,dx,dy)=>ctx.moveEntity?ctx.moveEntity(o,dx,dy):(o.x+=dx,o.y+=dy);
   'use strict';
   const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
   function bestElement(ctx,target){
@@ -31,7 +32,7 @@
       ctx.hit(e,p.dmg,p.crit,p.skillId,{element:p.element});
       if(p.skillId==='basic'&&['brute','insect'].includes(ctx.types[e.type][8].classification.race)&&ctx.state.beast_bane)
         ctx.hit(e,4*ctx.state.beast_bane,false,'beast_bane',{ignoreDef:true});
-      if(p.knockback&&!e.boss&&!e.dead){const a=Math.atan2(e.y-ctx.player.y,e.x-ctx.player.x);e.x+=Math.cos(a)*p.knockback;e.y+=Math.sin(a)*p.knockback;}
+      if(p.knockback&&!e.boss&&!e.dead){const a=Math.atan2(e.y-ctx.player.y,e.x-ctx.player.x);move(ctx,e,Math.cos(a)*p.knockback,Math.sin(a)*p.knockback);}
     }
     if(p.splash)ctx.burst(target.x,target.y,'#ffe3a2',12);
   }
@@ -106,7 +107,7 @@
         else if(id==='sandman'&&!e.boss){e.sleeping=true;e.stunnedUntil=S.t+5+2*l;}
         else if(id==='flasher'&&!e.boss)e.blindedUntil=S.t+5+2*l;
         else if(id==='shockwave_trap')e.sp=Math.max(0,(e.sp||0)*(1-.1*l));
-        else if(id==='skid_trap'&&!e.boss){const a=Math.atan2(e.y-P.y,e.x-P.x);e.x+=Math.cos(a)*(5+l)*16;e.y+=Math.sin(a)*(5+l)*16;}
+        else if(id==='skid_trap'&&!e.boss){const a=Math.atan2(e.y-P.y,e.x-P.x);move(ctx,e,Math.cos(a)*(5+l)*16,Math.sin(a)*(5+l)*16);}
       }
       if(id==='talkie_box')ctx.say('Talkie Box: Hunter был здесь');
       ctx.burst(t.x,t.y,id==='freezing_trap'?'#9edfff':'#ffd075',12);

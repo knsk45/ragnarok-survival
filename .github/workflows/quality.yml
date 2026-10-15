@@ -1,7 +1,7 @@
 name: Quality gate
 on:
   push:
-    branches: [main, upgrade/0.14.0]
+    branches: [main, upgrade/0.15.0]
   pull_request:
   workflow_dispatch:
 permissions:

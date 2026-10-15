@@ -1,6 +1,8 @@
 # Ragnarok Survival — foundation
 
-## Актуальная версия: 0.14.0
+## Актуальная версия: 0.15.0
+
+Локация Payon Forest 08, столкновения и навигация — `data/maps.js` и `engine/world.js`; детали и источники: [RELEASE-0.15.0.md](RELEASE-0.15.0.md).
 
 Исправления аудита, сборки и тактики, статусы, новые атаки монстров, отчёт забега и проверка публикации описаны в [RELEASE-0.14.0.md](RELEASE-0.14.0.md). Фиксированные часы — `engine/clock.js`, UI — `engine/interface.js`, выбор навыков — `engine/combat-policy.js`, индикаторы и отчёты — `engine/insights.js`, AI — `engine/monster-ai.js`.
 

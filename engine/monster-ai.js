@@ -1,5 +1,6 @@
 // Telegraphs and attacks are Survivor adaptations, not original RO monster skills.
 (function(root){
+ const move=(ctx,o,dx,dy)=>ctx.moveEntity?ctx.moveEntity(o,dx,dy):(o.x+=dx,o.y+=dy);
  const ranged=new Set(['condor','chonchon','harpy']),dashers=new Set(['savage','alligator','grand_peco','roween']),casters=new Set(['myst','marionette','wraith','zerom']);
  const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
  function source(ctx,e){return {type:e.type,atkMin:e.atkMin,atkMax:e.atkMax,damageScale:e.damageScale||1,boss:!!e.boss};}
@@ -11,11 +12,11 @@
    if(e.charge){
     if(e.rootedUntil>S.t){delete e.charge;continue;}
     if(e.charge.at>S.t)continue;
-    const previous={x:e.x,y:e.y};e.x+=Math.cos(e.charge.angle)*500*dt;e.y+=Math.sin(e.charge.angle)*500*dt;
+    const previous={x:e.x,y:e.y};move(ctx,e,Math.cos(e.charge.angle)*500*dt,Math.sin(e.charge.angle)*500*dt);
     if(root.RSCore.segmentHits(previous.x,previous.y,e.x,e.y,P.x,P.y,e.r+16))ctx.hurt(e,1,'Рывок',true);
     if(S.t>=e.charge.until)delete e.charge;continue;
    }
-   if((e.nextAbility||0)>S.t||d>450)continue;
+   if((e.nextAbility||0)>S.t||d>450||(ctx.lineOfSight&&!ctx.lineOfSight(e,P)))continue;
    e.nextAbility=S.t+(e.boss?9:6)+(e.id%3);
    if(ranged.has(e.type)){
     const angle=Math.atan2(P.y-e.y,P.x-e.x);S.hostileProjectiles.push({x:e.x,y:e.y,vx:Math.cos(angle)*170,vy:Math.sin(angle)*170,life:3,source:source(ctx,e)});
@@ -27,6 +28,7 @@
   }
   S.hostileProjectiles=S.hostileProjectiles.filter(p=>{
    const x=p.x,y=p.y;p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;
+   if(ctx.lineOfSight&&!ctx.lineOfSight({x,y},p))return false;
    if(root.RSCore.segmentHits(x,y,p.x,p.y,P.x,P.y,20)){ctx.hurt(p.source,.7,'Дальний выстрел',false);return false;}return p.life>0;
   }).slice(-80);
   S.dangerAreas=S.dangerAreas.filter(a=>{
