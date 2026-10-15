@@ -7,7 +7,8 @@
  function reveal(ctx){delete ctx.state.effects.hiding;delete ctx.state.effects.cloaking;}
  function poison(ctx,e,l){
   const c=classification(ctx,e);if(e.boss||['poison','undead'].includes(c.element))return;
-  e.poison={expires:ctx.state.t+5+2*l,next:ctx.state.t+1,damage:Math.max(1,ctx.state.atk*.08+3*l)};
+  const existing=e.poison?.expires>ctx.state.t?e.poison:null;
+  e.poison={expires:ctx.state.t+5+2*l,next:existing?.next??ctx.state.t+1,damage:Math.max(existing?.damage||0,ctx.state.atk*.08+3*l,1)};
  }
  function status(ctx,e,kind,duration){
   if(e.dead||e.boss)return;
@@ -80,7 +81,7 @@
   const S=ctx.state,P=ctx.player,l=S[d.stateKey],a=d.runtime.action,id=d.id;
   if(S.pendingClassCast||S.classCastReady>S.t)return false;
   const list=ctx.enemies().filter(e=>!e.dead&&dist(e,P)<=(d.runtime.range||320)+e.r&&(!d.element||root.RSCore.elementMultiplier(d.element,classification(ctx,e))>0));
-  list.sort((a,b)=>dist(a,P)-dist(b,P));const target=list[0];if(!target)return false;
+  list.sort((a,b)=>(S.tactics?.focusBoss?Number(b.boss)-Number(a.boss):0)||dist(a,P)-dist(b,P));const target=list[0];if(!target)return false;
   if(a==='waterBall'||a==='stoneSupply')return false;
   if((a==='sonic'||a==='grim')&&S.weaponStyle==='dual')return false;
   if(a==='grim'&&!hidden(ctx))return false;
@@ -94,7 +95,7 @@
   if(a==='sight'&&!list.some(e=>e.hidden))return false;
   if(a==='steal'&&(target.boss||target.stealAttempted))return false;
   const buffKey={coat:'energyCoat',enchant:'enchantPoison',react:'poisonReact',wall:'safetyWall',sightBlast:'sightBlaster'}[a];
-  if(buffKey&&S.effects[buffKey]?.expires>S.t)return false;
+  if(buffKey&&S.effects[buffKey]?.expires>S.t&&(buffKey!=='safetyWall'||S.effects[buffKey].charges>0))return false;
   if(['field','dust','ice'].includes(a)&&S.classFields.some(f=>f.id===id&&f.expires>S.t))return false;
   if(a==='splasher'&&S.venomBombs.some(b=>b.targetId===target.id))return false;
   if(!ctx.useSp(cost(d,l)))return false;
@@ -207,9 +208,9 @@
   if(!hidden(ctx))return true;
   return e.boss||['insect','demon'].includes(classification(ctx,e).race);
  }
- function incoming(ctx,e,taken){
+ function incoming(ctx,e,taken,options={}){
   const S=ctx.state,wall=S.effects.safetyWall;
-  if(wall?.expires>S.t&&wall.charges>0&&dist(ctx.player,wall)<=36){wall.charges--;return 0;}
+  if(options.melee!==false&&wall?.expires>S.t&&wall.charges>0&&dist(ctx.player,wall)<=36){wall.charges--;return 0;}
   if(S.effects.energyCoat?.expires>S.t&&S.sp>0){const cost=Math.max(1,Math.ceil(S.spMax*.01));if(ctx.useSp(cost))taken*=.7;else delete S.effects.energyCoat;}
   const react=S.effects.poisonReact;
   if(react?.expires>S.t&&react.charges>0){react.charges--;hurt(ctx,e,S.atk*(1+.3*react.level),'poison_react','poison');}

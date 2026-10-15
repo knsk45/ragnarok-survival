@@ -1,11 +1,17 @@
 {
   "name": "ragnarok-survival",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "private": true,
   "scripts": {
-    "test": "node --test --test-force-exit tests/*.test.cjs"
+    "test": "node --test --test-force-exit tests/*.test.cjs",
+    "test:browser": "node tests/browser.cjs",
+    "check": "npm test && npm run test:browser"
   },
   "devDependencies": {
-    "jsdom": "26.1.0"
+    "jsdom": "26.1.0",
+    "playwright": "1.62.1"
+  },
+  "overrides": {
+    "rrweb-cssom": "0.8.0"
   }
 }

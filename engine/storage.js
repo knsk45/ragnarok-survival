@@ -4,7 +4,7 @@
     ERRORS = "rs.errors.v1";
   function save(storage, snapshot) {
     try {
-      storage.setItem(KEY, JSON.stringify({ schema: 2, ...snapshot }));
+      storage.setItem(KEY, JSON.stringify({ ...snapshot, schema: 2 },(_,v)=>v instanceof Set?{rsSet:[...v]}:v));
       return true;
     } catch {
       return false;
@@ -12,7 +12,7 @@
   }
   function read(storage) {
     try {
-      const s = JSON.parse(storage.getItem(KEY));
+      const s = JSON.parse(storage.getItem(KEY),(_,v)=>v&&Array.isArray(v.rsSet)&&Object.keys(v).length===1?new Set(v.rsSet):v);
       return s?.schema === 2 ? s : null;
     } catch {
       return null;

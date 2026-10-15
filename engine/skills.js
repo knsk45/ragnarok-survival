@@ -24,10 +24,11 @@
 
       let used = false;
       const defs = SKILL_DEFS.filter((d) => skillRuns(d.id)).sort(
-        (a, b) => (a.runtime.priority ?? 10) - (b.runtime.priority ?? 10),
+        (a, b) => root.RSCombatPolicy.priority(S,a)-root.RSCombatPolicy.priority(S,b),
       );
       for (const d of defs) {
         if ((S.cooldowns[d.id] || 0) > S.t) continue;
+        if(root.RSCombatPolicy.reason(ctx,d))continue;
         if(d.runtime.kind==='adventurer'){
           used = root.RSAdventurers.cast(ctx,d) || used;
           continue;

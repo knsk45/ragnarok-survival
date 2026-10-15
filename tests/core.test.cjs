@@ -53,6 +53,7 @@ function database() {
   const c = { window: {} };
   vm.createContext(c);
   for (const f of [
+    "version",
     "sources",
     "stats",
     "jobs",
@@ -67,6 +68,7 @@ function database() {
     "elements",
     "hunter",
     "adventurers",
+    "presets",
     "monsters",
     "monster-expansion",
     "bosses",

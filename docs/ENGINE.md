@@ -1,6 +1,8 @@
 # Ragnarok Survival — foundation
 
-## Актуальная версия: 0.13.0
+## Актуальная версия: 0.14.0
+
+Исправления аудита, сборки и тактики, статусы, новые атаки монстров, отчёт забега и проверка публикации описаны в [RELEASE-0.14.0.md](RELEASE-0.14.0.md). Фиксированные часы — `engine/clock.js`, UI — `engine/interface.js`, выбор навыков — `engine/combat-policy.js`, индикаторы и отчёты — `engine/insights.js`, AI — `engine/monster-ai.js`.
 
 Добавлены Novice → Mage → Wizard и Novice → Thief → Assassin. Четыре ветки доступны в стартовом меню. Новые деревья и профили — `data/adventurers.js`, исполнитель магии/ядов/скрытности — `engine/adventurers.js`. Оригинальные ресурсы и метаданные — `data/casters-rogues-sources.json`. Подробности и адаптации Survivor: [RELEASE-0.13.0.md](RELEASE-0.13.0.md).
 

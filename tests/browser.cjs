@@ -1,0 +1,35 @@
+// Runs actual Chromium and WebKit against a local static server. No mock Canvas.
+const {chromium,webkit}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http');
+const root=path.resolve(__dirname,'..');
+const server=http.createServer((req,res)=>{
+ if(req.url==='/favicon.ico'){res.writeHead(204);return res.end();}
+ const rel=decodeURIComponent(new URL(req.url,'http://localhost').pathname),file=path.resolve(root,'.'+(rel==='/'?'/index.html':rel));
+ if(!file.startsWith(root+path.sep)){res.writeHead(403);return res.end();}
+ fs.readFile(file,(err,data)=>{if(err){res.writeHead(404);return res.end();}const ext=path.extname(file);res.setHeader('Content-Type',({'.html':'text/html','.js':'text/javascript','.css':'text/css','.png':'image/png','.json':'application/json'})[ext]||'application/octet-stream');res.end(data);});
+});
+async function suite(engine,name){
+ const browser=await engine.launch({headless:true});
+ try{for(const [width,height]of [[320,480],[390,660],[844,390],[1366,768]]){
+  const page=await browser.newPage({viewport:{width,height}}),errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)errors.push(r.url()+' '+r.status());});
+  await page.goto('http://127.0.0.1:'+server.address().port+'/?test=1&scene=1');await page.waitForFunction(()=>window.RS_BOOTED===true);
+  for(const hero of ['knight','hunter','wizard','assassin']){
+   await page.locator('[data-class-id="'+hero+'"]').click();
+   const start=page.locator('#startBtn');await start.scrollIntoViewIfNeeded();assert(await start.isVisible());
+   const bounds=await start.boundingBox();assert(bounds.y>=0&&bounds.y+bounds.height<=height,'start accessible '+name+' '+width+' '+hero);
+  }
+  await page.locator('#buildPreset').selectOption('assassin_dual');await page.locator('#startBtn').click();
+  await page.locator('#pauseBtn').click();await page.getByRole('tab',{name:'Настройки',exact:true}).click();await page.locator('#combatMode').selectOption('economy');await page.locator('#spReserve').selectOption('0.25');await page.locator('#focusBoss').check();
+  await page.locator('#resume').click();await page.waitForFunction(()=>window.RS_TEST.state.t>.15);await page.locator('#pauseBtn').click();
+  assert.equal(await page.evaluate(()=>window.RS_TEST.state.tactics.mode),'economy');
+  // Test hook only prepares a deterministic combat scene; actual browser loop/render/input stay real.
+  for(const [hero,stage]of [['wizard_male','Wizard'],['assassin_male','Assassin'],['hunter_male','Hunter'],['knight_male','Knight']]){
+   await page.evaluate(({hero,stage})=>{const g=window.RS_TEST;g.reset(hero);g.state.stage=stage;g.state.lvl=85;g.state.job=50;g.state.debugInfiniteHp=true;g.state.debugInfiniteSp=true;g.state.skillPoints=0;for(const d of window.RS_DATABASE.skills)if(d.implemented&&g.skillAvailable(d.id))g.state[d.stateKey]=Math.min(3,d.maxLevel);g.recalc(true);g.start();}, {hero,stage});
+   await page.waitForFunction(()=>window.RS_TEST.state.t>.2);await page.locator('#pauseBtn').click();
+   assert.equal(await page.locator('#fatal').isVisible(),false);assert.equal(await page.evaluate(()=>window.RS_TEST.state.stage),stage);
+   assert(await page.evaluate(()=>[window.RS_TEST.state.hp,window.RS_TEST.state.sp].every(Number.isFinite)));
+  }
+  await page.screenshot({path:path.join(root,'test-results',name+'-'+width+'x'+height+'.png')});
+  assert.deepEqual(errors,[]);await page.close();console.log(name+' '+width+'×'+height+' passed');
+ }}finally{await browser.close();}
+}
+(async()=>{fs.mkdirSync(path.join(root,'test-results'),{recursive:true});await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));try{await suite(chromium,'chromium');if(process.env.BROWSER_ALL==='1')await suite(webkit,'webkit');}finally{server.close();}})().catch(e=>{console.error(e);process.exitCode=1;server.close();});
