@@ -96,17 +96,18 @@ test("Base and Job crystals apply configured rates exactly once to independent c
   }
   b.x = b.y = 0;
   g.update(0);
-  assert.equal(g.state.xp, 540);
+  assert.equal(g.state.xp, 127);
+  assert.equal(g.state.lvl, 2); // 27 × 25 = 675; 548 spent, 127 carried over.
   assert.equal(g.state.job, 1);
   assert.equal(g.state.jobXp, 0);
   j.x = j.y = 0;
   g.update(0);
-  assert.equal(g.state.xp, 540);
+  assert.equal(g.state.xp, 127);
   assert.equal(g.state.job, 6);
-  assert.equal(g.state.jobXp, 13);
+  assert.equal(g.state.jobXp, 113);
   g.update(0);
-  assert.equal(g.state.xp, 540);
-  assert.equal(g.state.jobXp, 13);
+  assert.equal(g.state.xp, 127);
+  assert.equal(g.state.jobXp, 113);
   dom.window.close();
 });
 test("Base levels never grant Job levels, and evolution has no Base gate", () => {
@@ -146,7 +147,7 @@ test("boot, pause, settings and resume work; passive/unlearned skills absent", (
   );
   w.document.querySelector('[data-tab="settings"]').click();
   assert.equal(w.document.querySelector('#experienceRates').textContent,
-    'Base EXP ×20 · Job EXP ×10');
+    'Base EXP ×25 · Job EXP ×15');
   assert(!w.document.querySelector('#experienceRates').closest('.hide'));
   w.document.querySelector("#debugInfiniteHp").click();
   assert(g.state.debugInfiniteHp);

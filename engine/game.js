@@ -54,7 +54,7 @@
     $("fatalReload").onclick = () => location.reload();
     try {
       RSStorage.log(localStorage, {
-        version: "0.8.2",
+        version: "0.8.3",
         time: new Date().toISOString(),
         message: message + detail,
         stack: error?.stack || "",

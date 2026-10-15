@@ -8,8 +8,8 @@ const sourceRegistry = window.RS_SOURCES || {
 
 window.RS_DATABASE = {
   schemaVersion: "1.0.0",
-  contentVersion: 33,
-  gameVersion: "0.8.2",
+  contentVersion: 34,
+  gameVersion: "0.8.3",
   experience: window.RS_EXPERIENCE,
   sourceRegistry,
   sources: {
@@ -20,7 +20,7 @@ window.RS_DATABASE = {
     novice: "https://irowiki.org/wiki/Novice",
   },
   settings: {
-    experienceRates: { base: 20, job: 10 },
+    experienceRates: { base: 25, job: 15 },
     infiniteSp: false,
     maxEnemies: 60,
     debugInfiniteHp: false,
