@@ -1,117 +1,222 @@
 // Canonical content sources used by the data layer.
 // Keep source ids stable: data records refer to them through sourceRefs.
 window.RS_SOURCES = {
-  schemaVersion: '1.0.0',
+  schemaVersion: "1.0.0",
   policy: {
     priority: [
-      'official-or-community-wiki',
-      'database-record',
-      'skill-simulator',
-      'prototype'
+      "official-or-community-wiki",
+      "database-record",
+      "skill-simulator",
+      "prototype",
     ],
-    rule: 'Use the most specific source available for a record; keep prototype values explicitly marked.'
+    rule: "Use the most specific source available for a record; keep prototype values explicitly marked.",
   },
   records: {
     irowiki_classes: {
-      id: 'irowiki_classes', type: 'class-index', authority: 'reference',
-      title: 'iRO Wiki — Classes', url: 'https://irowiki.org/wiki/Classes'
+      id: "irowiki_classes",
+      type: "class-index",
+      authority: "reference",
+      title: "iRO Wiki — Classes",
+      url: "https://irowiki.org/wiki/Classes",
     },
     irowiki_novice: {
-      id: 'irowiki_novice', type: 'job', authority: 'reference',
-      title: 'iRO Wiki — Novice', url: 'https://irowiki.org/wiki/Novice'
+      id: "irowiki_novice",
+      type: "job",
+      authority: "reference",
+      title: "iRO Wiki — Novice",
+      url: "https://irowiki.org/wiki/Novice",
     },
     irowiki_swordman: {
-      id: 'irowiki_swordman', type: 'job', authority: 'reference',
-      title: 'iRO Wiki — Swordman', url: 'https://irowiki.org/wiki/Swordman'
+      id: "irowiki_swordman",
+      type: "job",
+      authority: "reference",
+      title: "iRO Wiki — Swordman",
+      url: "https://irowiki.org/wiki/Swordman",
     },
     irowiki_knight: {
-      id: 'irowiki_knight', type: 'job', authority: 'reference',
-      title: 'iRO Wiki — Knight', url: 'https://irowiki.org/wiki/Knight'
+      id: "irowiki_knight",
+      type: "job",
+      authority: "reference",
+      title: "iRO Wiki — Knight",
+      url: "https://irowiki.org/wiki/Knight",
     },
     irowiki_stats: {
-      id: 'irowiki_stats', type: 'stats', authority: 'reference',
-      title: 'iRO Wiki — Stats', url: 'https://irowiki.org/wiki/Stats'
+      id: "irowiki_stats",
+      type: "stats",
+      authority: "reference",
+      title: "iRO Wiki — Stats",
+      url: "https://irowiki.org/wiki/Stats",
     },
     irowiki_max_hp: {
-      id: 'irowiki_max_hp', type: 'formula', authority: 'reference',
-      title: 'iRO Wiki — Max HP', url: 'https://irowiki.org/wiki/Max_HP'
+      id: "irowiki_max_hp",
+      type: "formula",
+      authority: "reference",
+      title: "iRO Wiki — Max HP",
+      url: "https://irowiki.org/wiki/Max_HP",
     },
     oldskillsim_index: {
-      id: 'oldskillsim_index', type: 'skill-simulator', authority: 'reference',
-      title: 'Old iRO Wiki Skill Simulator', url: 'https://oldskillsim.irowiki.org/'
+      id: "oldskillsim_index",
+      type: "skill-simulator",
+      authority: "reference",
+      title: "Old iRO Wiki Skill Simulator",
+      url: "https://oldskillsim.irowiki.org/",
     },
     oldskillsim_knight: {
-      id: 'oldskillsim_knight', type: 'skill-tree', authority: 'reference',
-      title: 'Old iRO Wiki Skill Simulator — Knight', url: 'https://oldskillsim.irowiki.org/knt.html'
+      id: "oldskillsim_knight",
+      type: "skill-tree",
+      authority: "reference",
+      title: "Old iRO Wiki Skill Simulator — Knight",
+      url: "https://oldskillsim.irowiki.org/knt.html",
     },
     irowiki_monster_db: {
-      id: 'irowiki_monster_db', type: 'monster-database', authority: 'reference',
-      title: 'iRO Wiki Monster Database', url: 'https://db.irowiki.org/db/'
+      id: "irowiki_monster_db",
+      type: "monster-database",
+      authority: "reference",
+      title: "iRO Wiki Monster Database",
+      url: "https://db.irowiki.org/db/",
     },
     irowiki_monster_poring: {
-      id: 'irowiki_monster_poring', type: 'monster', authority: 'reference',
-      title: 'iRO Wiki DB — Poring', url: 'https://db.irowiki.org/db/monster-info/1002/'
+      id: "irowiki_monster_poring",
+      type: "monster",
+      authority: "reference",
+      title: "iRO Wiki DB — Poring",
+      url: "https://db.irowiki.org/db/monster-info/1002/",
     },
     irowiki_monster_lunatic: {
-      id: 'irowiki_monster_lunatic', type: 'monster', authority: 'reference',
-      title: 'iRO Wiki DB — Lunatic', url: 'https://db.irowiki.org/db/monster-info/1063/'
+      id: "irowiki_monster_lunatic",
+      type: "monster",
+      authority: "reference",
+      title: "iRO Wiki DB — Lunatic",
+      url: "https://db.irowiki.org/db/monster-info/1063/",
     },
     irowiki_monster_rocker: {
-      id: 'irowiki_monster_rocker', type: 'monster', authority: 'reference',
-      title: 'iRO Wiki DB — Rocker', url: 'https://db.irowiki.org/db/monster-info/1052/'
+      id: "irowiki_monster_rocker",
+      type: "monster",
+      authority: "reference",
+      title: "iRO Wiki DB — Rocker",
+      url: "https://db.irowiki.org/db/monster-info/1052/",
     },
     irowiki_monster_creamy: {
-      id: 'irowiki_monster_creamy', type: 'monster', authority: 'reference',
-      title: 'iRO Wiki DB — Creamy', url: 'https://db.irowiki.org/db/monster-info/1018/'
+      id: "irowiki_monster_creamy",
+      type: "monster",
+      authority: "reference",
+      title: "iRO Wiki DB — Creamy",
+      url: "https://db.irowiki.org/db/monster-info/1018/",
     },
     irowiki_monster_soldier_skeleton: {
-      id: 'irowiki_monster_soldier_skeleton', type: 'monster', authority: 'reference',
-      title: 'iRO Wiki DB — Soldier Skeleton', url: 'https://db.irowiki.org/db/monster-info/1028/'
+      id: "irowiki_monster_soldier_skeleton",
+      type: "monster",
+      authority: "reference",
+      title: "iRO Wiki DB — Soldier Skeleton",
+      url: "https://db.irowiki.org/db/monster-info/1028/",
     },
     irowiki_monster_orc_warrior: {
-      id: 'irowiki_monster_orc_warrior', type: 'monster', authority: 'reference',
-      title: 'iRO Wiki DB — Orc Warrior', url: 'https://db.irowiki.org/db/monster-info/1023/'
+      id: "irowiki_monster_orc_warrior",
+      type: "monster",
+      authority: "reference",
+      title: "iRO Wiki DB — Orc Warrior",
+      url: "https://db.irowiki.org/db/monster-info/1023/",
     },
     irowiki_monster_myst: {
-      id: 'irowiki_monster_myst', type: 'monster', authority: 'reference',
-      title: 'iRO Wiki DB — Myst', url: 'https://db.irowiki.org/db/monster-info/1151/'
+      id: "irowiki_monster_myst",
+      type: "monster",
+      authority: "reference",
+      title: "iRO Wiki DB — Myst",
+      url: "https://db.irowiki.org/db/monster-info/1151/",
     },
     irowiki_monster_savage: {
-      id: 'irowiki_monster_savage', type: 'monster', authority: 'reference',
-      title: 'iRO Wiki DB — Savage', url: 'https://db.irowiki.org/db/monster-info/1166/'
+      id: "irowiki_monster_savage",
+      type: "monster",
+      authority: "reference",
+      title: "iRO Wiki DB — Savage",
+      url: "https://db.irowiki.org/db/monster-info/1166/",
     },
     irowiki_monster_zerom: {
-      id: 'irowiki_monster_zerom', type: 'monster', authority: 'reference',
-      title: 'iRO Wiki DB — Zerom', url: 'https://db.irowiki.org/db/monster-info/1178/'
+      id: "irowiki_monster_zerom",
+      type: "monster",
+      authority: "reference",
+      title: "iRO Wiki DB — Zerom",
+      url: "https://db.irowiki.org/db/monster-info/1178/",
     },
     irowiki_monster_goat: {
-      id: 'irowiki_monster_goat', type: 'monster', authority: 'reference',
-      title: 'iRO Wiki DB — Goat', url: 'https://db.irowiki.org/db/monster-info/1372/'
+      id: "irowiki_monster_goat",
+      type: "monster",
+      authority: "reference",
+      title: "iRO Wiki DB — Goat",
+      url: "https://db.irowiki.org/db/monster-info/1372/",
     },
     irowiki_monster_marionette: {
-      id: 'irowiki_monster_marionette', type: 'monster', authority: 'reference',
-      title: 'iRO Wiki DB — Marionette', url: 'https://db.irowiki.org/db/monster-info/1143/'
+      id: "irowiki_monster_marionette",
+      type: "monster",
+      authority: "reference",
+      title: "iRO Wiki DB — Marionette",
+      url: "https://db.irowiki.org/db/monster-info/1143/",
     },
     irowiki_item_644: {
-      id: 'irowiki_item_644', type: 'item', authority: 'reference',
-      title: 'iRO Wiki DB — Gift Box (Plain)', url: 'https://db.irowiki.org/db/item-info/644/',
-      imageUrl: 'https://db.irowiki.org/image/item/644.png'
+      id: "irowiki_item_644",
+      type: "item",
+      authority: "reference",
+      title: "iRO Wiki DB — Gift Box (Plain)",
+      url: "https://db.irowiki.org/db/item-info/644/",
+      imageUrl: "https://db.irowiki.org/image/item/644.png",
     },
     irowiki_blessing: {
-      id: 'irowiki_blessing', type: 'skill', authority: 'reference',
-      title: 'iRO Wiki — Blessing', url: 'https://irowiki.org/wiki/Blessing'
+      id: "irowiki_blessing",
+      type: "skill",
+      authority: "reference",
+      title: "iRO Wiki — Blessing",
+      url: "https://irowiki.org/wiki/Blessing",
     },
     irowiki_increase_agi: {
-      id: 'irowiki_increase_agi', type: 'skill', authority: 'reference',
-      title: 'iRO Wiki — Increase AGI', url: 'https://irowiki.org/wiki/Increase_AGI'
+      id: "irowiki_increase_agi",
+      type: "skill",
+      authority: "reference",
+      title: "iRO Wiki — Increase AGI",
+      url: "https://irowiki.org/wiki/Increase_AGI",
     },
     irowiki_magnificat: {
-      id: 'irowiki_magnificat', type: 'skill', authority: 'reference',
-      title: 'iRO Wiki — Magnificat', url: 'https://irowiki.org/wiki/Magnificat'
+      id: "irowiki_magnificat",
+      type: "skill",
+      authority: "reference",
+      title: "iRO Wiki — Magnificat",
+      url: "https://irowiki.org/wiki/Magnificat",
     },
     irowiki_impositio_manus: {
-      id: 'irowiki_impositio_manus', type: 'skill', authority: 'reference',
-      title: 'iRO Wiki — Impositio Manus', url: 'https://irowiki.org/wiki/Impositio_Manus'
-    }
-  }
+      id: "irowiki_impositio_manus",
+      type: "skill",
+      authority: "reference",
+      title: "iRO Wiki — Impositio Manus",
+      url: "https://irowiki.org/wiki/Impositio_Manus",
+    },
+  },
 };
+Object.assign(window.RS_SOURCES.records, {
+  irowiki_base_exp: {
+    id: "irowiki_base_exp",
+    type: "table",
+    authority: "reference",
+    title: "iRO Wiki Renewal Normal Base EXP 1–99",
+    url: "https://irowiki.org/wiki/Base_EXP_Chart",
+  },
+  irowiki_job_exp: {
+    id: "irowiki_job_exp",
+    type: "table",
+    authority: "reference",
+    title: "iRO Wiki Renewal Regular Job EXP",
+    url: "https://irowiki.org/wiki/Job_EXP_Chart",
+  },
+  irowiki_monster_fabre: {
+    id: "irowiki_monster_fabre",
+    type: "monster",
+    authority: "reference",
+    title: "iW DB — Fabre",
+    url: "https://db.irowiki.org/db/monster-info/1007/",
+  },
+  irowiki_monster_poporing: {
+    id: "irowiki_monster_poporing",
+    type: "monster",
+    authority: "reference",
+    title: "iW DB — Poporing",
+    url: "https://db.irowiki.org/db/monster-info/1031/",
+  },
+});

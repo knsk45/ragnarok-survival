@@ -44,6 +44,86 @@ function boot() {
   assert(w.RS_TEST, "runtime booted");
   return { dom, w, g: w.RS_TEST };
 }
+test("capped Base still allows Job EXP and MAX bars stay finite",()=>{const {dom,w,g}=boot();g.state.lvl=98;g.state.need=1252761;g.xp(1252761,0);assert.equal(g.state.lvl,99);assert.equal(w.document.querySelector('#xpText').textContent,'MAX');assert.equal(w.document.querySelector('#xp').style.width,'100%');g.state.stage='Knight';g.state.job=1;g.state.jobXp=0;g.state.jobNeed=2500;g.xp(0,2500);assert.equal(g.state.job,2);assert.equal(g.state.jobNeed,4200);assert.equal(g.state.lvl,99);dom.window.close()});
+test("disabled learned skills disappear only from the lower HUD", () => {
+  const { dom, w, g } = boot();
+  g.start();
+  g.pause();
+  const button = w.document.querySelector(
+    '#pauseActiveSkills [data-skill-id="first_aid"]',
+  );
+  button.click();
+  assert.equal(g.state.firstAid, 1);
+  assert(!w.document.querySelector('#skills [data-skill-id="first_aid"]'));
+  assert(
+    w.document.querySelector('#pauseActiveSkills [data-skill-id="first_aid"]'),
+  );
+  w.document
+    .querySelector('#pauseActiveSkills [data-skill-id="first_aid"]')
+    .click();
+  assert(w.document.querySelector('#skills [data-skill-id="first_aid"]'));
+  dom.window.close();
+});
+test("each normal or elite death emits full, separate canonical Base/Job rewards", () => {
+  const { dom, w, g } = boot();
+  for (const elite of [false, true]) {
+    g.reset();
+    g.spawn("poring", elite);
+    const m = g.enemies()[0];
+    g.hit(m, 1e9);
+    const b = g.gems().filter((x) => x.kind === "baseExp"),
+      j = g.gems().filter((x) => x.kind === "jobExp");
+    assert.equal(b.length, 1);
+    assert.equal(j.length, 1);
+    assert.equal(b[0].amount, 27);
+    assert.equal(j[0].amount, 20);
+    assert.equal(g.state.xp, 0);
+    assert.equal(g.state.jobXp, 0);
+  }
+  dom.window.close();
+});
+test("Base and Job crystals credit independent counters with no multiplier", () => {
+  const { dom, g } = boot();
+  g.spawn("poring");
+  g.hit(g.enemies()[0], 1e9);
+  g.start();
+  g.state.spawn = 100;
+  const b = g.gems().find((x) => x.kind === "baseExp"),
+    j = g.gems().find((x) => x.kind === "jobExp");
+  for (const drop of g.gems()) {
+    drop.x = 2000;
+    drop.y = 2000;
+  }
+  b.x = b.y = 0;
+  g.update(0);
+  assert.equal(g.state.xp, 27);
+  assert.equal(g.state.job, 1);
+  assert.equal(g.state.jobXp, 0);
+  j.x = j.y = 0;
+  g.update(0);
+  assert.equal(g.state.xp, 27);
+  assert.equal(g.state.job, 2);
+  assert.equal(g.state.jobXp, 10);
+  dom.window.close();
+});
+test("Base levels never grant Job levels, and evolution has no Base gate", () => {
+  const { dom, g } = boot();
+  g.xp(50000, 0);
+  assert(g.state.lvl > 1);
+  assert.equal(g.state.job, 1);
+  assert.equal(g.state.skillPoints, 0);
+  g.reset();
+  g.awardJobXp(1151);
+  assert.equal(g.state.job, 10);
+  assert.equal(g.state.lvl, 1);
+  g.state.basic = 9;
+  g.state.skillPoints = 0;
+  g.evolveByProgression();
+  assert.equal(g.state.stage, "Swordman");
+  assert.equal(g.state.lvl, 1);
+  assert.equal(g.state.jobNeed, 60);
+  dom.window.close();
+});
 test("boot, pause, settings and resume work; passive/unlearned skills absent", () => {
   let { dom, w, g } = boot();
   g.start();

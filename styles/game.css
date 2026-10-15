@@ -288,6 +288,14 @@ button:disabled {
   font-size: 20px;
   flex: 0 0 auto;
 }
+.skill-art {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  image-rendering: pixelated;
+  object-fit: contain;
+  flex: 0 0 24px;
+}
 .skill-info {
   min-width: 0;
   display: flex;

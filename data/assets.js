@@ -8,9 +8,12 @@
       (!m.visual.spriteUrl ? "embedded-png" : "local-svg"),
     facing: m.visual.facing || "left",
     anchor: { x: 0.5, y: 0.78 },
-    status: ["poring", "lunatic", "poporing"].includes(m.key)
-      ? "embedded-reference"
-      : "prototype-art",
+    status:
+      m.visual.provenance === "irowiki-original"
+        ? "irowiki-original"
+        : ["poring", "lunatic", "poporing"].includes(m.key)
+          ? "embedded-reference"
+          : "prototype-art",
     sourceRefs: m.sourceRefs || [],
   }));
   window.RS_ASSETS = { schemaVersion: 1, monsters: records };

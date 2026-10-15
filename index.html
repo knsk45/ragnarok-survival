@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- 0.7.0: tested combat core, independent skills and experience, mobile pause UI -->
+<!-- 0.8.0: canonical Renewal EXP, original local artwork and selected auto-skills -->
 <html lang="ru">
   <head>
     <meta charset="utf-8" />
@@ -8,24 +8,26 @@
       content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
     />
     <title>Ragnarok Survival — prototype</title>
-    <script src="engine/bootstrap.js?v=0.7.0"></script>
-    <script src="data/sources.js?v=0.7.0"></script>
-    <script src="data/stats.js?v=0.7.0"></script>
-    <script src="data/jobs.js?v=0.7.0"></script>
-    <script src="data/characters.js?v=0.7.0"></script>
-    <script src="data/progression.js?v=0.7.0"></script>
-    <script src="data/builds.js?v=0.7.0"></script>
-    <script src="data/skills.js?v=0.7.0"></script>
-    <script src="data/skill-runtime.js?v=0.7.0"></script>
-    <script src="engine/core.js?v=0.7.0"></script>
-    <script src="engine/skills.js?v=0.7.0"></script>
-    <script src="engine/storage.js?v=0.7.0"></script>
-    <script src="data/monsters.js?v=0.7.0"></script>
-    <script src="data/assets.js?v=0.7.0"></script>
-    <script src="data/buffs.js?v=0.7.0"></script>
-    <script src="data/items.js?v=0.7.0"></script>
-    <script src="data/database.js?v=0.7.0"></script>
-    <link rel="stylesheet" href="styles/game.css?v=0.7.0" />
+    <script src="engine/bootstrap.js?v=0.8.0"></script>
+    <script src="data/sources.js?v=0.8.0"></script>
+    <script src="data/stats.js?v=0.8.0"></script>
+    <script src="data/jobs.js?v=0.8.0"></script>
+    <script src="data/characters.js?v=0.8.0"></script>
+    <script src="data/progression.js?v=0.8.0"></script>
+    <script src="data/experience.js?v=0.8.0"></script>
+    <script src="data/builds.js?v=0.8.0"></script>
+    <script src="data/skills.js?v=0.8.0"></script>
+    <script src="data/skill-runtime.js?v=0.8.0"></script>
+    <script src="engine/core.js?v=0.8.0"></script>
+    <script src="engine/skills.js?v=0.8.0"></script>
+    <script src="engine/storage.js?v=0.8.0"></script>
+    <script src="data/monsters.js?v=0.8.0"></script>
+    <script src="data/buffs.js?v=0.8.0"></script>
+    <script src="data/items.js?v=0.8.0"></script>
+    <script src="data/artwork.js?v=0.8.0"></script>
+    <script src="data/assets.js?v=0.8.0"></script>
+    <script src="data/database.js?v=0.8.0"></script>
+    <link rel="stylesheet" href="styles/game.css?v=0.8.0" />
   </head>
   <body>
     <main id="app">
@@ -37,7 +39,7 @@
           <div class="bar statusbar exp-bar">
             <div id="xp" class="fill exp"></div>
             <span class="bar-label"
-              >Base Lv. <b id="level">1</b> | Exp <b id="xpText">0/30</b></span
+              >Base Lv. <b id="level">1</b> | Exp <b id="xpText">0/548</b></span
             >
           </div>
           <div class="bar statusbar job-exp-bar">
@@ -154,6 +156,6 @@
         </div>
       </div>
     </main>
-    <script src="engine/game.js?v=0.7.0"></script>
+    <script src="engine/game.js?v=0.8.0"></script>
   </body>
 </html>

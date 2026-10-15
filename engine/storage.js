@@ -1,10 +1,10 @@
 (function (root) {
   "use strict";
-  const KEY = "rs.run.v1",
+  const KEY = "rs.run.v2",
     ERRORS = "rs.errors.v1";
   function save(storage, snapshot) {
     try {
-      storage.setItem(KEY, JSON.stringify({ schema: 1, ...snapshot }));
+      storage.setItem(KEY, JSON.stringify({ schema: 2, ...snapshot }));
       return true;
     } catch {
       return false;
@@ -13,7 +13,7 @@
   function read(storage) {
     try {
       const s = JSON.parse(storage.getItem(KEY));
-      return s?.schema === 1 ? s : null;
+      return s?.schema === 2 ? s : null;
     } catch {
       return null;
     }

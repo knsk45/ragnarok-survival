@@ -50,12 +50,14 @@ function database() {
     "jobs",
     "characters",
     "progression",
+    "experience",
     "builds",
     "skills",
     "skill-runtime",
     "monsters",
     "buffs",
     "items",
+    "artwork",
     "database",
   ])
     vm.runInContext(
@@ -106,3 +108,56 @@ test("spawn pool has no missing levels 1–99", () => {
     );
 });
 module.exports = { root };
+test("canonical Renewal EXP tables have exact fixtures and totals", () => {
+  const db = database(),
+    e = db.experience;
+  assert.equal(core.baseNeed(1, e), 548);
+  assert.equal(core.baseNeed(98, e), 1252761);
+  assert.equal(core.baseNeed(99, e), 0);
+  assert.equal(
+    e.base.reduce((a, b) => a + b, 0),
+    14305769,
+  );
+  assert.equal(core.jobNeed(1, "Novice", e), 10);
+  assert.equal(core.jobNeed(9, "Novice", e), 340);
+  assert.equal(core.jobNeed(1, "Swordman", e), 60);
+  assert.equal(core.jobNeed(1, "Knight", e), 2500);
+  assert.equal(core.jobNeed(49, "Knight", e), 345400);
+  assert.equal(
+    e.jobs.Knight.reduce((a, b) => a + b, 0),
+    5601400,
+  );
+  for (const stage of ["Swordman", "Knight"])
+    assert.equal(core.jobNeed(50, stage, e), 0);
+});
+test("monster rewards and image bytes match the primary-source snapshot", () => {
+  const db = database(),
+    snap = JSON.parse(
+      fs.readFileSync(path.join(root, "data/irowiki-snapshot.json"), "utf8"),
+    ),
+    crypto = require("node:crypto");
+  assert.equal(snap.files.length, 43);
+  for (const art of snap.files) {
+    const bytes = fs.readFileSync(path.join(root, art.path));
+    assert.equal(
+      crypto.createHash("sha256").update(bytes).digest("hex"),
+      art.sha256,
+      art.path,
+    );
+    assert.equal(bytes.subarray(0, 8).toString("hex"), "89504e470d0a1a0a");
+    if (art.group === "monsters") {
+      const m = db.monsters[art.key];
+      assert.equal(m.id, art.id);
+      for (const key of ["hp", "baseExp", "jobExp"])
+        assert.equal(m.combat[key], art.stats[key], art.key + " " + key);
+      assert.equal(m.visual.renderMode, "sprite");
+    }
+  }
+  assert.equal(db.monsters.fabre.id, 1007);
+  assert.equal(db.monsters.poporing.stats.level, 30);
+  for (const skill of db.skills)
+    assert(
+      skill.iconUrl && fs.existsSync(path.join(root, skill.iconUrl)),
+      skill.id,
+    );
+});

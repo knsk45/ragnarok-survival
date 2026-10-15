@@ -1,36 +1,29 @@
-const progression = window.RS_PROGRESSION || {
-  id: 'classic_knight_path',
-  milestones: [
-    { stage: 'Novice', jobId: 'novice', baseStart: 1, baseMilestone: 15, jobStart: 1, jobMilestone: 10, nextStage: 'Swordman' },
-    { stage: 'Swordman', jobId: 'swordman', baseStart: 15, baseMilestone: 65, jobStart: 1, jobMilestone: 50, nextStage: 'Knight' },
-    { stage: 'Knight', jobId: 'knight', baseStart: 65, baseMilestone: 80, jobStart: 1, jobMilestone: 50, nextStage: null }
-  ],
-  levelCap: { base: 99, job: 50 }
-};
+const progression = window.RS_PROGRESSION;
 
 const sourceRegistry = window.RS_SOURCES || {
-  schemaVersion: '1.0.0',
-  policy: { priority: ['prototype'], rule: 'No source registry loaded.' },
-  records: {}
+  schemaVersion: "1.0.0",
+  policy: { priority: ["prototype"], rule: "No source registry loaded." },
+  records: {},
 };
 
 window.RS_DATABASE = {
-  schemaVersion: '1.0.0',
-  contentVersion: 30,
-  gameVersion: '0.7.0',
+  schemaVersion: "1.0.0",
+  contentVersion: 31,
+  gameVersion: "0.8.0",
+  experience: window.RS_EXPERIENCE,
   sourceRegistry,
   sources: {
-    monsterDatabase: 'https://db.irowiki.org/db/',
-    classDatabase: 'https://irowiki.org/wiki/Classes',
-    knight: 'https://irowiki.org/wiki/Knight',
-    swordman: 'https://irowiki.org/wiki/Swordman',
-    novice: 'https://irowiki.org/wiki/Novice'
+    monsterDatabase: "https://db.irowiki.org/db/",
+    classDatabase: "https://irowiki.org/wiki/Classes",
+    knight: "https://irowiki.org/wiki/Knight",
+    swordman: "https://irowiki.org/wiki/Swordman",
+    novice: "https://irowiki.org/wiki/Novice",
   },
   settings: {
     infiniteSp: false,
     maxEnemies: 60,
     debugInfiniteHp: false,
-    debugInfiniteSp: false
+    debugInfiniteSp: false,
   },
   stats: window.RS_STATS,
   jobs: window.RS_JOBS,
@@ -40,5 +33,5 @@ window.RS_DATABASE = {
   skills: window.RS_SKILLS,
   monsters: window.RS_MONSTERS,
   buffs: window.RS_BUFFS,
-  items: window.RS_ITEMS
+  items: window.RS_ITEMS,
 };

@@ -54,7 +54,7 @@
     $("fatalReload").onclick = () => location.reload();
     try {
       RSStorage.log(localStorage, {
-        version: "0.7.0",
+        version: "0.8.0",
         time: new Date().toISOString(),
         message: message + detail,
         stack: error?.stack || "",
@@ -108,7 +108,7 @@
     kills: 0,
     lvl: 1,
     xp: 0,
-    need: 30,
+    need: RSCore.baseNeed(1, DB.experience),
     hp: 100,
     max: 100,
     sp: 40,
@@ -220,7 +220,7 @@
           m.combat.hp,
           m.combat.speed,
           m.combat.damage,
-          m.combat.exp,
+          m.combat.baseExp,
           m.visual.radius,
           m,
         ],
@@ -294,9 +294,16 @@
       }
     });
   }
-  function renderSkillToggleBox(box) {
+  function skillIcon(d) {
+    return d.iconUrl
+      ? '<img class="skill-art" src="' + d.iconUrl + '" alt="">'
+      : d.icon;
+  }
+  function renderSkillToggleBox(box, onlyEnabled = false) {
     if (!box) return;
-    let sig = SKILL_DEFS.filter(skillMenuVisible)
+    const visible = (d) =>
+      skillMenuVisible(d) && (!onlyEnabled || skillIsEnabled(d.id));
+    let sig = SKILL_DEFS.filter(visible)
       .map(
         (d) =>
           d.id +
@@ -309,7 +316,7 @@
     if (box.dataset.signature === sig) return;
     box.dataset.signature = sig;
     box.innerHTML = "";
-    let pool = SKILL_DEFS.filter(skillMenuVisible);
+    let pool = SKILL_DEFS.filter(visible);
     if (!pool.length) {
       box.innerHTML = '<span class="muted">Активных навыков пока нет.</span>';
       return;
@@ -337,7 +344,7 @@
           : d.description);
       b.innerHTML =
         '<span class="skill-icon">' +
-        d.icon +
+        skillIcon(d) +
         '</span><span class="skill-info"><span class="skill-name">' +
         d.name +
         '</span><span class="skill-level">Lv ' +
@@ -358,7 +365,7 @@
     });
   }
   function renderActiveSkills() {
-    renderSkillToggleBox($("skills"));
+    renderSkillToggleBox($("skills"), true);
     renderSkillToggleBox($("pauseActiveSkills")?.querySelector(".skills"));
   }
   function activeBuff(id) {
@@ -471,7 +478,7 @@
       S.jobXp -= S.jobNeed;
       S.job++;
       S.skillPoints++;
-      S.jobNeed = RSCore.jobNeed(S.job, S.stage, DB.progression);
+      S.jobNeed = RSCore.jobNeed(S.job, S.stage, DB.experience);
     }
     if (jobCapReached()) S.jobXp = 0;
     unlockQuestSkillsForStage();
@@ -483,17 +490,11 @@
   }
   function evolveByProgression() {
     let p = PROGRESSION_BY_STAGE[S.stage];
-    if (
-      p &&
-      p.nextStage &&
-      S.lvl >= p.baseMilestone &&
-      S.job >= p.jobMilestone &&
-      S.skillPoints === 0
-    ) {
+    if (p && p.nextStage && S.job >= p.jobMilestone && S.skillPoints === 0) {
       S.stage = p.nextStage;
       S.job = 1;
       S.jobXp = 0;
-      S.jobNeed = RSCore.jobNeed(1, S.stage, DB.progression);
+      S.jobNeed = RSCore.jobNeed(1, S.stage, DB.experience);
       unlockQuestSkillsForStage();
       recalc();
       say("Эволюция: " + S.stage);
@@ -522,7 +523,7 @@
       kills: 0,
       lvl: 1,
       xp: 0,
-      need: 30,
+      need: RSCore.baseNeed(1, DB.experience),
       hp: 100,
       max: 100,
       sp: 40,
@@ -586,7 +587,7 @@
     Object.assign(S, {
       jobXp: 0,
       lastSave: 0,
-      jobNeed: RSCore.jobNeed(1, "Novice", DB.progression),
+      jobNeed: RSCore.jobNeed(1, "Novice", DB.experience),
       jobCapPrompted: {},
       cooldowns: {},
       effects: {},
@@ -656,7 +657,7 @@
       S.lvl++;
       S.statPoints += Math.floor((S.lvl - 1) / 5) + 3;
       autoAllocateStats();
-      S.need = RSCore.baseNeed(S.lvl);
+      S.need = RSCore.baseNeed(S.lvl, DB.experience);
       recalc();
     }
     if (S.lvl >= 99) {
@@ -692,7 +693,7 @@
         .join(", ");
       b.innerHTML =
         "<strong>" +
-        d.icon +
+        skillIcon(d) +
         " " +
         d.name +
         "</strong><small>" +
@@ -903,16 +904,23 @@
     burst(e.x, e.y, crit ? "#ffe36b" : "#ffe4a1", crit ? 5 : 2);
     if (RSCore.removeDead(en, e)) {
       S.kills++;
-      const pieces = e.elite ? 5 : 1;
-      for (let i = 0; i < pieces; i++)
-        gems.push({
-          x: e.x + rnd(-8, 8),
-          y: e.y + rnd(-8, 8),
-          v: e.val / pieces,
-          jv: (types[e.type]?.[8]?.combat.jobExp || 0) / pieces,
-          heart: false,
-          life: 25,
-        });
+      const reward = types[e.type][8].combat;
+      gems.push({
+        x: e.x - 8,
+        y: e.y,
+        kind: "baseExp",
+        amount: reward.baseExp,
+        monsterId: types[e.type][8].id,
+        life: 45,
+      });
+      gems.push({
+        x: e.x + 8,
+        y: e.y,
+        kind: "jobExp",
+        amount: reward.jobExp,
+        monsterId: types[e.type][8].id,
+        life: 45,
+      });
       if (Math.random() < 0.035)
         gems.push({ x: e.x, y: e.y, v: 0, heart: true, life: 16 });
       if (Math.random() < ITEM_DEFS.giftBoxPlain.dropChance)
@@ -1139,7 +1147,8 @@
         gems.splice(gems.indexOf(g), 1);
         if (g.kind === "gift") applyRandomBuff();
         else if (g.heart) S.hp = Math.min(S.max, S.hp + S.max * 0.15);
-        else xp(g.v, g.jv);
+        else if (g.kind === "baseExp") xp(g.amount, 0);
+        else if (g.kind === "jobExp") xp(0, g.amount);
       }
       if (g.life <= 0 && gems.includes(g)) gems.splice(gems.indexOf(g), 1);
     }
@@ -1346,7 +1355,7 @@
   function drawMonsterSprite(e, q, r) {
     let sprite = monsterSprites[e.type];
     if (!sprite?.complete || !sprite.naturalWidth) return false;
-    let h = Math.max(8, r * 2.75),
+    let h = q[8].visual.renderHeight || Math.max(8, r * 2.75),
       scale = h / sprite.naturalHeight,
       w = Math.max(8, sprite.naturalWidth * scale);
     x.imageSmoothingEnabled = false;
@@ -1489,10 +1498,21 @@
       return;
     }
     x.rotate(Math.PI / 4);
-    x.fillStyle = g.heart ? "#ff627a" : "#79d8ff";
+    x.fillStyle = g.heart
+      ? "#ff627a"
+      : g.kind === "jobExp"
+        ? "#c693ff"
+        : "#79d8ff";
     x.shadowBlur = 10;
     x.shadowColor = x.fillStyle;
     x.fillRect(-5, -5, 10, 10);
+    x.rotate(-Math.PI / 4);
+    x.shadowBlur = 0;
+    x.font = "bold 7px Arial";
+    x.textAlign = "center";
+    x.textBaseline = "middle";
+    x.fillStyle = "#183240";
+    if (!g.heart) x.fillText(g.kind === "jobExp" ? "J" : "B", 0, 0);
     x.restore();
   }
   function drawGiftBox() {
@@ -1883,6 +1903,7 @@
     try {
       return RSStorage.save(localStorage, {
         version: DB.gameVersion,
+        experienceId: DB.experience.id,
         state: { ...S, run: false, pause: true },
         player: { ...P },
         enemies: en,
@@ -1903,6 +1924,7 @@
     if (
       !saved ||
       !saved.state ||
+      saved.experienceId !== DB.experience.id ||
       !STAGE_JOB_IDS[saved.state.stage] ||
       !Number.isFinite(saved.state.t) ||
       saved.state.t >= 1800 ||
@@ -1960,7 +1982,18 @@
     try {
       saved = RSStorage.read(localStorage);
     } catch {}
-    if (!saved) return;
+    if (!saved || saved.experienceId !== DB.experience.id) {
+      try {
+        if (localStorage.getItem("rs.run.v1")) {
+          const note = document.createElement("p");
+          note.className = "muted";
+          note.textContent =
+            "Новая таблица опыта: начните новый забег. Предыдущее сохранение оставлено без изменений.";
+          $("startBtn").after(note);
+        }
+      } catch {}
+      return;
+    }
     const b = document.createElement("button");
     b.id = "restoreRun";
     b.textContent = "ПРОДОЛЖИТЬ СОХРАНЁННЫЙ ЗАБЕГ";
@@ -2168,14 +2201,17 @@
     hud();
   };
   function jobExpDisplay() {
-    return { xp: Math.floor(S.jobXp || 0), need: S.jobNeed || 30 };
+    return { xp: Math.floor(S.jobXp || 0), need: S.jobNeed };
   }
   function updateXpText() {
     let j = jobExpDisplay();
-    $("xpText").textContent = Math.floor(S.xp) + "/" + S.need;
-    $("xp").style.width = cl(S.xp / S.need, 0, 1) * 100 + "%";
-    $("jobXpText").textContent = j.xp + "/" + j.need;
-    $("jobXp").style.width = (j.xp / j.need) * 100 + "%";
+    $("xpText").textContent =
+      S.lvl >= 99 ? "MAX" : Math.floor(S.xp) + "/" + S.need;
+    $("xp").style.width =
+      (S.lvl >= 99 ? 100 : cl(S.xp / S.need, 0, 1) * 100) + "%";
+    $("jobXpText").textContent = jobCapReached() ? "MAX" : j.xp + "/" + j.need;
+    $("jobXp").style.width =
+      (jobCapReached() ? 100 : cl(j.xp / j.need, 0, 1) * 100) + "%";
     $("critText").textContent = Math.round(S.crit * 100) + "%";
   }
   setInterval(updateXpText, 100);

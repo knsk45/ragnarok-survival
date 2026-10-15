@@ -28,16 +28,17 @@
   function damage(raw, def = 0) {
     return Math.max(1, Math.round((raw * 100) / (100 + Math.max(0, def))));
   }
-  function baseNeed(level) {
-    return Math.floor(30 + level * 5.8 + Math.pow(level, 1.22) * 1.4);
+  function baseNeed(level, experience = root.RS_EXPERIENCE) {
+    const value = experience?.base?.[level];
+    if (!Number.isInteger(value) || value < 0)
+      throw Error("Нет Base EXP для уровня " + level);
+    return value;
   }
-  function jobNeed(job, stage, progression) {
-    const p = progression.milestones.find((v) => v.stage === stage);
-    const span = (p.baseMilestone - p.baseStart) / (p.jobMilestone - 1);
-    return Math.max(
-      10,
-      Math.round(baseNeed(p.baseStart + (job - 1) * span) * span * 0.85),
-    );
+  function jobNeed(job, stage, experience = root.RS_EXPERIENCE) {
+    const value = experience?.jobs?.[stage]?.[job];
+    if (!Number.isInteger(value) || value < 0)
+      throw Error("Нет Job EXP: " + stage + " " + job);
+    return value;
   }
   function spawnPoint(player, width, height, random = Math.random) {
     const edge = Math.floor(random() * 4),
@@ -61,6 +62,25 @@
       !db.progression
     )
       throw Error("База данных неполна");
+    if (
+      db.experience?.ruleset !== "renewal" ||
+      db.experience.base.length !== 100
+    )
+      throw Error("Таблица Base EXP не загружена");
+    for (let level = 1; level < 99; level++)
+      if (!(baseNeed(level, db.experience) > 0))
+        throw Error("Неверная строка Base EXP");
+    for (const [stage, cap] of Object.entries({
+      Novice: 10,
+      Swordman: 50,
+      Knight: 50,
+    })) {
+      for (let level = 1; level < cap; level++)
+        if (!(jobNeed(level, stage, db.experience) > 0))
+          throw Error("Неверная строка Job EXP");
+      if (jobNeed(cap, stage, db.experience) !== 0)
+        throw Error("Неверный Job cap");
+    }
     const byId = new Map(),
       states = new Set();
     for (const s of db.skills) {
@@ -100,7 +120,9 @@
         !Number.isFinite(m.stats?.level) ||
         !(m.combat?.hp > 0) ||
         !Number.isFinite(m.combat?.atkMin) ||
-        !Number.isFinite(m.visual?.radius)
+        !Number.isFinite(m.visual?.radius) ||
+        !Number.isInteger(m.combat?.baseExp) ||
+        !Number.isInteger(m.combat?.jobExp)
       )
         throw Error("Некорректный монстр: " + m.key);
     return db;
