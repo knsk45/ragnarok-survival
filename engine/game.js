@@ -1371,10 +1371,11 @@
       renderer(q, r);
     }
     if (e.elite || e.boss) {
+      const barY = -(visual?.renderHeight || r * 2.75) * 0.78 - 10;
       x.fillStyle = "#0009";
-      x.fillRect(-r * 1.25, -r - 11, r * 2.5, 4);
+      x.fillRect(-r * 1.25, barY, r * 2.5, 4);
       x.fillStyle = "#ff536c";
-      x.fillRect(-r * 1.25, -r - 11, r * 2.5 * cl(e.hp / e.max, 0, 1), 4);
+      x.fillRect(-r * 1.25, barY, r * 2.5 * cl(e.hp / e.max, 0, 1), 4);
     }
     x.restore();
   }

@@ -22,5 +22,7 @@ document.getElementById('show').onclick=()=>{
   g.spawn(selector.value,false,true);
   const boss=g.enemies().find(e=>e.boss);boss.x=g.player.x+70;boss.y=g.player.y+15;
   g.update(0);g.state.pause=true;g.draw();
+  // Refresh the throttled HUD without allowing the frozen scene to advance.
+  setTimeout(()=>{g.pause();g.state.pause=true;g.draw()},130);
 };
 </script></html>
