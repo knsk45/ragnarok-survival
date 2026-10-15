@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- 0.10.0: canonical Renewal EXP, original local artwork and selected auto-skills -->
+<!-- 0.11.0: playable Knight / Hunter branches and Classic class catalog -->
 <html lang="ru">
   <head>
     <meta charset="utf-8" />
@@ -8,28 +8,32 @@
       content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
     />
     <title>Ragnarok Survival — prototype</title>
-    <script src="engine/bootstrap.js?v=0.10.0"></script>
-    <script src="data/sources.js?v=0.10.0"></script>
-    <script src="data/stats.js?v=0.10.0"></script>
-    <script src="data/jobs.js?v=0.10.0"></script>
-    <script src="data/characters.js?v=0.10.0"></script>
-    <script src="data/progression.js?v=0.10.0"></script>
-    <script src="data/experience.js?v=0.10.0"></script>
-    <script src="data/equipment.js?v=0.10.0"></script>
-    <script src="data/builds.js?v=0.10.0"></script>
-    <script src="data/skills.js?v=0.10.0"></script>
-    <script src="data/skill-runtime.js?v=0.10.0"></script>
-    <script src="engine/core.js?v=0.10.0"></script>
-    <script src="engine/skills.js?v=0.10.0"></script>
-    <script src="engine/storage.js?v=0.10.0"></script>
-    <script src="data/monsters.js?v=0.10.0"></script>
-    <script src="data/bosses.js?v=0.10.0"></script>
-    <script src="data/buffs.js?v=0.10.0"></script>
-    <script src="data/items.js?v=0.10.0"></script>
-    <script src="data/artwork.js?v=0.10.0"></script>
-    <script src="data/assets.js?v=0.10.0"></script>
-    <script src="data/database.js?v=0.10.0"></script>
-    <link rel="stylesheet" href="styles/game.css?v=0.10.0" />
+    <script src="engine/bootstrap.js?v=0.11.0"></script>
+    <script src="data/sources.js?v=0.11.0"></script>
+    <script src="data/stats.js?v=0.11.0"></script>
+    <script src="data/jobs.js?v=0.11.0"></script>
+    <script src="data/characters.js?v=0.11.0"></script>
+    <script src="data/progression.js?v=0.11.0"></script>
+    <script src="data/experience.js?v=0.11.0"></script>
+    <script src="data/equipment.js?v=0.11.0"></script>
+    <script src="data/builds.js?v=0.11.0"></script>
+    <script src="data/skills.js?v=0.11.0"></script>
+    <script src="data/skill-runtime.js?v=0.11.0"></script>
+    <script src="data/classes.js?v=0.11.0"></script>
+    <script src="data/elements.js?v=0.11.0"></script>
+    <script src="data/hunter.js?v=0.11.0"></script>
+    <script src="engine/core.js?v=0.11.0"></script>
+    <script src="engine/skills.js?v=0.11.0"></script>
+    <script src="engine/hunter.js?v=0.11.0"></script>
+    <script src="engine/storage.js?v=0.11.0"></script>
+    <script src="data/monsters.js?v=0.11.0"></script>
+    <script src="data/bosses.js?v=0.11.0"></script>
+    <script src="data/buffs.js?v=0.11.0"></script>
+    <script src="data/items.js?v=0.11.0"></script>
+    <script src="data/artwork.js?v=0.11.0"></script>
+    <script src="data/assets.js?v=0.11.0"></script>
+    <script src="data/database.js?v=0.11.0"></script>
+    <link rel="stylesheet" href="styles/game.css?v=0.11.0" />
   </head>
   <body>
     <main id="app">
@@ -108,16 +112,12 @@
       <div id="start" class="overlay">
         <div class="box">
           <div class="logo">RAGNAROK<br />SURVIVAL</div>
-          <h2>Испытание Novice</h2>
-          <p>
-            Начни как Novice, развивай STR, AGI, VIT, INT, DEX и LUK,
-            эволюционируй в Swordman, а затем в Knight и выживи 30 минут.
-          </p>
-          <p class="muted">
-            Статы распределяются автоматически по Hybrid-билду Knight. Мужские
-            спрайты профессий взяты с iRO Wiki-совместимого рендера. Анимации
-            движения пока отключены.
-          </p>
+          <h2>Выбери ветку героя</h2>
+          <label for="classGroup">Профессии Classic</label>
+          <select id="classGroup"><option value="normal">Основные</option><option value="transcendent">Перерождение</option><option value="expanded">Особые</option></select>
+          <div id="characterChoices" class="character-choices" aria-label="Ветки профессий"></div>
+          <p id="selectedPath"></p>
+          <p id="characterHint" class="muted"></p>
           <button id="startBtn" class="start">НАЧАТЬ ЗАБЕГ</button>
         </div>
       </div>
@@ -161,9 +161,10 @@
           <h2 id="endTitle"></h2>
           <p id="endStats"></p>
           <button id="restart">НОВЫЙ ЗАБЕГ</button>
+          <button id="changeHero">ВЫБРАТЬ ГЕРОЯ</button>
         </div>
       </div>
     </main>
-    <script src="engine/game.js?v=0.10.0"></script>
+    <script src="engine/game.js?v=0.11.0"></script>
   </body>
 </html>

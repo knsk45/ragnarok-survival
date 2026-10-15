@@ -70,11 +70,8 @@
     for (let level = 1; level < 99; level++)
       if (!(baseNeed(level, db.experience) > 0))
         throw Error("Неверная строка Base EXP");
-    for (const [stage, cap] of Object.entries({
-      Novice: 10,
-      Swordman: 50,
-      Knight: 50,
-    })) {
+    for (const job of Object.values(db.jobs)) {
+      const stage=job.name,cap=job.jobLevelMax;
       for (let level = 1; level < cap; level++)
         if (!(jobNeed(level, stage, db.experience) > 0))
           throw Error("Неверная строка Job EXP");
@@ -82,6 +79,11 @@
         throw Error("Неверный Job cap");
     }
     for (const character of Object.values(db.characters || {})) {
+      if(!Array.isArray(character.jobPath)||!db.builds?.[character.buildId])throw Error("Не загружена ветка персонажа");
+      for(let i=0;i<character.jobPath.length;i++){
+        const job=db.jobs[character.jobPath[i]];
+        if(!job||!character.combatProfiles?.[job.id]||(i>0&&job.parentId!==character.jobPath[i-1]))throw Error("Неверная цепочка профессий");
+      }
       const profile = db.equipment?.profiles?.[character.equipmentProfileId];
       if (!profile?.milestones?.length) throw Error("Не загружен профиль экипировки");
       let previous = -1;
@@ -118,6 +120,8 @@
       )
         throw Error("Некорректный навык: " + s.id);
     }
+    if(!Array.isArray(db.classCatalog)||!db.classCatalog.some(c=>c.enabled))throw Error("Каталог профессий не загружен");
+    for(const entry of db.classCatalog)if(entry.enabled&&!db.characters[entry.characterId]?.playable)throw Error("Открыта неготовая профессия");
     const visiting = new Set(),
       visited = new Set();
     function visit(id) {
@@ -166,6 +170,14 @@
     };
   }
   const api = {
+    elementMultiplier(attack,defense,elements=root.RS_ELEMENTS){
+      return elements?.levels?.[defense?.elementLevel||1]?.[defense?.element]?.[attack] ?? 1;
+    },
+    segmentHits(ax,ay,bx,by,cx,cy,r){
+      const dx=bx-ax,dy=by-ay,length=dx*dx+dy*dy;
+      const t=length?clamp(((cx-ax)*dx+(cy-ay)*dy)/length,0,1):0;
+      return Math.hypot(cx-(ax+t*dx),cy-(ay+t*dy))<=r;
+    },
     equipmentBonus,
     clamp,
     contains,

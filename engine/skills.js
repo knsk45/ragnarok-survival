@@ -28,6 +28,10 @@
       );
       for (const d of defs) {
         if ((S.cooldowns[d.id] || 0) > S.t) continue;
+        if(d.runtime.kind==='hunter'){
+          used = root.RSHunter.cast(ctx,d) || used;
+          continue;
+        }
         const r = d.runtime,
           l = S[d.stateKey],
           target = nearest(r.range || MELEE_RANGE);

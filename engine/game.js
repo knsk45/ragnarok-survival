@@ -80,17 +80,8 @@
     showFatal(e.message, e);
     return;
   }
-  const STAGE_JOB_IDS = {
-      Novice: "novice",
-      Swordman: "swordman",
-      Knight: "knight",
-    },
-    PROGRESSION = DB.progression.milestones,
-    PROGRESSION_BY_STAGE = Object.fromEntries(
-      PROGRESSION.map((p) => [p.stage, p]),
-    ),
+  const STAGE_JOB_IDS = Object.fromEntries(Object.values(DB.jobs).map(j=>[j.name,j.id])),
     STAT_KEYS = DB.stats.order.map((s) => [s.id, s.label]),
-    HYBRID_TARGET = DB.builds.hybrid_knight.target,
     JOB_BONUSES = Object.fromEntries(
       Object.values(DB.jobs).map((j) => [j.name, j.statBonuses]),
     ),
@@ -99,6 +90,7 @@
     ITEM_DEFS = DB.items,
     MAX_ENEMIES = Math.max(10, Math.floor(PLAYTEST_FLAGS.maxEnemies ?? 60));
   const S = {
+    characterId: "knight_male",
     run: false,
     pause: false,
     choose: false,
@@ -169,8 +161,33 @@
     spawn: 0,
   };
   const P = { x: 0, y: 0, dir: 0 };
+  function character() { return DB.characters[S.characterId || "knight_male"]; }
+  function combatProfile() { return character().combatProfiles[STAGE_JOB_IDS[S.stage]]; }
+  function progression() {
+    const path=character().jobPath, index=path.indexOf(STAGE_JOB_IDS[S.stage]);
+    const job=DB.jobs[path[index]];
+    return {jobMilestone:job.jobLevelMax,nextStage:DB.jobs[path[index+1]]?.name || null};
+  }
   function screen(wx, wy) {
     return { x: wx - P.x + W / 2, y: wy - P.y + H / 2 };
+  }
+  function drawHunterWorld(){
+    for(const trap of S.traps || []){
+      const p=screen(trap.x,trap.y);x.save();x.translate(p.x,p.y);
+      x.strokeStyle=trap.skillId==='freezing_trap'?'#a6e8ff':'#e9c677';x.lineWidth=2;
+      x.strokeRect(-9,-6,18,12);x.beginPath();x.moveTo(-12,0);x.lineTo(12,0);x.moveTo(0,-9);x.lineTo(0,9);x.stroke();x.restore();
+    }
+    function bird(px,py){
+      if(falconSprite.complete&&falconSprite.naturalWidth){
+        x.save();x.translate(px,py);x.scale(Math.cos(P.dir)<0?1:-1,1);
+        x.drawImage(falconSprite,112,120,68,64,-18,-17,36,34);x.restore();return;
+      }
+      x.save();x.translate(px,py);x.fillStyle='#d8c6a0';
+      x.beginPath();x.moveTo(-18,-5);x.lineTo(-5,-2);x.lineTo(0,-10);x.lineTo(5,-2);x.lineTo(18,-5);x.lineTo(8,5);x.lineTo(0,3);x.lineTo(-8,5);x.closePath();x.fill();
+      x.fillStyle='#76583a';x.fillRect(-3,-5,6,12);x.fillStyle='#f1d05a';x.fillRect(2,-5,5,2);x.restore();
+    }
+    if(S.stage==='Hunter'&&S.falconry_mastery)bird(W/2+35,H/2-68+Math.sin(S.t*4)*4);
+    for(const f of S.falconFlights || []){const t=1-f.life/f.max,p=screen(f.x+(f.tx-f.x)*t,f.y+(f.ty-f.y)*t);bird(p.x,p.y);}
   }
   const NOVICE_SPRITE_DATA =
     "data:image/png;base64,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";
@@ -207,6 +224,15 @@
   lunaticSprite.onload = () => {
     if (typeof draw === "function") draw();
   };
+  const falconSprite = new Image();
+  falconSprite.src='assets/irowiki/characters/falcon-sheet.png';
+  falconSprite.onload=()=>{if(typeof draw==='function')draw()};
+  const jobSprites = {};
+  for(const c of Object.values(DB.characters))for(const [jobId,v] of Object.entries(c.visuals||{})){
+    const image=new Image();image.src=v.spriteUrl;
+    image.onload=()=>{if(typeof draw==='function')draw()};
+    jobSprites[DB.jobs[jobId].name]=image;
+  }
   const poringTintCanvas = document.createElement("canvas"),
     poringTintCtx = poringTintCanvas.getContext("2d"),
     giftBoxSprite = new Image();
@@ -244,18 +270,11 @@
     };
   });
   const SKILL_DEFS = DB.skills,
-    SKILL_BY_ID = Object.fromEntries(SKILL_DEFS.map((s) => [s.id, s])),
-    JOB_RANK = { novice: 0, swordman: 1, knight: 2 };
-  const ups = SKILL_DEFS.map((d) => [
-    d.icon,
-    d.name,
-    d.description,
-    () => S[d.stateKey]++,
-    d.jobId,
-    d.id,
-  ]);
+    SKILL_BY_ID = Object.fromEntries(SKILL_DEFS.map((s) => [s.id, s]));
   function stageAllows(jobId) {
-    return JOB_RANK[jobId] <= JOB_RANK[STAGE_JOB_IDS[S.stage]];
+    let current=STAGE_JOB_IDS[S.stage];
+    while(current){if(current===jobId)return true;current=DB.jobs[current]?.parentId;}
+    return false;
   }
   function skillAvailable(id) {
     let d = SKILL_BY_ID[id];
@@ -264,7 +283,7 @@
       d.implemented !== false &&
       d.spendable !== false &&
       stageAllows(d.jobId) &&
-      S[d.stateKey] < d.maxLevel &&
+      (S[d.stateKey] || 0) < d.maxLevel &&
       d.requires.every((r) => {
         let dep = SKILL_BY_ID[r.skillId];
         return dep && (S[dep.stateKey] || 0) >= r.level;
@@ -280,7 +299,7 @@
   function skillRuns(id) {
     let d = SKILL_BY_ID[id];
     return (
-      !!d && skillIsActive(d) && (S[d.stateKey] || 0) > 0 && skillIsEnabled(id)
+      !!d && stageAllows(d.jobId) && skillIsActive(d) && (S[d.stateKey] || 0) > 0 && skillIsEnabled(id)
     );
   }
   function skillMenuVisible(d) {
@@ -289,12 +308,11 @@
   function unlockQuestSkillsForStage() {
     if (!S.questUnlocked) S.questUnlocked = {};
     SKILL_DEFS.filter((d) => d.quest).forEach((d) => {
-      let rank = JOB_RANK[d.jobId],
-        current = JOB_RANK[STAGE_JOB_IDS[S.stage]],
-        unlocked = !!S.questUnlocked[d.id] || rank <= current;
+      let unlocked = !!S.questUnlocked[d.id] || stageAllows(d.jobId);
       if (unlocked) {
         S.questUnlocked[d.id] = true;
         S[d.stateKey] = Math.max(1, S[d.stateKey] || 0);
+        if(d.utility && S.skillEnabled[d.id] === undefined)S.skillEnabled[d.id]=false;
       }
     });
   }
@@ -391,6 +409,11 @@
       ([k]) =>
         (q[k] = S.stats[k] + Math.floor((b[k] * Math.min(S.job, 50)) / 50)),
     );
+    if(stageAllows('archer')) q.dex += S.owls_eye || 0;
+    if(S.effects?.concentration?.expires > S.t){
+      const percent=(2+S.effects.concentration.level)/100;
+      q.agi+=Math.floor(q.agi*percent);q.dex+=Math.floor(q.dex*percent);
+    }
     Object.keys(BUFF_DEFS).forEach((id) => {
       let d = activeBuff(id);
       Object.entries(d?.effect?.stats || {}).forEach(([k, v]) => {
@@ -400,6 +423,7 @@
     return q;
   }
   function autoAllocateStats() {
+    const HYBRID_TARGET=DB.builds[character().buildId].target;
     let guard = 0;
     while (S.statPoints > 0 && guard++ < 1000) {
       let choices = STAT_KEYS.map(([k]) => k).filter(
@@ -428,14 +452,14 @@
   }
   function recalc(full = false) {
     S.gear = RSCore.equipmentBonus(S.lvl,
-      DB.equipment.profiles[DB.characters.knight_male.equipmentProfileId]);
+      DB.equipment.profiles[character().equipmentProfileId]);
     let q = totalStats(),
       oldMax = S.max || 100,
       oldSp = S.spMax || 40,
       quick = S.effects?.quicken?.expires > S.t,
       baseAtk =
         12 +
-        q.str * 1.35 +
+        q[combatProfile().primaryStat] * 1.35 +
         Math.floor(q.dex / 5) +
         Math.floor(q.luk / 3) +
         S.swordMastery * 4 +
@@ -444,7 +468,7 @@
         buffSum("atk") + S.gear.weaponAtk;
     if (S.berserk && S.hp < S.max * 0.25) baseAtk *= 1.25;
     S.atkMin = Math.max(1, Math.floor(baseAtk * 0.9));
-    S.atkMax = Math.max(S.atkMin + 1, Math.ceil(baseAtk * 1.1 + q.str * 0.08));
+    S.atkMax = Math.max(S.atkMin + 1, Math.ceil(baseAtk * 1.1 + q[combatProfile().primaryStat] * 0.08));
     S.atk = (S.atkMin + S.atkMax) / 2;
     S.rate =
       Math.max(0.32, 1.25 - q.agi * 0.008 - q.dex * 0.002) *
@@ -454,15 +478,16 @@
       1,
       Math.floor(baseHpForLevel(S.lvl, S.stage) * (1 + q.vit * 0.01)),
     );
-    S.spMax = 48 + q.int * 2;
+    S.spMax = 48 + q.int * 2 + (DB.jobs[STAGE_JOB_IDS[S.stage]].spPerLevel || 0)*S.lvl;
     S.armor =
       Math.floor(q.vit / 10) + (S.effects?.endure?.expires > S.t ? 5 : 0) + S.gear.defense;
     S.crit = Math.min(0.85, 0.02 + q.luk * 0.003 + (quick ? 0.05 : 0));
-    S.hit = 175 + S.lvl + q.dex + Math.floor(q.luk / 3) + buffSum("hit") + S.gear.hit;
+    S.hit = 175 + S.lvl + q.dex + Math.floor(q.luk / 3) + buffSum("hit") + S.gear.hit + (S.vultures_eye || 0);
     S.flee = 100 + S.lvl + q.agi + Math.floor(q.luk / 5);
     S.perfect = Math.min(0.2, Math.floor(q.luk / 10) * 0.01);
     S.move = (125 + q.agi * 0.75 + S.peco * 15) * (1 + buffSum("moveRate"));
     S.mag = 60 + Math.floor(q.luk / 2) + S.peco * 12;
+    S.attackRange=combatProfile().range+(combatProfile().kind==='bow'?(S.vultures_eye||0)*14:0);
     if (full) {
       S.hp = S.max;
       S.sp = S.spMax;
@@ -495,7 +520,7 @@
     }
   }
   function evolveByProgression() {
-    let p = PROGRESSION_BY_STAGE[S.stage];
+    let p = progression();
     if (p && p.nextStage && S.job >= p.jobMilestone && S.skillPoints === 0) {
       S.stage = p.nextStage;
       S.job = 1;
@@ -518,8 +543,9 @@
     if (k === "vit") S.hp += S.max - old;
     hud();
   }
-  function reset() {
+  function reset(characterId = S.characterId || "knight_male") {
     Object.assign(S, {
+      characterId,
       run: false,
       pause: false,
       choose: false,
@@ -600,8 +626,9 @@
       effects: {},
       metrics: { damage: {}, casts: {}, spSpent: 0, taken: 0 },
     });
+    for(const d of SKILL_DEFS) S[d.stateKey]=0;
+    S.traps=[];S.falconFlights=[];S.hunterCastReady=0;S.pendingHunterCast=null;S.enemyTraps=[];
     unlockQuestSkillsForStage();
-    recalc(true);
     autoAllocateStats();
     recalc(true);
     P.x = P.y = 0;
@@ -629,6 +656,33 @@
     last = performance.now();
     say("Испытание началось!");
     requestAnimationFrame(loop);
+  }
+  function selectCharacter(id){
+    if(S.run||!DB.characters[id]?.playable||!DB.classCatalog.some(c=>c.enabled&&c.characterId===id))return false;
+    reset(id);renderStartMenu();return true;
+  }
+  function renderStartMenu(){
+    const box=$('characterChoices'),group=$('classGroup').value;
+    box.innerHTML='';
+    const entries=DB.classCatalog.filter(c=>c.group===group).sort((a,b)=>Number(b.enabled)-Number(a.enabled));
+    for(const entry of entries){
+      const button=document.createElement('button');button.type='button';button.className='class-card';
+      button.disabled=!entry.enabled;button.dataset.classId=entry.id;
+      button.setAttribute('aria-pressed',String(entry.characterId===S.characterId));
+      const details=document.createElement('span'),title=document.createElement('strong'),route=document.createElement('small');
+      title.textContent=entry.name+(entry.enabled?'':' 🔒');
+      route.textContent=entry.enabled?'Доступен · '+DB.characters[entry.characterId].jobPath.map(id=>DB.jobs[id].name).join(' → '):'Будет добавлен позже';
+      details.append(title,route);
+      if(entry.enabled){
+        const portrait=document.createElement('canvas');portrait.width=44;portrait.height=64;
+        const image=new Image(),def=DB.characters[entry.characterId],visual=def.visuals?.[def.jobPath.at(-1)];
+        image.onload=()=>{const ctx=portrait.getContext('2d'),r=visual?.sourceRect||{x:0,y:0,width:image.naturalWidth,height:image.naturalHeight};const h=60,w=h*r.width/r.height;ctx.imageSmoothingEnabled=false;ctx.drawImage(image,r.x,r.y,r.width,r.height,(44-w)/2,2,w,h)};
+        image.src=visual?.spriteUrl||KNIGHT_SPRITE_DATA;button.append(portrait);
+      }
+      button.append(details);button.onclick=()=>selectCharacter(entry.characterId);box.append(button);
+    }
+    $('selectedPath').textContent=character().jobPath.map(id=>DB.jobs[id].name).join(' → ');
+    $('characterHint').textContent=(S.characterId==='hunter_male'?'Лук, сокол и ловушки · авто-билд DEX/AGI':'Мечи, копья и Peco Peco · авто-билд Hybrid')+' · 30 минут';
   }
   function say(t) {
     $("toast").textContent = t;
@@ -676,7 +730,7 @@
     updateXpText();
   }
   function jobCapReached() {
-    let p = PROGRESSION_BY_STAGE[S.stage];
+    let p = progression();
     return !!p && S.job >= p.jobMilestone;
   }
   function renderSkillMenu() {
@@ -715,13 +769,7 @@
         (d.implemented === false ? "<br>Пока не реализован" : "") +
         "</small>";
       b.onclick = () => {
-        if (!skillAvailable(d.id) || S.skillPoints <= 0) return;
-        S[d.stateKey]++;
-        S.skillPoints--;
-        recalc();
-        saveRun();
-        renderSkillMenu();
-        hud();
+        learnSkill(d.id);
       };
       box.appendChild(b);
     }
@@ -732,6 +780,12 @@
     if (!badge) return;
     badge.textContent = S.skillPoints;
     badge.classList.toggle("hide", S.skillPoints <= 0);
+  }
+  function learnSkill(id){
+    if(!S.pause||!skillAvailable(id)||S.skillPoints<=0)return false;
+    const d=SKILL_BY_ID[id];S[d.stateKey]++;S.skillPoints--;
+    if(d.utility&&S.skillEnabled[id]===undefined)S.skillEnabled[id]=false;
+    recalc();saveRun();renderSkillMenu();hud();return true;
   }
   function syncDebugControls() {
     let hp = $("debugInfiniteHp"),
@@ -860,6 +914,16 @@
     return true;
   }
   function attack() {
+    if(S.pendingHunterCast)return;
+    if(combatProfile().kind==='bow'){
+      const target=nearest(S.attackRange);if(!target)return;
+      P.dir=Math.atan2(target.y-P.y,target.x-P.x);
+      const ctx=hunterContext(),q=totalStats();
+      if(stageAllows('hunter')&&S.falconry_mastery&&Math.random()<q.luk/300)RSHunter.falcon(ctx,target,false);
+      const crit=Math.random()<S.crit;
+      RSHunter.arrow(ctx,target,rnd(S.atkMin,S.atkMax)*(crit?2:1),{crit,speed:combatProfile().projectileSpeed,miss:Math.random()>RSCore.chance(S.hit,types[target.type][8].stats.flee)});
+      return;
+    }
     let e = nearest(MELEE_RANGE);
     if (!e) return;
     let a = Math.atan2(e.y - P.y, e.x - P.x);
@@ -903,6 +967,9 @@
     return RSSkills.cast({
       state: S,
       definitions: SKILL_DEFS,
+      enemies: ()=>en,
+      stats: totalStats,
+      say,
       runs: skillRuns,
       nearest,
       useSp,
@@ -923,12 +990,20 @@
     if (S.effects.playDead?.expires > S.t) return false;
     return special();
   }
-  function hit(e, d, crit = false, skillId = "basic") {
+  function hunterContext(){return {state:S,player:P,enemies:()=>en,stats:totalStats,shots,types,hit,burst,skillCast,useSp,nearest,recalc,say,byId:SKILL_BY_ID};}
+  function hit(e, d, crit = false, skillId = "basic", options = {}) {
     if (!e || e.dead || en.indexOf(e) < 0 || !Number.isFinite(d) || d <= 0)
       return;
+    if(options.element){
+      const classification=e.frozen?{element:'water',elementLevel:1}:types[e.type][8].classification;
+      const multiplier=RSCore.elementMultiplier(options.element,classification,DB.elements);
+      if(multiplier<=0){if(multiplier<0)e.hp=Math.min(e.max,e.hp-d*multiplier);return;}
+      d*=multiplier;
+    }
+    if(e.sleeping||e.frozen){e.stunnedUntil=0;e.sleeping=false;e.frozen=false;}
     let def = types[e.type]?.[8]?.stats?.def || 0;
     if (e.provokedUntil > S.t) def *= 1 - e.provoke.defDown;
-    d = RSCore.damage(d, def);
+    d = options.ignoreDef ? Math.max(1,Math.round(d)) : RSCore.damage(d, def);
     e.hp -= d;
     S.metrics.damage[skillId] = (S.metrics.damage[skillId] || 0) + d;
     damageNumber(e.x, e.y, d, crit);
@@ -1035,6 +1110,7 @@
     if (!S.run || S.pause) return;
     dt *= S.spd;
     S.t += dt;
+    RSHunter.update(hunterContext(),dt);
     S.metrics.spRegen = S.metrics.spRegen || 0;
     for (const id of Object.keys(S.effects)) {
       if (S.effects[id].expires <= S.t) {
@@ -1089,8 +1165,10 @@
         dy = P.y - e.y,
         d = Math.hypot(dx, dy) || 1;
       e.attackCooldown = Math.max(0, (e.attackCooldown || 0) - dt);
-      e.x += (dx / d) * e.speed * dt;
-      e.y += (dy / d) * e.speed * dt;
+      if(!(e.rootedUntil>S.t)){
+        e.x += (dx / d) * e.speed * dt;
+        e.y += (dy / d) * e.speed * dt;
+      }
       if (
         d < e.r + 18 &&
         S.inv <= 0 &&
@@ -1100,7 +1178,7 @@
         e.attackCooldown = monsterAttackInterval(e);
         if (
           Math.random() < S.perfect ||
-          Math.random() > RSCore.chance(types[e.type][8].stats.hit, S.flee)
+          Math.random() > RSCore.chance(types[e.type][8].stats.hit-(e.blindedUntil>S.t?35:0), S.flee)
         ) {
           say("Идеальное уклонение");
           continue;
@@ -1132,6 +1210,9 @@
       }
     }
     for (let p of [...shots]) {
+      if(p.delay>0){p.delay-=dt;continue;}
+      if(p.hunterArrow){const target=en.find(e=>e.id===p.targetId);if(target){const a=Math.atan2(target.y-p.y,target.x-p.x);p.vx=Math.cos(a)*p.speed;p.vy=Math.sin(a)*p.speed;}}
+      const previousX=p.x,previousY=p.y;
       p.x += p.vx * dt;
       p.y += p.vy * dt;
       p.life -= dt;
@@ -1140,8 +1221,9 @@
         continue;
       }
       for (let e of [...en])
-        if (!p.hit.has(e.id) && Math.hypot(p.x - e.x, p.y - e.y) < p.r + e.r) {
+        if (!p.hit.has(e.id) && RSCore.segmentHits(previousX,previousY,p.x,p.y,e.x,e.y,p.r+e.r)) {
           p.hit.add(e.id);
+          if(p.hunterArrow){RSHunter.impact(hunterContext(),p,e);p.life=0;break;}
           hit(e, p.dmg, p.crit, p.skillId);
           p.life -= 0.08;
         }
@@ -1234,20 +1316,21 @@
     x.beginPath();
     x.ellipse(X, Y + 18, 23, 8, 0, 0, TAU);
     x.fill();
-    const mount = DB.characters.knight_male.mountedVisual;
-    const mounted = S.stage === "Knight" && S[mount.stateKey] > 0;
+    const mount = character().mountedVisual;
+    const visual = character().visuals?.[STAGE_JOB_IDS[S.stage]];
+    const mounted = !!mount && S.stage === "Knight" && S[mount.stateKey] > 0;
     let sprite =
       mounted && pecoKnightSprite.complete && pecoKnightSprite.naturalWidth
         ? pecoKnightSprite
-        : S.stage === "Knight"
+        : jobSprites[S.stage] || (S.stage === "Knight"
         ? knightSprite
         : S.stage === "Swordman"
           ? swordmanSprite
-          : noviceSprite;
+          : noviceSprite);
     if (sprite.complete && sprite.naturalWidth) {
       const riding = sprite === pecoKnightSprite;
-      const rect = riding ? mount.sourceRect : {x:0,y:0,width:sprite.naturalWidth,height:sprite.naturalHeight};
-      let h = riding ? mount.renderHeight : 86,
+      const rect = riding ? mount.sourceRect : visual?.sourceRect || {x:0,y:0,width:sprite.naturalWidth,height:sprite.naturalHeight};
+      let h = riding ? mount.renderHeight : visual?.renderHeight || 86,
         w = (h * rect.width) / rect.height;
       x.save();
       x.translate(X, Y);
@@ -1329,6 +1412,7 @@
     for (let n of dnums)
       if (n && Number.isFinite(n.x) && Number.isFinite(n.y))
         drawDamageNumber(n);
+    drawHunterWorld();
     player();
   }
   function poringShape(r) {
@@ -1523,7 +1607,11 @@
     x.shadowBlur = 12;
     x.shadowColor = p.col;
     x.fillStyle = p.col;
-    x.fillRect(-12, -4, 24, 8);
+    if(p.hunterArrow){
+      x.fillStyle='#ead6a7';x.fillRect(-12,-1,24,2);
+      x.beginPath();x.moveTo(14,0);x.lineTo(7,-4);x.lineTo(7,4);x.closePath();x.fill();
+      x.fillStyle='#fff';x.fillRect(-11,-3,4,6);
+    }else x.fillRect(-12, -4, 24, 8);
     x.restore();
   }
   function gem(g) {
@@ -1723,7 +1811,7 @@
         q[k] +
         "</em></span></div>",
     ).join("");
-    $("statPoints").textContent = "Hybrid";
+    $("statPoints").textContent = DB.builds[character().buildId].name;
     $("skillPointsText").textContent = S.skillPoints;
     renderActiveSkills();
     updateSkillStatus();
@@ -1973,6 +2061,8 @@
       !saved.state ||
       saved.experienceId !== DB.experience.id ||
       !STAGE_JOB_IDS[saved.state.stage] ||
+      !DB.characters[saved.state.characterId || 'knight_male']?.playable ||
+      !DB.characters[saved.state.characterId || 'knight_male'].jobPath.includes(STAGE_JOB_IDS[saved.state.stage]) ||
       !Number.isFinite(saved.state.t) ||
       saved.state.t >= 1800 ||
       !saved.state.stats ||
@@ -1999,8 +2089,8 @@
     snapshotRestore(saved);
   }
   function snapshotRestore(saved) {
-    reset();
-    Object.assign(S, saved.state, { run: false, pause: false, end: false });
+    reset(saved.state.characterId || 'knight_male');
+    Object.assign(S, saved.state, {characterId:saved.state.characterId||'knight_male',run: false, pause: false, end: false });
     S.cooldowns = S.cooldowns || {};
     S.effects = S.effects || {};
     S.metrics = S.metrics || { damage: {}, casts: {}, spSpent: 0, taken: 0 };
@@ -2054,7 +2144,8 @@
       const d = SKILL_BY_ID[b.dataset.skillId],
         remaining = Math.max(0, (S.cooldowns[d.id] || 0) - S.t),
         off = !skillIsEnabled(d.id),
-        low = !S.debugInfiniteSp && S.sp < d.spCost;
+        cost = d.spCosts?.[(S[d.stateKey] || 1)-1] ?? d.spCost,
+        low = !S.debugInfiniteSp && S.sp < cost;
       let status = b.querySelector(".skill-status");
       if (!status) {
         status = document.createElement("span");
@@ -2069,7 +2160,7 @@
             ? "Нет SP"
             : "Готов";
       b.classList.toggle("skill-no-sp", !off && low);
-      b.title = d.name + " · SP " + d.spCost + " · " + d.description;
+      b.title = d.name + " · SP " + cost + " · " + d.description;
     });
   }
   function renderCharacterInfo() {
@@ -2086,6 +2177,9 @@
         ["Бонус точности", "+" + S.gear.hit + " HIT"],
         ["Бонус брони", "+" + S.gear.defense + " DEF"],
         ["Верхом", S.stage === "Knight" && S.peco > 0 ? "Peco Peco" : "Нет"],
+        ["Билд", DB.builds[character().buildId].name],
+        ["Базовая атака", combatProfile().kind==='bow'?'Лук · '+S.attackRange+' px':'Ближний бой'],
+        ...(combatProfile().kind==='bow'?[["Стрелы", "Без ограничений · элемент по уязвимости"]]:[]),
         ["HIT / FLEE", S.hit + " / " + S.flee],
         ["Критический шанс", Math.round(S.crit * 100) + "%"],
         ["Интервал атаки", S.rate.toFixed(2) + " сек."],
@@ -2180,6 +2274,8 @@
         !e.target.closest(".skills") &&
         !e.target.closest("#cards") &&
         !e.target.closest(".pause-scroll") &&
+        !e.target.closest(".character-choices") &&
+        !e.target.closest("select") &&
         !e.target.closest("input") &&
         !e.target.closest(".top-hud")
       )
@@ -2194,6 +2290,8 @@
       if (
         e.target.closest("#cards") ||
         e.target.closest(".pause-scroll") ||
+        e.target.closest(".character-choices") ||
+        e.target.closest("select") ||
         e.target.closest(".skills")
       )
         return;
@@ -2237,6 +2335,7 @@
     reset();
     start();
   };
+  $('changeHero').onclick=()=>{reset();renderStartMenu()};
   $("fatalReload").onclick = () => location.reload();
   document.querySelectorAll(".speed").forEach(
     (b) =>
@@ -2286,6 +2385,8 @@
   syncViewportLayout();
   resizeCanvas();
   reset();
+  $('classGroup').onchange=renderStartMenu;
+  renderStartMenu();
   setupSaveButton();
   updateXpText();
   draw();
@@ -2298,6 +2399,10 @@
       gems: () => gems,
       hit,
       spawn,
+      selectCharacter,
+      attack,
+      totalStats,
+      shots:()=>shots,
       spawnBoss,
       update,
       draw,
@@ -2310,6 +2415,7 @@
       special,
       recalc,
       skillAvailable,
+      learnSkill,
       jobCapReached,
       skillRuns,
       saveRun,

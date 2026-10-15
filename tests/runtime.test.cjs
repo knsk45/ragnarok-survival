@@ -1,51 +1,5 @@
-const test = require("node:test"),
-  assert = require("node:assert/strict"),
-  fs = require("node:fs"),
-  path = require("node:path");
-const { JSDOM } = require("jsdom");
-const root = path.resolve(__dirname, "..");
-function boot() {
-  const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
-  const dom = new JSDOM(html, {
-    runScripts: "outside-only",
-    url: "https://example.test/?test=1",
-    pretendToBeVisual: true,
-  });
-  const w = dom.window;
-  const canvas = new Proxy(
-    { measureText: (t) => ({ width: String(t).length * 8 }) },
-    {
-      get: (obj, key) => (key in obj ? obj[key] : () => {}),
-      set: (obj, key, val) => ((obj[key] = val), true),
-    },
-  );
-  w.HTMLCanvasElement.prototype.getContext = () => canvas;
-  w.HTMLElement.prototype.getBoundingClientRect = () => ({
-    x: 0,
-    y: 0,
-    left: 0,
-    top: 0,
-    width: 390,
-    height: 660,
-    right: 390,
-    bottom: 660,
-  });
-  w.requestAnimationFrame = () => 1;
-  const images = [];
-  w.Image = class {
-    constructor() {
-      images.push(this);
-      this.complete = false;
-      this.naturalWidth = 0;
-    }
-  };
-  for (const script of html.matchAll(/<script src="([^"?]+)[^"]*"><\/script>/g))
-    w.eval(fs.readFileSync(path.join(root, script[1]), "utf8"));
-  for (const script of html.matchAll(/<script>([\s\S]*?)<\/script>/g))
-    w.eval(script[1]);
-  assert(w.RS_TEST, "runtime booted");
-  return { dom, w, g: w.RS_TEST, images, canvas };
-}
+const test = require("node:test"), assert = require("node:assert/strict");
+const {boot}=require("./helpers.cjs");
 test("capped Base still allows Job EXP and MAX bars stay finite",()=>{const {dom,w,g}=boot();g.state.lvl=98;g.state.need=1252761;g.xp(1252761,0);assert.equal(g.state.lvl,99);assert.equal(w.document.querySelector('#xpText').textContent,'MAX');assert.equal(w.document.querySelector('#xp').style.width,'100%');g.state.stage='Knight';g.state.job=1;g.state.jobXp=0;g.state.jobNeed=2500;g.xp(0,250);assert.equal(g.state.job,2);assert.equal(g.state.jobNeed,4200);assert.equal(g.state.lvl,99);dom.window.close()});
 test("disabled learned skills disappear only from the lower HUD", () => {
   const { dom, w, g } = boot();

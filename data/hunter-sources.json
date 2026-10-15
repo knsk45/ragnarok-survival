@@ -1,0 +1,560 @@
+{
+  "retrieved": "2026-10-15",
+  "classSource": "https://irowiki.org/classic/Classes",
+  "files": [
+    {
+      "key": "archer",
+      "group": "characters",
+      "jobId": "archer",
+      "sourceUrl": "https://irowiki.org/classic/Archer",
+      "imageSourceUrl": "https://irowiki.org/cl/images/2/29/Archer.png",
+      "path": "assets/irowiki/characters/archer-male.png",
+      "sha256": "215dd6d19b66cd4256a6c2c66a9bcec670fccf42bce674c47d86246a8188087d",
+      "width": 118,
+      "height": 111
+    },
+    {
+      "key": "arrow_shower",
+      "group": "skills",
+      "jobId": "archer",
+      "sourceUrl": "https://irowiki.org/classic/Archer",
+      "imageSourceUrl": "https://irowiki.org/cl/images/d/d9/Arrow_Shower.png",
+      "path": "assets/irowiki/skills/arrow_shower.png",
+      "sha256": "e9e02ba6d78d2c806a7025a4698730ed48e1a30a8c1026e04aeb6e58a6278ad3",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "double_strafe",
+      "group": "skills",
+      "jobId": "archer",
+      "sourceUrl": "https://irowiki.org/classic/Archer",
+      "imageSourceUrl": "https://irowiki.org/cl/images/6/6e/Double_Strafe.png",
+      "path": "assets/irowiki/skills/double_strafe.png",
+      "sha256": "0284405eceddcf75aa698d712a8066c1c9dde97c2e6aba59c5b65dd4c4ddf5b7",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "improve_concentration",
+      "group": "skills",
+      "jobId": "archer",
+      "sourceUrl": "https://irowiki.org/classic/Archer",
+      "imageSourceUrl": "https://irowiki.org/cl/images/9/90/Improve_Concentration.png",
+      "path": "assets/irowiki/skills/improve_concentration.png",
+      "sha256": "7d644ed70feb7b8f162c3e6a4cb5becf83f9d092851e34a7b0b8dc6b9683112b",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "owls_eye",
+      "group": "skills",
+      "jobId": "archer",
+      "sourceUrl": "https://irowiki.org/classic/Archer",
+      "imageSourceUrl": "https://irowiki.org/cl/images/3/3d/Owl%27s_Eye.png",
+      "path": "assets/irowiki/skills/owls_eye.png",
+      "sha256": "12c63237ec97bc384934582c26576d1e60d8fd4fca16b0ccf9d4eb9c1aeb61c8",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "vultures_eye",
+      "group": "skills",
+      "jobId": "archer",
+      "sourceUrl": "https://irowiki.org/classic/Archer",
+      "imageSourceUrl": "https://irowiki.org/cl/images/c/c7/Vulture%27s_Eye.png",
+      "path": "assets/irowiki/skills/vultures_eye.png",
+      "sha256": "0417f7b78cdf0dad51c75c19ed2da560954049429a240d55883f9d8d7da3ebe4",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "arrow_crafting",
+      "group": "skills",
+      "jobId": "archer",
+      "sourceUrl": "https://irowiki.org/classic/Archer",
+      "imageSourceUrl": "https://irowiki.org/cl/images/3/35/Arrow_Crafting.png",
+      "path": "assets/irowiki/skills/arrow_crafting.png",
+      "sha256": "1b288d8847c6bfaafcc23d6b4ee55b0ddcb27ff1f746f3262e9974c7bd631505",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "arrow_repel",
+      "group": "skills",
+      "jobId": "archer",
+      "sourceUrl": "https://irowiki.org/classic/Archer",
+      "imageSourceUrl": "https://irowiki.org/cl/images/0/01/Arrow_Repel.png",
+      "path": "assets/irowiki/skills/arrow_repel.png",
+      "sha256": "51b16930b81557194a27d0ad0d96f7e7ccf0b6a6f6ba52697a8b2f6b48180f86",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "hunter",
+      "group": "characters",
+      "jobId": "hunter",
+      "sourceUrl": "https://irowiki.org/classic/Hunter",
+      "imageSourceUrl": "https://irowiki.org/cl/images/4/4b/Hunter.png",
+      "path": "assets/irowiki/characters/hunter-male.png",
+      "sha256": "f22c0d8f925586e11945ff910764715c90a2b144a04248c41c131b15284ea9a5",
+      "width": 118,
+      "height": 111
+    },
+    {
+      "key": "ankle_snare",
+      "group": "skills",
+      "jobId": "hunter",
+      "sourceUrl": "https://irowiki.org/classic/Hunter",
+      "imageSourceUrl": "https://irowiki.org/cl/images/6/60/Ankle_Snare.png",
+      "path": "assets/irowiki/skills/ankle_snare.png",
+      "sha256": "ad023680f54066551671be4890037cad33942336cf872e6a6c780cc20ca32cd4",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "beast_bane",
+      "group": "skills",
+      "jobId": "hunter",
+      "sourceUrl": "https://irowiki.org/classic/Hunter",
+      "imageSourceUrl": "https://irowiki.org/cl/images/c/c4/Beast_Bane.png",
+      "path": "assets/irowiki/skills/beast_bane.png",
+      "sha256": "21055eeb2152b7eea974c12e9fecbc7fe15436f40e114d30d2cd45ff9aad036e",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "blast_mine",
+      "group": "skills",
+      "jobId": "hunter",
+      "sourceUrl": "https://irowiki.org/classic/Hunter",
+      "imageSourceUrl": "https://irowiki.org/cl/images/2/27/Blast_Mine.png",
+      "path": "assets/irowiki/skills/blast_mine.png",
+      "sha256": "3368a6e5e3d416f478bfb4fa46f7c1cdaaf1df4f03ad07a52002be362d96a74b",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "blitz_beat",
+      "group": "skills",
+      "jobId": "hunter",
+      "sourceUrl": "https://irowiki.org/classic/Hunter",
+      "imageSourceUrl": "https://irowiki.org/cl/images/a/a9/Blitz_Beat.png",
+      "path": "assets/irowiki/skills/blitz_beat.png",
+      "sha256": "8a7ad0d4827f2b293bb5bc2f427a54058a6b988a2a75d68b3b19969941c9724c",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "claymore_trap",
+      "group": "skills",
+      "jobId": "hunter",
+      "sourceUrl": "https://irowiki.org/classic/Hunter",
+      "imageSourceUrl": "https://irowiki.org/cl/images/9/92/Claymore_Trap.png",
+      "path": "assets/irowiki/skills/claymore_trap.png",
+      "sha256": "1045a22032c8ce430046416358c9dc0c417436841b398f0923a191bd9f6e8466",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "detect",
+      "group": "skills",
+      "jobId": "hunter",
+      "sourceUrl": "https://irowiki.org/classic/Hunter",
+      "imageSourceUrl": "https://irowiki.org/cl/images/d/da/Detect.png",
+      "path": "assets/irowiki/skills/detect.png",
+      "sha256": "585e23809bd0ad64e06c7e8dac5a916ac9662799c8485950d9c7535045c568e4",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "falconry_mastery",
+      "group": "skills",
+      "jobId": "hunter",
+      "sourceUrl": "https://irowiki.org/classic/Hunter",
+      "imageSourceUrl": "https://irowiki.org/cl/images/1/1b/Falconry_Mastery.png",
+      "path": "assets/irowiki/skills/falconry_mastery.png",
+      "sha256": "106a23fba6ea3d41855c0b3e2fe93fb6f671af6f2e448d3fb28b1531f096e116",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "flasher",
+      "group": "skills",
+      "jobId": "hunter",
+      "sourceUrl": "https://irowiki.org/classic/Hunter",
+      "imageSourceUrl": "https://irowiki.org/cl/images/b/ba/Flasher.png",
+      "path": "assets/irowiki/skills/flasher.png",
+      "sha256": "d3c984efb684f427a5fb75d7001d80aae1b771efb225bdc0942d6673cc6dc4b8",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "freezing_trap",
+      "group": "skills",
+      "jobId": "hunter",
+      "sourceUrl": "https://irowiki.org/classic/Hunter",
+      "imageSourceUrl": "https://irowiki.org/cl/images/2/24/Freezing_Trap.png",
+      "path": "assets/irowiki/skills/freezing_trap.png",
+      "sha256": "e59f98e4c55add4461d9eb1f956532de02fefcdf782792fd40dd2e02e3a71f5b",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "land_mine",
+      "group": "skills",
+      "jobId": "hunter",
+      "sourceUrl": "https://irowiki.org/classic/Hunter",
+      "imageSourceUrl": "https://irowiki.org/cl/images/3/37/Land_Mine.png",
+      "path": "assets/irowiki/skills/land_mine.png",
+      "sha256": "d47933c6fb3d86bf139f805a0c63c6bd7edf0fa99c644b50234a04c9a49ed246",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "remove_trap",
+      "group": "skills",
+      "jobId": "hunter",
+      "sourceUrl": "https://irowiki.org/classic/Hunter",
+      "imageSourceUrl": "https://irowiki.org/cl/images/7/7a/Remove_Trap.png",
+      "path": "assets/irowiki/skills/remove_trap.png",
+      "sha256": "86db19c25e28716a2c774af3bea187337fca5ca26b12edcdb18d6aaa782cddc5",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "sandman",
+      "group": "skills",
+      "jobId": "hunter",
+      "sourceUrl": "https://irowiki.org/classic/Hunter",
+      "imageSourceUrl": "https://irowiki.org/cl/images/d/d1/Sandman.png",
+      "path": "assets/irowiki/skills/sandman.png",
+      "sha256": "edcfc35962ffab6533f7e0507fcdab1f4a4973b03f215e8b4a5eef2113b38a7e",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "shockwave_trap",
+      "group": "skills",
+      "jobId": "hunter",
+      "sourceUrl": "https://irowiki.org/classic/Hunter",
+      "imageSourceUrl": "https://irowiki.org/cl/images/3/33/Shockwave_Trap.png",
+      "path": "assets/irowiki/skills/shockwave_trap.png",
+      "sha256": "1826b22b43ed6ee46f1d85779193d2651ead3e4ac184180a935444dc0d669a0d",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "skid_trap",
+      "group": "skills",
+      "jobId": "hunter",
+      "sourceUrl": "https://irowiki.org/classic/Hunter",
+      "imageSourceUrl": "https://irowiki.org/cl/images/b/b2/Skid_Trap.png",
+      "path": "assets/irowiki/skills/skid_trap.png",
+      "sha256": "9d3af5f9f8ab331f96ced10965f932444f2469dc04f82ce1812b50cd2d9baecf",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "spring_trap",
+      "group": "skills",
+      "jobId": "hunter",
+      "sourceUrl": "https://irowiki.org/classic/Hunter",
+      "imageSourceUrl": "https://irowiki.org/cl/images/f/f6/Spring_Trap.png",
+      "path": "assets/irowiki/skills/spring_trap.png",
+      "sha256": "e3bf2d572d6bcbcdc1d5dff8a6075be10bec3ac07c3e4655851d53047b625231",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "steel_crow",
+      "group": "skills",
+      "jobId": "hunter",
+      "sourceUrl": "https://irowiki.org/classic/Hunter",
+      "imageSourceUrl": "https://irowiki.org/cl/images/a/a9/Steel_Crow.png",
+      "path": "assets/irowiki/skills/steel_crow.png",
+      "sha256": "92fa7b9c307577300fa75eeb535f4b89ad6253881cf3da5175040a633e680ffa",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "talkie_box",
+      "group": "skills",
+      "jobId": "hunter",
+      "sourceUrl": "https://irowiki.org/classic/Hunter",
+      "imageSourceUrl": "https://irowiki.org/cl/images/f/f9/Talkie_Box.png",
+      "path": "assets/irowiki/skills/talkie_box.png",
+      "sha256": "3c6ebd7f928e3917d09c09be43bd2719c75c08063c77337d5c02a5d6fb66721e",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "phantasmic_arrow",
+      "group": "skills",
+      "jobId": "hunter",
+      "sourceUrl": "https://irowiki.org/classic/Hunter",
+      "imageSourceUrl": "https://irowiki.org/cl/images/f/f1/Phantasmic_Arrow.png",
+      "path": "assets/irowiki/skills/phantasmic_arrow.png",
+      "sha256": "d0fbc3a4ade9076b740161079ca1e92413ce8b7b318af7e13af6336f4c741b17",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "beast_charge",
+      "group": "skills",
+      "jobId": "hunter",
+      "sourceUrl": "https://irowiki.org/classic/Hunter",
+      "imageSourceUrl": "https://irowiki.org/cl/images/d/d8/Beast_Charge.png",
+      "path": "assets/irowiki/skills/beast_charge.png",
+      "sha256": "c536335b1ae18f4880a2a557f774dd0a7aaa6a709f2ea635f9d9286d3a771f8b",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "key": "hunter_falcon",
+      "group": "companions",
+      "sourceUrl": "https://www.spriters-resource.com/pc_computer/ragnarokonline/asset/141268/",
+      "imageSourceUrl": "https://www.spriters-resource.com/media/assets/138/141268.png?updated=1755481944",
+      "path": "assets/irowiki/characters/falcon-sheet.png",
+      "sha256": "fb8bbc9221dcc48af54423759c53e4bc84db343a751a79a6fba270a11c4b2d66",
+      "width": 612,
+      "height": 493
+    }
+  ],
+  "skills": [
+    {
+      "key": "arrow_shower",
+      "name": "Arrow Shower",
+      "jobId": "archer",
+      "source": "https://irowiki.org/classic/Arrow_Shower",
+      "tables": [
+        "Arrow Shower Type: Offensive Skill Levels: 10 SP Cost: 15 Cast Time: None Cast Delay: 1 second Target: Ground Range: 14 cells cells Knock Back: 2 cells cells Area of Effect: 5x5 Weapon: Bow Prerequisites (Archer) Double Strafe Lv. 5"
+      ]
+    },
+    {
+      "key": "double_strafe",
+      "name": "Double Strafe",
+      "jobId": "archer",
+      "source": "https://irowiki.org/classic/Double_Strafe",
+      "tables": [
+        "Double Strafe Type: Offensive Skill Levels: 10 SP Cost: 12 Cast Time: None Cast Delay: ASPD Target: Foe Range: +3 cells cells Catalyst: 1 Arrow Weapon: Bow Prerequisites (Archer) None; (Rogue) Vulture's Eye Lv. 10"
+      ]
+    },
+    {
+      "key": "improve_concentration",
+      "name": "Improve Concentration",
+      "jobId": "archer",
+      "source": "https://irowiki.org/classic/Improve_Concentration",
+      "tables": [
+        "Improve Concentration Type: Supportive Skill Levels: 10 (Selectable) SP Cost: (20 + (Skill level*5)) Cast Time: None Cast Delay: None Duration: (40 + (Skill level*20)) seconds Target: Self Prerequisites (Archer & Super Novice) Vulture's Eye Lv. 1"
+      ]
+    },
+    {
+      "key": "owls_eye",
+      "name": "Owl's Eye",
+      "jobId": "archer",
+      "source": "https://irowiki.org/classic/Owl's_Eye",
+      "tables": [
+        "Owl's Eye Type: Passive Skill Levels: 10 Prerequisites None"
+      ]
+    },
+    {
+      "key": "vultures_eye",
+      "name": "Vulture's Eye",
+      "jobId": "archer",
+      "source": "https://irowiki.org/classic/Vulture's_Eye",
+      "tables": [
+        "Vulture's Eye Type: Passive Skill Levels: 10 Affects: Bow Prerequisites (Archer & Super Novice) Owl's Eye Lv. 3; (Rogue) None"
+      ]
+    },
+    {
+      "key": "arrow_crafting",
+      "name": "Arrow Crafting",
+      "jobId": "archer",
+      "source": "https://irowiki.org/classic/Arrow_Crafting",
+      "tables": [
+        "Arrow Crafting Type: Active Skill Levels: 1 SP Cost: 10 Catalyst: Varies Prerequisites In order to gain this skill, the player has to complete a quest."
+      ]
+    },
+    {
+      "key": "arrow_repel",
+      "name": "Arrow Repel",
+      "jobId": "archer",
+      "source": "https://irowiki.org/classic/Arrow_Repel",
+      "tables": [
+        "Arrow Repel Type: Offensive Skill Levels: 1 SP Cost: 15 Cast Time: 1.5 seconds (Not interruptible) Cast Delay: None Target: Foe Range: 14 cells Knock Back: 6 cells cells Catalyst: 1 Arrow Weapon: Bow Prerequisites In order to gain this skill, the player has to complete a quest."
+      ]
+    },
+    {
+      "key": "ankle_snare",
+      "name": "Ankle Snare",
+      "jobId": "hunter",
+      "source": "https://irowiki.org/classic/Ankle_Snare",
+      "tables": [
+        "Ankle Snare Type: Active Skill Levels: 5 (Selectable) SP Cost: 12 Cast Time: None Cast Delay: ASPD Duration: (300-Skill Level*50) Seconds Target: Ground Catalyst: 1 Trap Prerequisites (Hunter) Skid Trap Lv. 1"
+      ]
+    },
+    {
+      "key": "beast_bane",
+      "name": "Beast Bane",
+      "jobId": "hunter",
+      "source": "https://irowiki.org/classic/Beast_Bane",
+      "tables": [
+        "Beast Bane Type: Passive Skill Levels: 10 Prerequisites None"
+      ]
+    },
+    {
+      "key": "blast_mine",
+      "name": "Blast Mine",
+      "jobId": "hunter",
+      "source": "https://irowiki.org/classic/Blast_Mine",
+      "tables": [
+        "Blast Mine Type: Offensive Skill Levels: 5 (Selectable) SP Cost: 10 Cast Time: None Cast Delay: ASPD Based Duration: (30 - (Skill level*5)) Target: Ground Range: Melee Area of Effect: 3x3 Property: Wind Catalyst: 1 Trap Prerequisites (Hunter) Freezing Trap Lv. 1, Land Mine Lv. 1, Sandman Lv. 1"
+      ]
+    },
+    {
+      "key": "blitz_beat",
+      "name": "Blitz Beat",
+      "jobId": "hunter",
+      "source": "https://irowiki.org/classic/Blitz_Beat",
+      "tables": [
+        "Blitz Beat Type: Offensive Skill Levels: 5 (Selectable) SP Cost: (7 + (Skill level*3)) Cast Time: 1.5 seconds Cast Delay: 1 second Target: Enemy Range: 5 + Vulture's Eye cells Area of Effect: 3x3 Property: Neutral Prerequisites (Hunter) Falconry Mastery Lv. 1"
+      ]
+    },
+    {
+      "key": "claymore_trap",
+      "name": "Claymore Trap",
+      "jobId": "hunter",
+      "source": "https://irowiki.org/classic/Claymore_Trap",
+      "tables": [
+        "Claymore Trap Type: Offensive Skill Levels: 5 SP Cost: 25 Cast Time: None Cast Delay: ASPD Based Duration: (Skill Level*20) seconds Target: Ground Area of Effect: 5x5 Property: Fire Catalyst: 1 Trap Prerequisites (Hunter) Blast Mine Lv.1, Shockwave Trap Lv.1"
+      ]
+    },
+    {
+      "key": "detect",
+      "name": "Detect",
+      "jobId": "hunter",
+      "source": "https://irowiki.org/classic/Detect",
+      "tables": [
+        "Detect Type: Active Skill Levels: 4 (Fixed) SP Cost: 8 Cast Time: None Cast Delay: N/A Target: Ground Range: 3~9 cells Prerequisites (Archer) Improve Concentration Lv. 1 (Hunter) Falconry Mastery Lv. 1"
+      ]
+    },
+    {
+      "key": "falconry_mastery",
+      "name": "Falconry Mastery",
+      "jobId": "hunter",
+      "source": "https://irowiki.org/classic/Falconry_Mastery",
+      "tables": [
+        "Falconry Mastery Type: Passive Skill Levels: 1 Prerequisites (Hunter) Lv. 1 Beast Bane"
+      ]
+    },
+    {
+      "key": "flasher",
+      "name": "Flasher",
+      "jobId": "hunter",
+      "source": "https://irowiki.org/classic/Flasher",
+      "tables": [
+        "Flasher Type: Active Skill Levels: 5 (Selectable) SP Cost: 12 Cast Time: None Cast Delay: ASPD Based Duration: (180 - (Skill level*30)) seconds Target: Ground Range: Melee Status: Blind Catalyst: 1 Trap Prerequisites (Hunter) Skid Trap Lv. 1"
+      ]
+    },
+    {
+      "key": "freezing_trap",
+      "name": "Freezing Trap",
+      "jobId": "hunter",
+      "source": "https://irowiki.org/classic/Freezing_Trap",
+      "tables": [
+        "Freezing Trap Type: Offensive Skill Levels: 5 (Selectable) SP Cost: 10 Cast Time: None Cast Delay: ASPD Based Duration: (180-(Skill Level*30)) seconds Target: Ground Range: Melee Status: Frozen Catalyst: 1 Trap Prerequisites (Hunter) Flasher Lv. 1"
+      ]
+    },
+    {
+      "key": "land_mine",
+      "name": "Land Mine",
+      "jobId": "hunter",
+      "source": "https://irowiki.org/classic/Land_Mine",
+      "tables": [
+        "Land Mine Type: Offensive Skill Levels: 5 SP Cost: 10 Cast Time: None Cast Delay: ASPD Based Duration: (240 - (Skill level*40)) seconds Target: Ground Range: Melee Property: Earth Status: Stun Catalyst: 1 Trap Prerequisites None"
+      ]
+    },
+    {
+      "key": "remove_trap",
+      "name": "Remove Trap",
+      "jobId": "hunter",
+      "source": "https://irowiki.org/classic/Remove_Trap",
+      "tables": [
+        "Remove Trap Type: Active Skill Levels: 1 SP Cost: 5 Target: Trap Range: Melee Prerequisites (Hunter) Land Mine Lv. 1; (Rogue) Double Strafe Lv. 5"
+      ]
+    },
+    {
+      "key": "sandman",
+      "name": "Sandman",
+      "jobId": "hunter",
+      "source": "https://irowiki.org/classic/Sandman",
+      "tables": [
+        "Sandman Type: Active Skill Levels: 5 SP Cost: 12 Cast Time: None Cast Delay: ASPD Based Duration: (180-Skill Level*30) seconds Target: Ground Range: Melee Area of Effect: 5x5 Status: Sleep Catalyst: 1 Trap Prerequisites (Hunter) Flasher Lv. 1"
+      ]
+    },
+    {
+      "key": "shockwave_trap",
+      "name": "Shockwave Trap",
+      "jobId": "hunter",
+      "source": "https://irowiki.org/classic/Shockwave_Trap",
+      "tables": [
+        "Shockwave Trap Type: Active Skill Levels: 5 (Selectable) SP Cost: 45 Cast Time: None Cast Delay: ASPD Based Duration: (240-Skill Level*40) seconds Target: Ground Range: Melee Catalyst: 2 Traps Prerequisites (Hunter) Ankle Snare Lv. 1"
+      ]
+    },
+    {
+      "key": "skid_trap",
+      "name": "Skid Trap",
+      "jobId": "hunter",
+      "source": "https://irowiki.org/classic/Skid_Trap",
+      "tables": [
+        "Skid Trap Type: Active Skill Levels: 5 SP Cost: 10 Cast Time: None Cast Delay: ASPD Based Duration: (360 - (Skill Level*60)) seconds Target: Ground Range: Melee Knock Back: (5 + (Skill Level*1)) cells Catalyst: 1 Trap Prerequisites None"
+      ]
+    },
+    {
+      "key": "spring_trap",
+      "name": "Spring Trap",
+      "jobId": "hunter",
+      "source": "https://irowiki.org/classic/Spring_Trap",
+      "tables": [
+        "Spring Trap Type: Active Skill Levels: 5 SP Cost: 10 Cast Time: None Cast Delay: ASPD Based Target: Trap Range: (3+Skill Level) cells cells Prerequisites (Hunter) Falconry Mastery Lv. 1, Remove Trap Lv. 1"
+      ]
+    },
+    {
+      "key": "steel_crow",
+      "name": "Steel Crow",
+      "jobId": "hunter",
+      "source": "https://irowiki.org/classic/Steel_Crow",
+      "tables": [
+        "Steel Crow Type: Passive Skill Levels: 10 Prerequisites (Hunter) Blitz Beat Lv. 5"
+      ]
+    },
+    {
+      "key": "talkie_box",
+      "name": "Talkie Box",
+      "jobId": "hunter",
+      "source": "https://irowiki.org/classic/Talkie_Box",
+      "tables": [
+        "Talkie Box Type: Active Skill Levels: 1 SP Cost: 10 Cast Time: None Cast Delay: ASPD Based Duration: 600 seconds Target: Ground Range: Melee Catalyst: 1 Trap Prerequisites (Hunter) Remove Trap Lv. 1, Shockwave Trap Lv. 1"
+      ]
+    },
+    {
+      "key": "phantasmic_arrow",
+      "name": "Phantasmic Arrow",
+      "jobId": "hunter",
+      "source": "https://irowiki.org/classic/Phantasmic_Arrow",
+      "tables": [
+        "Phantasmic Arrow Type: Offensive Skill Levels: 1 SP Cost: 10 Cast Time: None Cast Delay: ASPD Based Target: Enemy Knock Back: 3 cells cells Property: Elements Weapon: Bow Prerequisites In order to gain this skill, the player has to complete a quest."
+      ]
+    },
+    {
+      "key": "beast_charge",
+      "name": "Beast Charge",
+      "jobId": "hunter",
+      "source": "https://irowiki.org/classic/Beast_Charge",
+      "tables": [
+        "Beast Charge Type: Offensive Skill Levels: 1 SP Cost: 12 Cast Time: None Cast Delay: ASPD Based Target: Brute Monster, Insect Monster Weapon: Bow Prerequisites (Archer) Double Strafe Lv. 10 (Hunter) Beast Bane Lv. 10"
+      ]
+    }
+  ]
+}

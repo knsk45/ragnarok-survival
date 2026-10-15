@@ -37,6 +37,14 @@ test("spawn is outside every supported viewport", () => {
       assert(Math.abs(p.x) > w / 2 || Math.abs(p.y) > h / 2);
     }
 });
+test('projectile swept collision and Classic element table are correct',()=>{
+  assert(core.segmentHits(0,0,200,0,100,0,10));
+  assert(!core.segmentHits(0,0,200,0,100,30,10));
+  const db=database();
+  assert.equal(core.elementMultiplier('water',{element:'fire',elementLevel:2},db.elements),1.75);
+  assert.equal(core.elementMultiplier('neutral',{element:'ghost',elementLevel:4},db.elements),0);
+  assert.equal(core.elementMultiplier('fire',{element:'earth',elementLevel:4},db.elements),2);
+});
 test("defense and flee affect combat", () => {
   assert(core.damage(100, 100) < core.damage(100, 0));
   assert(core.chance(200, 250) < core.chance(200, 150));
@@ -55,6 +63,9 @@ function database() {
     "builds",
     "skills",
     "skill-runtime",
+    "classes",
+    "elements",
+    "hunter",
     "monsters",
     "bosses",
     "buffs",
@@ -168,7 +179,7 @@ test("monster rewards and image bytes match the primary-source snapshot", () => 
       fs.readFileSync(path.join(root, "data/irowiki-snapshot.json"), "utf8"),
     ),
     crypto = require("node:crypto");
-  assert.equal(snap.files.length, 61);
+  assert.equal(snap.files.length, 90);
   for (const art of snap.files) {
     const bytes = fs.readFileSync(path.join(root, art.path));
     assert.equal(

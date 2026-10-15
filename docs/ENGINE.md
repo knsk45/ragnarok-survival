@@ -1,6 +1,8 @@
 # Ragnarok Survival — foundation
 
-## Актуальная версия: 0.10.0
+## Актуальная версия: 0.11.0
+
+Каталог Classic-профессий и две доступные ветки находятся в `data/classes.js`: Novice → Swordman → Knight и Novice → Archer → Hunter. Остальные профессии видны в стартовом меню, но закрыты. Навыки Hunter — `data/hunter.js`, исполнение — `engine/hunter.js`, таблица элементов — `data/elements.js`. Правила подключения новой ветки и ограничения адаптации: [RELEASE-0.11.0.md](RELEASE-0.11.0.md).
 
 Прогрессия экипировки с B70 находится в `data/equipment.js`; внешний вид Knight верхом выбирается через `RS_CHARACTERS.knight_male.mountedVisual` при изученном Riding. Подробности и границы проверки баланса: [RELEASE-0.10.0.md](RELEASE-0.10.0.md).
 

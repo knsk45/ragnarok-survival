@@ -8,8 +8,8 @@ const sourceRegistry = window.RS_SOURCES || {
 
 window.RS_DATABASE = {
   schemaVersion: "1.0.0",
-  contentVersion: 36,
-  gameVersion: "0.10.0",
+  contentVersion: 37,
+  gameVersion: "0.11.0",
   experience: window.RS_EXPERIENCE,
   equipment: window.RS_EQUIPMENT,
   bosses: window.RS_BOSSES,
@@ -31,6 +31,8 @@ window.RS_DATABASE = {
   stats: window.RS_STATS,
   jobs: window.RS_JOBS,
   characters: window.RS_CHARACTERS,
+  classCatalog: window.RS_CLASS_CATALOG,
+  elements: window.RS_ELEMENTS,
   progression,
   builds: window.RS_BUILDS,
   skills: window.RS_SKILLS,
