@@ -48,7 +48,7 @@ async function suite(engine,name){
   await page.goto('http://127.0.0.1:'+server.address().port+'/?test=1&scene=1');
   await page.waitForFunction(()=>window.RS_TEST&&Object.keys(window.RS_DATABASE.monsters).every(k=>window.RS_TEST.spriteImage(k)));
   assert(await page.evaluate(()=>window.RS_TEST.spriteImage('willow').src.startsWith('data:image/png;base64,')));
-  await page.evaluate(()=>{const g=window.RS_TEST;g.selectMap('pay_fild08');g.spawn('willow');const e=g.enemies()[0];e.x=g.player.x+65;e.y=g.player.y+80;g.start();g.state.pause=true;g.draw();});
+  await page.evaluate(()=>{const g=window.RS_TEST;g.selectMap('pay_fild08');g.state.lvl=window.RS_DATABASE.monsters.willow.stats.level;g.spawn('willow');const e=g.enemies()[0];if(e.type!=='willow')throw Error('Wrong visual QA monster');e.x=g.player.x+65;e.y=g.player.y+80;g.start();g.state.pause=true;g.draw();});
   await page.screenshot({path:path.join(root,'test-results',name+'-willow-'+failure+'.png')});
   assert.deepEqual(errors,[]);await page.close();console.log(name+' Willow '+failure+' recovery and all 65 sprites decoded');
  }
