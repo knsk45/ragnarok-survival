@@ -8,10 +8,10 @@
   {id:'cooldown',name:'Поток навыков',description:'Перезарядки и подготовка заклинаний ×0,90.'},
   {id:'area',name:'Масштаб',description:'Радиусы атак, взрывов и зон ×1,15.'},
   {id:'fury',name:'Неистовство',description:'+1 снаряд или повтор удара. Избыток повторов усиливает попадание.'},
-  {id:'defense',name:'Стальная кожа',description:'Получаемый урон ×0,88. Защита усиливается с каждым выбором.'},
+  {id:'defense',name:'Стальная кожа',description:'Получаемый урон ×0,88. Защита усиливается с каждым пробуждением.'},
  ];
  const classes={Knight:'Волны меча и цепные взрывы Bowling Bash',Hunter:'Веер пробивающих стрел и сокол по площади',Wizard:'Эхо заклинаний и распространяющиеся взрывы',Assassin:'Ядовитые взрывы критов и цепные добивания'};
- const fresh=()=>({active:false,level:0,earned:0,xp:0,pending:0,stacks:{},offer:[],reactions:[],nextWave:0,nextCrit:0});
+ const fresh=()=>({paceVersion:2,active:false,level:0,earned:0,xp:0,pending:0,stacks:{},offer:[],reactions:[],nextWave:0,nextCrit:0});
  function state(S){return S.awakening??(S.awakening=fresh());}
  const eligible=S=>S.lvl>=99&&S.job>=50&&!!classes[S.stage];
  const power=(base,n)=>Math.min(1e12,Math.pow(base,Math.min(1000,Math.max(0,n||0))));
@@ -19,11 +19,17 @@
  const tier=S=>Math.floor(state(S).level/5);
  const area=S=>Math.min(5,factors(S).area);
  const areaOverflow=S=>Math.max(1,factors(S).area/5);
- const need=S=>Math.round(60000*power(1.1,state(S).earned));
+ const need=S=>3*Math.round(60000*power(1.1,state(S).earned));
  function sync(S){const a=state(S);if(!a.active&&eligible(S)){a.active=true;a.pending++;return true;}return false;}
  function award(S,amount){const a=state(S);if(!a.active||!eligible(S))return 0;a.xp+=Math.max(0,amount||0);let n=0;while(a.xp>=need(S)&&n<200){a.xp-=need(S);a.earned++;a.pending++;n++;}return n;}
  function offer(S,random=Math.random){const a=state(S);if(!a.pending)return [];if(a.offer.length!==3){const pool=[...definitions];a.offer=[];while(a.offer.length<3)a.offer.push(pool.splice(Math.floor(random()*pool.length),1)[0].id);}return a.offer.map(id=>definitions.find(d=>d.id===id));}
  function choose(S,id){const a=state(S);if(!a.pending||!a.offer.includes(id))return false;a.stacks[id]=(a.stacks[id]||0)+1;a.level++;a.pending--;a.offer=[];return true;}
+ function autoChoose(S,random=Math.random){
+  const a=state(S);let count=0;
+  while(a.pending>0&&count<200){const d=definitions[Math.min(definitions.length-1,Math.floor(random()*definitions.length))];a.offer=[d.id];choose(S,d.id);a.lastUpgrade=d.id;count++;}
+  a.offer=[];return count;
+ }
+ function migrate(saved){const a={...fresh(),...saved};if(saved&&saved.paceVersion!==2)a.xp=Math.max(0,a.xp||0)*3;a.paceVersion=2;a.offer=[];return a;}
  function delay(S,seconds){return Math.max(.08,seconds*factors(S).cooldown);}
  function wave(S){const phase=S.t<420?0:S.t<780?1:S.t<1020?2:3;return {phase,cap:[60,90,140,200][phase],batch:[1,2,4,7][phase],interval:[.72,.48,.30,.18][phase],regular:phase<2?3:Math.min(120,40+tier(S)*4)};}
  function enqueue(S,event){const a=state(S);if(a.reactions.length<128)a.reactions.push(event);else a.reactions[a.reactions.length-1].raw+=event.raw;}
@@ -47,5 +53,5 @@
  }
  function update(ctx){const S=ctx.state,a=state(S);let n=0;while(a.reactions.length&&n++<12){const b=a.reactions.shift();for(const e of targets(ctx,b,95*area(S)))ctx.hit(e,b.raw,false,'awakening_blast',{magical:b.magical,awakeningProc:true,awakeningDepth:b.depth});ring(ctx,b,95*area(S),'ghost');}}
  function compact(gems){if(gems.length<700)return gems;const out=[],groups=new Map();for(const g of gems){if(!['baseExp','jobExp'].includes(g.kind)){out.push(g);continue;}const key=g.kind+':'+Math.floor(g.x/120)+':'+Math.floor(g.y/120);if(groups.has(key)){const old=groups.get(key);old.amount+=g.amount;old.life=Math.max(old.life,g.life);}else{groups.set(key,g);out.push(g);}}return out;}
- root.RSAwakening={definitions,classes,fresh,state,eligible,sync,award,need,offer,choose,factors,tier,area,areaOverflow,delay,wave,afterHit,update,compact};
+ root.RSAwakening={definitions,classes,fresh,state,eligible,sync,award,need,offer,choose,autoChoose,migrate,factors,tier,area,areaOverflow,delay,wave,afterHit,update,compact};
 })(typeof window!=='undefined'?window:globalThis);

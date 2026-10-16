@@ -708,7 +708,7 @@
   function xp(n, jobAmount = 0) {
     const rates = DB.settings.experienceRates;
     RSAwakening.sync(S);
-    if(RSAwakening.eligible(S)&&S.awakening.active){RSAwakening.award(S,n*rates.base+jobAmount*rates.job);showAwakening();hud();return;}
+    if(RSAwakening.eligible(S)&&S.awakening.active){RSAwakening.award(S,n*rates.base+jobAmount*rates.job);applyAwakenings();hud();return;}
     awardJobXp(jobAmount * rates.job);
     if (S.lvl >= 99) return;
     S.xp += Math.max(0, n || 0) * rates.base;
@@ -725,19 +725,13 @@
       S.xp = S.need;
     }
     evolveByProgression();
-    RSAwakening.sync(S);showAwakening();
+    RSAwakening.sync(S);applyAwakenings();
     updateXpText();
   }
-  function showAwakening(){
-    const a=RSAwakening.state(S);if(!S.run||S.end||S.choose||!a.pending||S.pause)return;
-    S.pause=true;S.choose=true;stopJoystick();keys={};
-    $('levelUp').classList.remove('hide');$('levelUp').querySelector('h2').textContent='ПРОБУЖДЕНИЕ '+(a.level+1);
-    $('levelHint').textContent='Выбери усиление · ожидает: '+a.pending+((a.level+1)%5===0?' · новое усиление класса!':'');
-    const box=$('cards');box.replaceChildren();
-    for(const d of RSAwakening.offer(S)){const b=document.createElement('button');b.type='button';b.className='card';b.dataset.awakening=d.id;
-      const name=document.createElement('strong'),desc=document.createElement('small');name.textContent=d.name+' · '+(a.stacks[d.id]||0)+' → '+((a.stacks[d.id]||0)+1);desc.textContent=d.description;b.append(name,desc);
-      b.onclick=()=>{if(!RSAwakening.choose(S,d.id))return;const rank=RSAwakening.tier(S);recalc();if(a.level%5===0)say('Пробуждение класса '+rank+': '+RSAwakening.classes[S.stage]);S.choose=false;S.pause=false;$('levelUp').classList.add('hide');saveRun();hud();showAwakening();};box.append(b);
-    }saveRun();
+  function applyAwakenings(){
+    if(!S.run||S.end)return;
+    if(!RSAwakening.autoChoose(S))return;
+    recalc();hud();saveRun();
   }
   function jobCapReached() {
     let p = progression();
@@ -1121,7 +1115,7 @@
   }
   function update(dt) {
     if (!S.run || S.pause) return;
-    RSAwakening.sync(S);showAwakening();if(S.pause)return;
+    RSAwakening.sync(S);applyAwakenings();if(S.pause)return;
     RSAwakening.update(hunterContext());
     dt *= S.spd;
     S.t += dt;
@@ -1824,7 +1818,7 @@
       S.pause = false;
       stopJoystick();
       $("pause").classList.add("hide");
-      showAwakening();hud();
+      applyAwakenings();hud();
     } else openPause(false);
   }
   async function fullscreen() {
@@ -1903,10 +1897,6 @@
   addEventListener("keydown", (e) => {
     keys[e.key.toLowerCase()] = true;
     if (e.key.toLowerCase() === "p") pause();
-    if (S.choose && ["1", "2", "3"].includes(e.key)) {
-      let b = $("cards").children[+e.key - 1];
-      if (b) b.click();
-    }
   });
   addEventListener("keyup", (e) => (keys[e.key.toLowerCase()] = false));
   c.addEventListener("pointerdown", (e) => {
@@ -2035,7 +2025,7 @@
     Object.assign(S, saved.state, {characterId:saved.state.characterId||'knight_male',run: false, pause: false, choose:false,end: false });
     S.cooldowns = S.cooldowns || {};
     S.effects = S.effects || {};
-    S.awakening={...RSAwakening.fresh(),...saved.state.awakening};
+    S.awakening=RSAwakening.migrate(saved.state.awakening);
     S.awakening.reactions=S.awakening.reactions||[];
     S.autoSkills=!!saved.state.autoSkills;
     S.pendingClassCasts=saved.state.pendingClassCasts|| (S.pendingClassCast?[S.pendingClassCast]:[]);
@@ -2069,7 +2059,7 @@
     syncDebugControls();
     start();
     if(S.t>=DB.settings.runDuration){S.t=DB.settings.runDuration;hud();finish(true);return;}
-    if(S.awakening.pending){showAwakening();}else openPause(false);
+    applyAwakenings();openPause(false);
   }
   function setupSaveButton() {
     let saved;
@@ -2324,7 +2314,7 @@
       selectWeaponStyle,
       selectPreset,
       recommendSkills,
-      showAwakening,
+      applyAwakenings,
       finish,
       attack,
       totalStats,

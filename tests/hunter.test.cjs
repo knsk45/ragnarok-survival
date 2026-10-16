@@ -91,7 +91,7 @@ test('Ankle Snare roots bosses without disabling their attacks; freeze cannot fr
  const{g,w,dom}=hunter();g.state.stage='Hunter';g.state.job=50;g.recalc();disableSkills(g,w);
  g.state.ankle_snare=5;g.state.skillEnabled.ankle_snare=true;g.state.sp=100;
  g.state.lvl=99;g.spawn('toad',false,true);const e=g.enemies()[0];e.x=55;e.y=0;e.speed=0;
- assert(g.special());g.start();g.state.attack=100;g.state.spawn=1e9;w.RSAwakening.sync(g.state);g.showAwakening();while(g.state.choose)w.document.querySelector('#cards button').click();g.update(.5);
+ assert(g.special());g.start();g.state.attack=100;g.state.spawn=1e9;w.RSAwakening.sync(g.state);g.applyAwakenings();while(g.state.choose)w.document.querySelector('#cards button').click();g.update(.5);
  assert.equal(e.rootedUntil,4.5);assert(!e.stunnedUntil);
  g.state.skillEnabled.ankle_snare=false;g.state.freezing_trap=5;g.state.skillEnabled.freezing_trap=true;
  g.state.hunterCastReady=0;g.state.sp=100;
