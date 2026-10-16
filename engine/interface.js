@@ -247,7 +247,8 @@
       })
       .join("");
     if($("buffs").innerHTML!==buffMarkup)$("buffs").innerHTML=buffMarkup;
-    let states=$('classStatus');if(!states){states=document.createElement('div');states.id='classStatus';states.className='class-status';states.setAttribute('aria-label','Состояния персонажа');$('buffs').after(states);}
+    let tray=$('statusTray');if(!tray){tray=document.createElement('div');tray.id='statusTray';tray.className='status-tray';$('buffs').before(tray);tray.append($('buffs'));}
+    let states=$('classStatus');if(!states){states=document.createElement('div');states.id='classStatus';states.className='class-status';states.setAttribute('aria-label','Состояния персонажа');tray.append(states);}
     const rows=RSInsights.statuses(S),stateText=rows.join('|');if(states.dataset.rows!==stateText){states.replaceChildren(...rows.map(text=>{const row=document.createElement('div');row.textContent=text;return row;}));states.dataset.rows=stateText;}
     updateSkillIndicator();
   }

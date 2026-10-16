@@ -1,5 +1,5 @@
 (function(root){
- const defensive=d=>['heal','playDead','buff','wall','coat','sightBlast','hide','cloak','slide','detox','react','enchant','concentration'].includes(d.runtime.action||d.runtime.kind);
+ const defensive=d=>['heal','playDead','buff','wall','coat','sightBlast','sight','hide','cloak','slide','detox','react','enchant','concentration'].includes(d.runtime.action||d.runtime.kind);
  function cost(d,l){return d.spCosts?.[Math.max(0,l-1)]??d.spCost;}
  function reason(ctx,d){
   const S=ctx.state,a=d.runtime.action,l=S[d.stateKey]||0;

@@ -2257,7 +2257,7 @@
       !S.run ||
       S.end ||
       e.target.closest("button") ||
-      e.target.closest(".buffs")
+      e.target.closest(".buffs,.status-tray")
     )
       return;
     pause();

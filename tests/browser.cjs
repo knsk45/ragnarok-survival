@@ -44,8 +44,9 @@ async function suite(engine,name){
  const skillsPage=await browser.newPage({viewport:{width:390,height:660}});
  await skillsPage.goto('http://127.0.0.1:'+server.address().port+'/?test=1&scene=1');await skillsPage.waitForFunction(()=>window.RS_TEST);
  await skillsPage.evaluate(()=>{const g=window.RS_TEST;g.selectCharacter('wizard_male');g.selectMap('pay_fild08');Object.assign(g.state,{stage:'Wizard',job:50,lvl:90,debugInfiniteHp:true});for(const d of window.RS_SKILLS)g.state.skillEnabled[d.id]=false;for(const id of ['fire_bolt','cold_bolt','lightning_bolt','energy_coat','sight','sight_blaster']){const d=window.RS_SKILLS.find(d=>d.id===id);g.state[d.stateKey]=Math.min(5,d.maxLevel);g.state.skillEnabled[id]=true;}g.recalc(true);g.start();g.state.spawn=g.state.nextBoss=1e9;});
- await skillsPage.waitForFunction(()=>window.RS_TEST.state.metrics.casts.energy_coat===1&&document.querySelector('#classStatus')?.textContent.includes('Energy Coat'));
+ await skillsPage.waitForFunction(()=>window.RS_TEST.state.metrics.casts.energy_coat===1&&document.querySelector('#classStatus')?.textContent.includes('Energy Coat')&&window.RS_TEST.state.effects.sight?.expires>window.RS_TEST.state.t);
  assert(await skillsPage.locator('#classStatus').textContent().then(s=>s.includes('Energy Coat')));
+ assert(await skillsPage.evaluate(()=>document.querySelector('#statusTray').getBoundingClientRect().top>=document.querySelector('.top-hud').getBoundingClientRect().bottom));
  await skillsPage.screenshot({path:path.join(root,'test-results',name+'-buff-timers.png')});await skillsPage.close();
  // Real browser decoding for every monster, including iOS/WebKit-compatible fallbacks.
  for(const failure of ['network','decode']){
