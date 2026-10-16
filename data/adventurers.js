@@ -66,7 +66,7 @@
  thief('double_attack','Double Attack',10,0,0,[],'passive','Кинжал: шанс двойного удара +5% за уровень.');
  thief('improve_dodge','Improve Dodge',10,0,0,[],'passive','Повышает FLEE; у Assassin также увеличивает скорость движения.');
  thief('steal','Steal',10,10,3,[],'steal','Одна попытка на обычного монстра: шанс украсть дополнительный Gift Box.',{utility:true});
- thief('hiding','Hiding',10,10,8,[['steal',5]],'hide','Короткое укрытие; насекомые, демоны и боссы видят персонажа.',{priority:3});
+ thief('hiding','Hiding',10,10,8,[['steal',5]],'hide','Скрытность на 30 × уровень секунд; 1 SP каждые (4 + уровень) секунд. Насекомые, демоны и боссы видят персонажа.',{priority:3});
  thief('envenom','Envenom',10,12,1,[],'envenom','Удар ядом с добавочным уроном и шансом отравления.');
  thief('detoxify','Detoxify',1,10,1,[['envenom',3]],'detox','Снимает отравление персонажа.');
  thief('sand_attack','Sand Attack',1,9,3,[],'sand','Земляная атака и шанс ослепления.',{quest:true});
@@ -76,7 +76,7 @@
  sin('righthand_mastery','Righthand Mastery',5,0,0,[],'passive','Восстанавливает урон правого кинжала до 100%.');
  sin('lefthand_mastery','Lefthand Mastery',5,0,0,[['righthand_mastery',2]],'passive','Восстанавливает урон левого кинжала до 80%.');
  sin('katar_mastery','Katar Mastery',10,0,0,[],'passive','Добавляет до 30 ATK при использовании катара.');
- sin('cloaking','Cloaking',10,15,10,[['hiding',2]],'cloak','Краткая скрытность в движении; атака раскрывает персонажа.',{priority:3});
+ sin('cloaking','Cloaking',10,15,10,[['hiding',2]],'cloak','Скрытность до раскрытия или исчерпания SP. Скорость и расход SP зависят от уровня.',{priority:3});
  sin('sonic_blow','Sonic Blow',10,16,3,[['katar_mastery',4]],'sonic','Восемь ударов катаром, до 800% ATK, шанс оглушения.',{priority:5});
  sin('grimtooth','Grimtooth',5,3,1,[['cloaking',2],['sonic_blow',5]],'grim','Атака катаром из скрытности по группе врагов.',{priority:4,range:240});
  sin('enchant_poison','Enchant Poison',10,20,10,[['envenom',1]],'enchant','Временно придаёт оружию стихию яда.',{priority:1});
@@ -87,7 +87,8 @@
  sin('venom_knife','Venom Knife',1,15,3,[],'knife','Дальний ядовитый удар.',{quest:true,range:280});
  // Keep the displayed SP cost identical to the executor at every skill level.
  for(const d of rows){
-  const formula={fire_bolt:l=>10+2*l,cold_bolt:l=>10+2*l,lightning_bolt:l=>10+2*l,earth_spike:l=>10+2*l,thunderstorm:l=>24+5*l,jupitel_thunder:l=>17+3*l,meteor_storm:l=>20+4*l,lord_of_vermilion:l=>56+4*l,sonic_blow:l=>14+2*l,poison_react:l=>l>=9?45:20+5*l,venom_splasher:l=>10+2*l,napalm_beat:l=>l===10?18:9+3*Math.floor((l-1)/3),stone_curse:l=>26-l,frost_diver:l=>26-l,frost_nova:l=>47-2*l,heavens_drive:l=>24+2*l,sightrasher:l=>33+2*l,soul_strike:l=>[18,14,24,20,30,26,36,32,42,38][l-1]}[d.id];
+  const formula={fire_bolt:l=>10+2*l,cold_bolt:l=>10+2*l,lightning_bolt:l=>10+2*l,earth_spike:l=>10+2*l,thunderstorm:l=>24+5*l,jupitel_thunder:l=>17+3*l,meteor_storm:l=>20+4*l,lord_of_vermilion:l=>56+4*l,sonic_blow:l=>14+2*l,poison_react:l=>l===10?45:15+5*l,venom_splasher:l=>10+2*l,napalm_beat:l=>l===10?18:9+3*Math.floor((l-1)/3),stone_curse:l=>26-l,frost_diver:l=>26-l,frost_nova:l=>47-2*l,heavens_drive:l=>24+2*l,sightrasher:l=>33+2*l,soul_strike:l=>[18,14,24,20,30,26,36,32,42,38][l-1]}[d.id];
+  if(d.id==='safety_wall')d.spCosts=Array.from({length:10},(_,i)=>i<3?30:i<6?35:40);
   if(formula)d.spCosts=Array.from({length:d.maxLevel},(_,i)=>formula(i+1));
  }
  W.RS_ADVENTURER_SKILLS=rows;W.RS_SKILLS.push(...rows);

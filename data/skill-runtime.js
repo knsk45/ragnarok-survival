@@ -149,6 +149,7 @@
     s.type = r.type;
     s.runtime = r;
     s.implemented = r.implemented !== false;
+    if(s.id==='twohand_quicken')s.spCosts=Array.from({length:10},(_,i)=>10+4*(i+1));
     if (r.cooldown != null) s.cooldown = r.cooldown;
   }
 })();

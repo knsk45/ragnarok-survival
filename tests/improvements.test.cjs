@@ -1,6 +1,6 @@
 const test=require('node:test'),assert=require('node:assert/strict'),{boot}=require('./helpers.cjs');
 const {create}=require('../engine/clock.js');
-function scenario(){const b=boot(),{g,w}=b;g.selectCharacter('assassin_male');g.state.stage='Assassin';g.state.job=50;g.state.lvl=3;g.recalc(true);for(const d of w.RS_SKILLS)g.state.skillEnabled[d.id]=false;g.spawn('lunatic');const e=g.enemies()[0];Object.assign(e,{x:55,y:0,speed:0,hp:1e7,max:1e7});g.start();g.state.debugInfiniteHp=true;g.state.spawn=g.state.nextBoss=g.state.attack=1e9;return {...b,e};}
+function scenario(){const b=boot(),{g,w}=b;g.selectCharacter('assassin_male');g.state.debugInfiniteSp=false;g.state.stage='Assassin';g.state.job=50;g.state.lvl=3;g.recalc(true);for(const d of w.RS_SKILLS)g.state.skillEnabled[d.id]=false;g.spawn('lunatic');const e=g.enemies()[0];Object.assign(e,{x:55,y:0,speed:0,hp:1e7,max:1e7});g.start();g.state.debugInfiniteHp=true;g.state.spawn=g.state.nextBoss=g.state.attack=1e9;return {...b,e};}
 test('Venom Dust ticks at 60 FPS while refreshing the same poison',()=>{
  const {g,w,dom,e}=scenario();g.state.venom_dust=10;g.state.skillEnabled.venom_dust=true;g.state.sp=100;assert(g.special());
  for(let i=0;i<360;i++)g.update(1/60);

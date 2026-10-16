@@ -29,7 +29,7 @@
     if(p.miss)return;
     const victims=p.splash?ctx.enemies().filter(e=>!e.dead&&distance(e,target)<=p.splash+e.r):[target];
     for(const e of victims){
-      ctx.hit(e,p.dmg,p.crit,p.skillId,{element:p.element});
+      ctx.hit(e,p.dmg*(p.skillId==='basic'&&e!==target?.55:1),p.crit,p.skillId,{element:p.element});
       if(p.skillId==='basic'&&['brute','insect'].includes(ctx.types[e.type][8].classification.race)&&ctx.state.beast_bane)
         ctx.hit(e,4*ctx.state.beast_bane,false,'beast_bane',{ignoreDef:true});
       if(p.knockback&&!e.boss&&!e.dead){const a=Math.atan2(e.y-ctx.player.y,e.x-ctx.player.x);move(ctx,e,Math.cos(a)*p.knockback,Math.sin(a)*p.knockback);}
@@ -38,7 +38,7 @@
   }
   function resolve(ctx,d,target){
     const {state:S,player:P,stats}=ctx,l=S[d.stateKey],action=d.runtime.action;
-    if(!target||target.dead)return;
+    if(action!=='concentration'&&(!target||target.dead))return;
     const atk=(S.atkMin+S.atkMax)/2;
     if(action==='double')for(let i=0;i<2;i++)arrow(ctx,target,atk*(.9+.1*l),{skillId:d.id,delay:i*.08});
     else if(action==='shower')arrow(ctx,target,atk*(.75+.05*l),{skillId:d.id,splash:72,knockback:30});
@@ -61,11 +61,11 @@
   }
   function cast(ctx,d){
     const {state:S,player:P}=ctx,l=S[d.stateKey],action=d.runtime.action;
-    if(S.hunterCastReady>S.t||S.pendingHunterCast)return false;
+    if(S.pendingHunterCasts?.some(c=>c.skillId===d.id))return false;
     const target=ctx.nearest((S.attackRange||280)+48);
-    if(!target)return false;
+    if(!target&&action!=='concentration')return false;
     if(action==='concentration'&&S.effects.concentration?.expires>S.t)return false;
-    if(action==='trap'&&(distance(target,P)>220||S.traps.length>=8||S.traps.some(t=>t.skillId===d.id)))return false;
+    if(action==='trap'&&(distance(target,P)>220||S.traps.length>=32||S.traps.some(t=>t.skillId===d.id)))return false;
     const trapElement={land_mine:'earth',blast_mine:'wind',claymore_trap:'fire',freezing_trap:'water'}[d.id];
     if(trapElement&&root.RSCore.elementMultiplier(trapElement,ctx.types[target.type][8].classification)<=0)return false;
     if(action==='falcon'&&!S.falconry_mastery)return false;
@@ -76,17 +76,18 @@
     const cost=d.spCosts?.[l-1]??d.spCost;
     if(!ctx.useSp(cost))return false;
     const castTime=action==='falcon'||action==='repel'?1.5:0;
-    S.hunterCastReady=S.t+Math.max(.35,castTime);
     S.cooldowns[d.id]=S.t+(d.runtime.delay==='aspd'?S.rate:d.cooldown)+castTime;
     S.metrics.casts[d.id]=(S.metrics.casts[d.id]||0)+1;
     ctx.skillCast(d.name);
-    if(castTime)S.pendingHunterCast={skillId:d.id,targetId:target.id,finishesAt:S.t+castTime};
+    if(castTime){(S.pendingHunterCasts??=[]).push({skillId:d.id,targetId:target.id,finishesAt:S.t+castTime});S.pendingHunterCast=S.pendingHunterCasts[0];}
     else resolve(ctx,d,target);
     return true;
   }
   function update(ctx,dt){
     const {state:S,player:P,stats}=ctx;
-    if(S.pendingHunterCast?.finishesAt<=S.t){const c=S.pendingHunterCast;S.pendingHunterCast=null;resolve(ctx,ctx.byId[c.skillId],ctx.enemies().find(e=>e.id===c.targetId));}
+    const ready=(S.pendingHunterCasts||[]).filter(c=>c.finishesAt<=S.t);
+    S.pendingHunterCasts=(S.pendingHunterCasts||[]).filter(c=>c.finishesAt>S.t);S.pendingHunterCast=S.pendingHunterCasts[0]||null;
+    for(const c of ready)resolve(ctx,ctx.byId[c.skillId],ctx.enemies().find(e=>e.id===c.targetId));
     for(const t of [...S.traps]){
       if(t.expiresAt<=S.t){S.traps.splice(S.traps.indexOf(t),1);continue;}
       if(t.armedAt>S.t)continue;

@@ -1,6 +1,6 @@
 const test=require('node:test'),assert=require('node:assert/strict');
 const {boot}=require('./helpers.cjs');
-function hunter(){const b=boot();b.g.selectCharacter('hunter_male');return b;}
+function hunter(){const b=boot();b.g.selectCharacter('hunter_male');b.g.state.debugInfiniteSp=false;return b;}
 function disableSkills(g,w){for(const d of w.RS_DATABASE.skills)g.state.skillEnabled[d.id]=false;}
 test('start menu unlocks four reviewed branches and prevents changing an active run',()=>{
  const{g,w,dom}=boot();
@@ -50,14 +50,14 @@ test('bow attack scales from DEX and Vulture increases range/HIT',()=>{
  g.state.owls_eye=10;assert.equal(g.totalStats().dex>=90,true);
  dom.window.close();
 });
-test('basic arrows travel, hit exactly one enemy and do not tunnel at high speed',()=>{
+test('basic arrows travel, splash adjacent enemies and do not tunnel at high speed',()=>{
  const{g,w,dom}=hunter();g.state.stage='Archer';g.state.job=1;g.recalc();
  disableSkills(g,w);g.spawn('poring');g.spawn('poring');
  const[a,b]=g.enemies();for(const e of[a,b]){e.x=150;e.y=0;e.speed=0;e.hp=e.max=10000;}
  w.Math.random=()=>.2;g.attack();assert.equal(g.shots().length,1);assert.equal(a.hp,10000);
  g.start();g.state.attack=100;g.state.spawn=1e9;g.state.nextBoss=1e9;
  for(let i=0;i<3;i++)g.update(.1);
- assert(a.hp<10000);assert.equal(b.hp,10000);assert.equal(g.shots().length,0);
+ assert(a.hp<10000);assert(b.hp<10000);assert(b.hp>a.hp);assert.equal(g.shots().length,0);
  dom.window.close();
 });
 test('Double Strafe spends canonical SP once and launches two separate arrows',()=>{

@@ -18,9 +18,10 @@ async function suite(engine,name){
    const bounds=await start.boundingBox();assert(bounds.y>=0&&bounds.y+bounds.height<=height,'start accessible '+name+' '+width+' '+hero);
   }
   await page.locator('#buildPreset').selectOption('assassin_dual');await page.locator('#startBtn').click();
-  await page.locator('#pauseBtn').click();await page.getByRole('tab',{name:'Настройки',exact:true}).click();await page.locator('#combatMode').selectOption('economy');await page.locator('#spReserve').selectOption('0.25');await page.locator('#focusBoss').check();
+  await page.locator('#pauseBtn').click();await page.getByRole('tab',{name:'Настройки',exact:true}).click();assert(await page.locator('#debugInfiniteSp').isChecked());assert(!(await page.locator('#autoSkills').isChecked()));await page.locator('#debugInfiniteSp').uncheck();await page.locator('#autoSkills').check();await page.locator('#combatMode').selectOption('economy');await page.locator('#spReserve').selectOption('0.25');await page.locator('#focusBoss').check();
   await page.locator('#resume').click();await page.waitForFunction(()=>window.RS_TEST.state.t>.15);await page.locator('#pauseBtn').click();
   assert.equal(await page.evaluate(()=>window.RS_TEST.state.tactics.mode),'economy');
+  assert(await page.locator('#autoSkills').isChecked());assert(!(await page.locator('#debugInfiniteSp').isChecked()));
   // Test hook only prepares a deterministic combat scene; actual browser loop/render/input stay real.
   for(const [hero,stage]of [['wizard_male','Wizard'],['assassin_male','Assassin'],['hunter_male','Hunter'],['knight_male','Knight']]){
    await page.evaluate(({hero,stage})=>{const g=window.RS_TEST;g.reset(hero);g.state.stage=stage;g.state.lvl=85;g.state.job=50;g.state.debugInfiniteHp=true;g.state.debugInfiniteSp=true;g.state.skillPoints=0;for(const d of window.RS_DATABASE.skills)if(d.implemented&&g.skillAvailable(d.id))g.state[d.stateKey]=Math.min(3,d.maxLevel);g.recalc(true);g.start();}, {hero,stage});
@@ -40,6 +41,12 @@ async function suite(engine,name){
   await page.screenshot({path:path.join(root,'test-results',name+'-'+width+'x'+height+'.png')});
   assert.deepEqual(errors,[]);await page.close();console.log(name+' '+width+'×'+height+' passed');
  }
+ const skillsPage=await browser.newPage({viewport:{width:390,height:660}});
+ await skillsPage.goto('http://127.0.0.1:'+server.address().port+'/?test=1&scene=1');await skillsPage.waitForFunction(()=>window.RS_TEST);
+ await skillsPage.evaluate(()=>{const g=window.RS_TEST;g.selectCharacter('wizard_male');g.selectMap('pay_fild08');Object.assign(g.state,{stage:'Wizard',job:50,lvl:90,debugInfiniteHp:true});for(const d of window.RS_SKILLS)g.state.skillEnabled[d.id]=false;for(const id of ['fire_bolt','cold_bolt','lightning_bolt','energy_coat','sight','sight_blaster']){const d=window.RS_SKILLS.find(d=>d.id===id);g.state[d.stateKey]=Math.min(5,d.maxLevel);g.state.skillEnabled[id]=true;}g.recalc(true);g.start();g.state.spawn=g.state.nextBoss=1e9;});
+ await skillsPage.waitForFunction(()=>window.RS_TEST.state.metrics.casts.energy_coat===1);
+ assert(await skillsPage.locator('#classStatus').textContent().then(s=>s.includes('Energy Coat')));
+ await skillsPage.screenshot({path:path.join(root,'test-results',name+'-buff-timers.png')});await skillsPage.close();
  // Real browser decoding for every monster, including iOS/WebKit-compatible fallbacks.
  for(const failure of ['network','decode']){
   const page=await browser.newPage({viewport:{width:390,height:660}}),errors=[];

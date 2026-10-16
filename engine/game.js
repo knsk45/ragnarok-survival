@@ -107,6 +107,7 @@
     spMax: 40,
     debugInfiniteHp: !!PLAYTEST_FLAGS.debugInfiniteHp,
     debugInfiniteSp: !!PLAYTEST_FLAGS.debugInfiniteSp,
+    autoSkills: false,
     stage: "Novice",
     job: 1,
     skillPoints: 0,
@@ -426,8 +427,9 @@
     );
     S.spMax = 48 + q.int * 2 + (DB.jobs[STAGE_JOB_IDS[S.stage]].spPerLevel || 0)*S.lvl;
     S.armor =
-      Math.floor(q.vit / 10) + (S.effects?.endure?.expires > S.t ? 5 : 0) + S.gear.defense;
-    S.crit = Math.min(0.85, 0.02 + q.luk * 0.003 + (quick ? 0.05 : 0));
+      Math.floor(q.vit / 10) + S.gear.defense;
+    S.mdef=S.effects?.endure?.expires>S.t?S.effects.endure.level:0;
+    S.crit = Math.min(0.85, 0.02 + q.luk * 0.003);
     if(S.stage==='Assassin'&&S.weaponStyle!=='dual')S.crit=Math.min(.85,S.crit*2);
     S.hit = 175 + S.lvl + q.dex + Math.floor(q.luk / 3) + buffSum("hit") + S.gear.hit + (S.vultures_eye || 0);
     S.flee = 100 + S.lvl + q.agi + Math.floor(q.luk / 5);
@@ -462,6 +464,7 @@
     }
     if (jobCapReached()) S.jobXp = 0;
     unlockQuestSkillsForStage();
+    if(S.autoSkills){allocateSkills();evolveByProgression();}
     recalc();
     if (jobCapReached() && S.skillPoints > 0 && !S.jobCapPrompted[S.stage]) {
       S.jobCapPrompted[S.stage] = true;
@@ -515,6 +518,7 @@
       spMax: 40,
       debugInfiniteHp: !!PLAYTEST_FLAGS.debugInfiniteHp,
       debugInfiniteSp: !!PLAYTEST_FLAGS.debugInfiniteSp,
+      autoSkills: false,
       stage: "Novice",
       job: 1,
       skillPoints: 0,
@@ -580,8 +584,8 @@
       metrics: { damage: {}, casts: {}, spSpent: 0, taken: 0 },
     });
     for(const d of SKILL_DEFS) S[d.stateKey]=0;
-    S.traps=[];S.falconFlights=[];S.hunterCastReady=0;S.pendingHunterCast=null;S.enemyTraps=[];
-    S.classFields=[];S.classVisuals=[];S.venomBombs=[];S.classCastReady=0;S.pendingClassCast=null;S.weaponStyle='katar';S.poisonedUntil=0;
+    S.traps=[];S.falconFlights=[];S.pendingHunterCast=null;S.pendingHunterCasts=[];S.enemyTraps=[];
+    S.classFields=[];S.classVisuals=[];S.venomBombs=[];S.pendingClassCast=null;S.pendingClassCasts=[];S.weaponStyle='katar';S.poisonedUntil=0;
     S.weaponStyle=weaponStyle;S.buildPreset=buildPreset||Object.keys(RS_PRESETS).find(id=>RS_PRESETS[id].characterId===characterId);
     S.tactics={mode:'normal',reserve:0,focusBoss:false};S.hostileProjectiles=[];S.dangerAreas=[];
     S.metrics.evolution=[{stage:'Novice',time:0,base:1}];
@@ -623,10 +627,18 @@
     S.buildPreset=id;S.weaponStyle=RS_PRESETS[id].weapon||S.weaponStyle;
     S.stats={str:1,agi:1,vit:1,int:1,dex:1,luk:1};S.statPoints=48;autoAllocateStats();recalc(true);renderStartMenu();return true;
   }
-  function recommendSkills(){
-    if(!S.pause)return 0;let count=0;
-    while(S.skillPoints>0&&count<200){const d=RSCombatPolicy.next(S,SKILL_DEFS,skillAvailable);if(!d||!learnSkill(d.id))break;count++;}
+  function allocateSkills(){
+    let count=0;
+    while(S.skillPoints>0&&count<200){
+      const d=RSCombatPolicy.next(S,SKILL_DEFS,skillAvailable);if(!d)break;
+      S[d.stateKey]++;S.skillPoints--;count++;
+      if(d.utility&&S.skillEnabled[d.id]===undefined)S.skillEnabled[d.id]=false;
+    }
+    if(count){recalc();updateSkillIndicator();}
     return count;
+  }
+  function recommendSkills(){
+    if(!S.pause)return 0;const count=allocateSkills();saveRun();renderSkillMenu();hud();return count;
   }
   function renderStartMenu(){
     $('mapChoice').value=S.mapId;
@@ -727,6 +739,7 @@
       sp = $("debugInfiniteSp");
     if (hp) hp.checked = !!S.debugInfiniteHp;
     if (sp) sp.checked = !!S.debugInfiniteSp;
+    $('autoSkills').checked=!!S.autoSkills;
     document
       .querySelectorAll(".speed")
       .forEach((b) =>
@@ -871,14 +884,14 @@
     if(['magic','dagger','assassin'].includes(combatProfile().kind)){
       RSAdventurers.basic(hunterContext(),combatProfile());return;
     }
-    if(S.pendingHunterCast)return;
+
     if(combatProfile().kind==='bow'){
       const target=nearest(S.attackRange);if(!target)return;
       P.dir=Math.atan2(target.y-P.y,target.x-P.x);
       const ctx=hunterContext(),q=totalStats();
       if(stageAllows('hunter')&&S.falconry_mastery&&Math.random()<q.luk/300)RSHunter.falcon(ctx,target,false);
       const crit=Math.random()<S.crit;
-      RSHunter.arrow(ctx,target,rnd(S.atkMin,S.atkMax)*(crit?2:1),{crit,speed:combatProfile().projectileSpeed,miss:Math.random()>RSCore.chance(S.hit,types[target.type][8].stats.flee)});
+      RSHunter.arrow(ctx,target,rnd(S.atkMin,S.atkMax)*(crit?2:1),{crit,splash:42,speed:combatProfile().projectileSpeed,miss:Math.random()>RSCore.chance(S.hit,types[target.type][8].stats.flee)});
       return;
     }
     let e = nearest(MELEE_RANGE);
@@ -1083,6 +1096,7 @@
     if (!S.run || S.pause) return;
     dt *= S.spd;
     S.t += dt;
+    if(S.autoSkills&&S.skillPoints>0){allocateSkills();evolveByProgression();}
     for(const e of [...en])expireBoss(e);
     RSHunter.update(hunterContext(),dt);
     RSAdventurers.update(hunterContext(),dt);
@@ -1108,7 +1122,7 @@
     S.inv = Math.max(0, S.inv - dt);
     if (S.debugInfiniteHp) S.hp = S.max;
     if (S.debugInfiniteSp) S.sp = S.spMax;
-    else
+    else if(!RSAdventurers.hidden(hunterContext()))
       S.sp = Math.min(
         S.spMax,
         S.sp +
@@ -1121,7 +1135,7 @@
     if (m.power > 0.01) delete S.effects.playDead;
     let ease = 1 - Math.exp(-dt * 12);
     S.movePower += (m.power - S.movePower) * ease;
-    const cloakSpeed=S.effects.cloaking?.expires>S.t ? .5+.05*(S.effects.cloaking.level||1) : 1;
+    const cloakSpeed=S.effects.cloaking?.expires>S.t ? ((S.effects.cloaking.level||1)<3?0:(70+3*S.effects.cloaking.level)/100) : 1;
     moveEntity(P,m.x * S.move * cloakSpeed * S.movePower * dt,m.y * S.move * cloakSpeed * S.movePower * dt);
     if (m.power > 0.01) P.dir = Math.atan2(m.y, m.x);
     S.attack -= dt;
@@ -1166,7 +1180,8 @@
           continue;
         }
         if (S.effects.counter?.expires > S.t) {
-          hit(e, rnd(S.atkMin, S.atkMax) * (1.7 + S.counter * 0.2), true);
+          delete S.effects.counter;
+          hit(e, rnd(S.atkMin, S.atkMax) * 2, true,'counter_attack');
           burst(P.x, P.y, "#fff1a1", 10);
           S.inv = 0.35;
           continue;
@@ -1190,7 +1205,7 @@
         if (!p.hit.has(e.id) && RSCore.segmentHits(previousX,previousY,p.x,p.y,e.x,e.y,p.r+e.r)) {
           p.hit.add(e.id);
           if(p.hunterArrow){RSHunter.impact(hunterContext(),p,e);p.life=0;break;}
-          if(p.classMagic){hit(e,p.dmg,false,p.skillId,{magical:true,element:p.element});p.life=0;break;}
+          if(p.classMagic){const victims=[e,...en.filter(q=>q!==e&&!q.dead&&Math.hypot(q.x-e.x,q.y-e.y)<=42)];for(const q of victims)hit(q,p.dmg*(q===e?1:.55),false,p.skillId,{magical:true,element:p.element});p.life=0;break;}
           hit(e, p.dmg, p.crit, p.skillId);
           p.life -= 0.08;
         }
@@ -1250,7 +1265,7 @@
   /* Passive HP recovery: VIT slightly improves the rate and speed controls scale with game time. */
   const gameUpdate = update;
   update = function (dt) {
-    if (S.run && !S.pause) {
+    if (S.run && !S.pause && !RSAdventurers.hidden(hunterContext())) {
       let q = totalStats(),
         moving = move().power > 0.01;
       S.hp = Math.min(
@@ -1988,6 +2003,11 @@
     Object.assign(S, saved.state, {characterId:saved.state.characterId||'knight_male',run: false, pause: false, end: false });
     S.cooldowns = S.cooldowns || {};
     S.effects = S.effects || {};
+    S.autoSkills=!!saved.state.autoSkills;
+    S.pendingClassCasts=saved.state.pendingClassCasts|| (S.pendingClassCast?[S.pendingClassCast]:[]);
+    S.pendingHunterCasts=saved.state.pendingHunterCasts|| (S.pendingHunterCast?[S.pendingHunterCast]:[]);
+    S.pendingClassCast=S.pendingClassCasts[0]||null;
+    S.pendingHunterCast=S.pendingHunterCasts[0]||null;
     S.metrics = S.metrics || { damage: {}, casts: {}, spSpent: 0, taken: 0 };
     S.jobCapPrompted = S.jobCapPrompted || {};
     S.bossesDefeated = Array.isArray(S.bossesDefeated) ? S.bossesDefeated : [];
@@ -2090,6 +2110,7 @@
     panels.settings.append(
       document.querySelector(".pause-speed"),
       document.querySelector(".debug-switches"),
+      $("autoSkills").closest("label"),
     );
     const controls=document.createElement('div');controls.className='combat-controls';
     const modeLabel=document.createElement('label');modeLabel.textContent='Стратегия автобоя ';const mode=document.createElement('select');mode.id='combatMode';mode.setAttribute('aria-label','Стратегия автобоя');
@@ -2206,10 +2227,15 @@
     if (S.debugInfiniteHp) S.hp = S.max;
     hud();
   };
+  $('autoSkills').onchange=e=>{
+    S.autoSkills=e.target.checked;
+    if(S.autoSkills){allocateSkills();evolveByProgression();}
+    saveRun();renderSkillMenu();hud();
+  };
   $("debugInfiniteSp").onchange = (e) => {
     S.debugInfiniteSp = e.target.checked;
     if (S.debugInfiniteSp) S.sp = S.spMax;
-    hud();
+    saveRun();hud();
   };
   function jobExpDisplay() {
     return { xp: Math.floor(S.jobXp || 0), need: S.jobNeed };

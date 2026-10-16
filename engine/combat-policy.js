@@ -7,21 +7,20 @@
   if(d.implemented===false)return 'Пока недоступен';
   if(['sonic','grim'].includes(a)&&S.weaponStyle==='dual')return 'Нужен катар';
   if(a==='grim'&&!root.RSAdventurers.hidden(ctx))return 'Нужна скрытность';
-  const effect={concentration:'concentration',coat:'energyCoat',enchant:'enchantPoison',react:'poisonReact',wall:'safetyWall',sightBlast:'sightBlaster'}[a];
+  const effect=d.runtime.buff||{concentration:'concentration',coat:'energyCoat',enchant:'enchantPoison',react:'poisonReact',wall:'safetyWall',sightBlast:'sightBlaster',sight:'sight'}[a];
   if(effect&&S.effects[effect]?.expires>S.t&&(effect!=='safetyWall'||S.effects[effect].charges>0))return 'Эффект активен';
   if(a==='detox'&&!(S.poisonedUntil>S.t))return 'Нет отравления';
   if(a==='waterBall')return 'Нужен водоём';
   if(a==='stoneSupply')return 'Расходники отключены';
   if((S.cooldowns[d.id]||0)>S.t)return Math.ceil(S.cooldowns[d.id]-S.t)+' сек.';
-  if(S.pendingClassCast?.id===d.id||S.pendingHunterCast?.skillId===d.id)return 'Применяется';
-  if(d.runtime.kind==='adventurer'&&S.pendingClassCast)return 'Ожидает окончания каста';
+  if(S.pendingClassCasts?.some(c=>c.id===d.id)||S.pendingHunterCasts?.some(c=>c.skillId===d.id)||S.pendingClassCast?.id===d.id||S.pendingHunterCast?.skillId===d.id)return 'Применяется';
   if(!S.debugInfiniteSp&&S.sp<cost(d,l))return 'Нет SP';
   if(!S.debugInfiniteSp&&!defensive(d)){
    const reserve=S.spMax*(S.tactics?.reserve||0);
    if(S.sp-cost(d,l)<reserve)return 'Резерв SP';
   }
   const target=ctx.nearest(d.runtime.range||S.attackRange||92);
-  if(!target&&['adventurer','hunter'].includes(d.runtime.kind))return 'Нет цели';
+  if(!target&&['adventurer','hunter'].includes(d.runtime.kind)&&!['coat','enchant','react','wall','sightBlast','sight','concentration','detox'].includes(a))return 'Нет цели';
   if(!target&&!defensive(d))return 'Нет цели';
   if(target&&d.element&&root.RSCore.elementMultiplier(d.element,root.RSAdventurers.classification(ctx,target))<=0&&!ctx.enemies().some(e=>!e.dead&&Math.hypot(e.x-ctx.player.x,e.y-ctx.player.y)<=(d.runtime.range||320)+e.r&&root.RSCore.elementMultiplier(d.element,root.RSAdventurers.classification(ctx,e))>0))return 'Иммунитет стихии';
   if(['hide','cloak'].includes(a)&&root.RSAdventurers.hidden(ctx))return 'Скрытность активна';

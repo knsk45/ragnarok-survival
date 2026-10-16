@@ -412,7 +412,8 @@ button:disabled {
 .combat-controls {display:grid;gap:12px;margin:12px 0;}
 .combat-controls label {display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .card.recommended {border-color:#ffd66b;background:#37402d;}
-.class-status {font-size:10px;color:#c7edff;max-width:200px;line-height:1.35;}
+.class-status {display:grid;gap:4px;margin-top:4px;font-size:11px;color:#c7edff;max-width:200px;line-height:1.35;}
+.class-status > div {padding:4px 7px;border-radius:5px;background:#14232ee8;}
 #end .box {overflow-y:auto;max-height:calc(100% - 16px);touch-action:pan-y;}
 #endStats {text-align:left;font-size:13px;line-height:1.5;}
 #startBtn {flex:0 0 auto;min-height:48px;}

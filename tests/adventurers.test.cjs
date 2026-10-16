@@ -1,6 +1,6 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const {boot}=require('./helpers.cjs');
-function setup(id,stage){const b=boot(),{g,w}=b;assert(g.selectCharacter(id+'_male'));g.state.stage=stage;g.state.lvl=90;g.state.job=50;g.recalc(true);for(const d of w.RS_DATABASE.skills)g.state.skillEnabled[d.id]=false;return b;}
+function setup(id,stage){const b=boot(),{g,w}=b;assert(g.selectCharacter(id+'_male'));g.state.debugInfiniteSp=false;g.state.stage=stage;g.state.lvl=90;g.state.job=50;g.recalc(true);for(const d of w.RS_DATABASE.skills)g.state.skillEnabled[d.id]=false;return b;}
 function enable(b,id,l){const {g,w}=b,d=w.RS_DATABASE.skills.find(d=>d.id===id);g.state[d.stateKey]=l;g.state.skillEnabled[id]=true;return d;}
 function enemy(b,key='poring',x=100,boss=false){const {g,w}=b,level=g.state.lvl;g.state.lvl=w.RS_DATABASE.monsters[key].stats.level;assert(g.spawn(key,false,boss));g.state.lvl=level;const e=g.enemies().at(-1);assert.equal(e.type,key);e.x=x;e.y=0;e.speed=0;e.hp=e.max=1e7;return e;}
 function run(g){g.start();g.state.spawn=1e9;g.state.nextBoss=1e9;g.state.attack=1e9;g.state.debugInfiniteHp=true;}
@@ -46,9 +46,9 @@ test('Storm Gust persists as an area, affects multiple targets, never freezes bo
 test('Safety Wall has finite charges and only protects its location; Energy Coat consumes SP',()=>{
  const b=setup('wizard','Wizard'),{g,w,dom}=b;enable(b,'safety_wall',3);g.state.sp=200;const e=enemy(b,'poring',15);assert(g.special());
  const ctx={state:g.state,player:g.player,types:{},useSp:n=>{g.state.sp-=n;return true;}};
- for(let i=0;i<5;i++)assert.equal(w.RSAdventurers.incoming(ctx,e,100),0);assert.equal(w.RSAdventurers.incoming(ctx,e,100),100);
+ for(let i=0;i<4;i++)assert.equal(w.RSAdventurers.incoming(ctx,e,100),0);assert.equal(w.RSAdventurers.incoming(ctx,e,100),100);
  g.state.effects.safetyWall.charges=2;g.player.x=100;assert.equal(w.RSAdventurers.incoming(ctx,e,100),100);
- g.state.effects.energyCoat={expires:100};const sp=g.state.sp;assert.equal(w.RSAdventurers.incoming(ctx,e,100),70);assert(g.state.sp<sp);dom.window.close();
+ g.state.effects.energyCoat={expires:100};g.state.sp=g.state.spMax;const sp=g.state.sp;assert.equal(w.RSAdventurers.incoming(ctx,e,100),70);assert(g.state.sp<sp);dom.window.close();
 });
 test('dagger Double Attack and dual mastery differ from katars; crit bypasses flee',()=>{
  const b=setup('assassin','Thief'),{g,w,dom}=b;const e=enemy(b,'poring',70);g.state.double_attack=10;g.state.hit=1e6;g.state.crit=0;w.Math.random=()=>.1;g.attack();assert(g.state.metrics.damage.double_attack>0);

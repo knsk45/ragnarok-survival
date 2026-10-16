@@ -96,7 +96,7 @@
     const px=(cx-ox)*t-P.x+W/2,py=(cy-oy)*t-P.y+H/2,v=tile(cx,cy),q=noise(cx,cy),kind=decoration(cx,cy);
     x.fillStyle=(v&1)||kind==='boulder'?(q>.66?'#80945a':q>.25?'#788e53':'#71884e'):v&8?'#6c7160':'#304d38';x.fillRect(px,py,t+1,t+1);
     if(v&1){
-     if(!walk(cx,cy+1)){x.fillStyle='#344c35';x.fillRect(px,py+t-3,t,3);}
+     if(!walk(cx,cy+1)&&decoration(cx,cy+1)!=='boulder'){x.fillStyle='#344c35';x.fillRect(px,py+t-3,t,3);}
      x.fillStyle=q>.5?'#a1ac72':'#617c47';x.fillRect(px+q*17+2,py+7,2,3);x.fillRect(px+12,py+18,4,1);
      if(q>.985){x.fillStyle='#ddc98b';x.fillRect(px+8,py+13,3,2);}
     }else if(kind==='boulder'){

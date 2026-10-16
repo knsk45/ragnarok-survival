@@ -46,7 +46,7 @@
           (S.hp >= S.max * r.threshold || !nearest(120))
         )
           continue;
-        if (!["heal", "playDead"].includes(r.kind) && !target) continue;
+        if (!["heal", "playDead", "buff"].includes(r.kind) && !target) continue;
         if (r.kind === "buff" && S.effects[r.buff]?.expires > S.t) continue;
         if (r.kind === "debuff" && target.provokedUntil > S.t) continue;
         const radius =
@@ -60,7 +60,7 @@
           Math.hypot(target.x - P.x, target.y - P.y) > radius + target.r
         )
           continue;
-        if (!useSp(d.spCost)) continue;
+        if (!useSp(root.RSCombatPolicy.cost(d,l))) continue;
         S.cooldowns[d.id] = S.t + Math.max(0.1, d.cooldown);
         S.metrics.casts[d.id] = (S.metrics.casts[d.id] || 0) + 1;
         skillCast(d.name);
@@ -75,7 +75,7 @@
           S.effects.playDead = { expires: S.t + r.duration };
           stopJoystick();
         } else if (r.kind === "buff") {
-          S.effects[r.buff] = { expires: S.t + r.duration, level: l };
+          S.effects[r.buff] = { expires: S.t + (r.buff==="quicken"?30*l:r.buff==="endure"?7+3*l:r.buff==="counter"?.4*l:r.duration), level: l };
           recalc();
         } else if (r.kind === "debuff") {
           target.provokedUntil = S.t + r.duration;

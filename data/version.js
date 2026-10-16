@@ -1,1 +1,1 @@
-window.RS_VERSION = '0.15.2';
+window.RS_VERSION = '0.16.0';

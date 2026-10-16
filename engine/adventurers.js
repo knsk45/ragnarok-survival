@@ -80,9 +80,9 @@
  }
  function cast(ctx,d){
   const S=ctx.state,P=ctx.player,l=S[d.stateKey],a=d.runtime.action,id=d.id;
-  if(S.pendingClassCast||S.classCastReady>S.t)return false;
+  if(S.pendingClassCasts?.some(c=>c.id===id))return false;
   const list=ctx.enemies().filter(e=>!e.dead&&(!ctx.lineOfSight||ctx.lineOfSight(P,e))&&dist(e,P)<=(d.runtime.range||320)+e.r&&(!d.element||root.RSCore.elementMultiplier(d.element,classification(ctx,e))>0));
-  list.sort((a,b)=>(S.tactics?.focusBoss?Number(b.boss)-Number(a.boss):0)||dist(a,P)-dist(b,P));const target=list[0];if(!target)return false;
+  list.sort((a,b)=>(S.tactics?.focusBoss?Number(b.boss)-Number(a.boss):0)||dist(a,P)-dist(b,P));const target=list[0];if(!target&&!['coat','enchant','react','wall','sightBlast','sight','detox'].includes(a))return false;
   if(a==='waterBall'||a==='stoneSupply')return false;
   if((a==='sonic'||a==='grim')&&S.weaponStyle==='dual')return false;
   if(a==='grim'&&!hidden(ctx))return false;
@@ -93,33 +93,33 @@
   if(a==='slide'&&(dist(target,P)>65||S.hp>S.max*.7))return false;
   if(a==='detox'&&!(S.poisonedUntil>S.t))return false;
   if(a==='stone'&&(target.boss||target.stunnedUntil>S.t))return false;
-  if(a==='sight'&&!list.some(e=>e.hidden))return false;
   if(a==='steal'&&(target.boss||target.stealAttempted))return false;
-  const buffKey={coat:'energyCoat',enchant:'enchantPoison',react:'poisonReact',wall:'safetyWall',sightBlast:'sightBlaster'}[a];
+  const buffKey={coat:'energyCoat',enchant:'enchantPoison',react:'poisonReact',wall:'safetyWall',sightBlast:'sightBlaster',sight:'sight'}[a];
   if(buffKey&&S.effects[buffKey]?.expires>S.t&&(buffKey!=='safetyWall'||S.effects[buffKey].charges>0))return false;
   if(['field','dust','ice'].includes(a)&&S.classFields.some(f=>f.id===id&&f.expires>S.t))return false;
   if(a==='splasher'&&S.venomBombs.some(b=>b.targetId===target.id))return false;
   if(!ctx.useSp(cost(d,l)))return false;
   S.cooldowns[id]=S.t+Math.max(.3,d.cooldown);S.metrics.casts[id]=(S.metrics.casts[id]||0)+1;ctx.skillCast(d.name);
-  S.classCastReady=S.t+.3;
   if(a==='spell'||a==='field'){
    const wait=castTime(d,l,ctx.stats().dex);
-   S.pendingClassCast={id,level:l,targetId:target.id,x:target.x,y:target.y,power:S.matk,startedAt:S.t,finishesAt:S.t+wait};
+   const pending={id,level:l,targetId:target.id,x:target.x,y:target.y,power:S.matk,startedAt:S.t,finishesAt:S.t+wait};
    S.cooldowns[id]+=wait;
-   if(!wait){resolve(ctx,S.pendingClassCast);S.pendingClassCast=null;}
-  }else if(a==='wall')S.effects.safetyWall={expires:S.t+5+l*2,x:P.x,y:P.y,charges:2+l};
+   if(!wait)resolve(ctx,pending);else (S.pendingClassCasts??=[]).push(pending);
+   S.pendingClassCast=S.pendingClassCasts?.[0]||null;
+  }else if(a==='wall')S.effects.safetyWall={expires:S.t+5*l,x:P.x,y:P.y,charges:1+l};
   else if(a==='sightBlast')S.effects.sightBlaster={expires:S.t+120};
-  else if(a==='coat')S.effects.energyCoat={expires:S.t+120};
-  else if(a==='enchant')S.effects.enchantPoison={expires:S.t+30+15*l,level:l};
-  else if(a==='react')S.effects.poisonReact={expires:S.t+30,charges:1+Math.floor(l/2),level:l};
+  else if(a==='coat')S.effects.energyCoat={expires:S.t+300};
+  else if(a==='enchant')S.effects.enchantPoison={expires:S.t+15+15*l,level:l};
+  else if(a==='react')S.effects.poisonReact={expires:S.t+Math.min(60,15+5*l),charges:Math.ceil(l/2),level:l};
   else if(a==='hide'||a==='cloak'){
-   S.effects[a==='hide'?'hiding':'cloaking']={expires:S.t+2+l*.35,level:l};
+   const interval=a==='hide'?l+4:l===1?.5:l-1;
+   S.effects[a==='hide'?'hiding':'cloaking']={expires:a==='hide'?S.t+30*l:Number.MAX_SAFE_INTEGER,level:l,interval,nextDrain:S.t+interval};
   }else if(a==='slide'){
    const angle=Math.atan2(P.y-target.y,P.x-target.x);move(ctx,P,Math.cos(angle)*80,Math.sin(angle)*80);
    visual(ctx,id,P,40,'ghost');
   }else if(a==='detox')S.poisonedUntil=0;
   else if(a==='stone')status(ctx,target,'stone',2+l*.4);
-  else if(a==='sight'){for(const e of list)e.hidden=false;}
+  else if(a==='sight'){S.effects.sight={expires:S.t+10};for(const e of list)e.hidden=false;}
   else if(a==='ice')field(ctx,'ice_wall',{x:(P.x+target.x)/2,y:(P.y+target.y)/2},l,'water');
   else if(a==='dust')field(ctx,'venom_dust',target,l,'poison');
   else if(a==='sense'){
@@ -149,7 +149,7 @@
   return true;
  }
  function basic(ctx,profile){
-  const S=ctx.state,P=ctx.player;if(S.pendingClassCast)return true;
+  const S=ctx.state,P=ctx.player;
   const target=ctx.nearest(S.attackRange);if(!target)return true;
   if(profile.kind==='magic'){
    // Non-canonical free magic spark keeps a solo Survivor run viable without SP.
@@ -169,15 +169,19 @@
   const damage=atk*(main*(double?2:1)+off);
   ctx.hit(target,damage,crit,double?'double_attack':'basic',{element,ignoreDef:crit});
   for(const e of targets(ctx,target,42))if(e!==target)hurt(ctx,e,damage*.35,'basic',element);
-  if(S.effects.enchantPoison?.expires>S.t&&Math.random()<.05*S.effects.enchantPoison.level)poison(ctx,target,S.effects.enchantPoison.level);
+  if(S.effects.enchantPoison?.expires>S.t&&Math.random()<(.025+.005*S.effects.enchantPoison.level))poison(ctx,target,S.effects.enchantPoison.level);
   visual(ctx,'slash',target,40,element);return true;
  }
  function update(ctx,dt){
   const S=ctx.state;
+  for(const key of ['hiding','cloaking']){const effect=S.effects[key];if(effect?.expires>S.t&&effect.nextDrain<=S.t){const n=1+Math.floor((S.t-effect.nextDrain)/effect.interval);effect.nextDrain+=n*effect.interval;if(!ctx.useSp(n)||(!S.debugInfiniteSp&&S.sp<=0))delete S.effects[key];}}
   if(S.effects.sightBlaster?.expires>S.t){
    const e=ctx.nearest(60);if(e){hurt(ctx,e,S.matk,'sight_blaster','fire',true);if(!e.boss&&!e.dead){const a=Math.atan2(e.y-ctx.player.y,e.x-ctx.player.x);move(ctx,e,Math.cos(a)*60,Math.sin(a)*60);}delete S.effects.sightBlaster;visual(ctx,'sight_blaster',ctx.player,65,'fire');}
   }
-  if(S.pendingClassCast?.finishesAt<=S.t){const c=S.pendingClassCast;S.pendingClassCast=null;resolve(ctx,c);}
+  const ready=(S.pendingClassCasts||[]).filter(c=>c.finishesAt<=S.t);
+  S.pendingClassCasts=(S.pendingClassCasts||[]).filter(c=>c.finishesAt>S.t);S.pendingClassCast=S.pendingClassCasts[0]||null;
+  for(const c of ready)resolve(ctx,c);
+  if(S.effects.sight?.expires>S.t)for(const e of targets(ctx,ctx.player,84))e.hidden=false;
   for(const e of [...ctx.enemies()]){
    if(e.frozen&&!(e.stunnedUntil>S.t)){e.frozen=false;}
    if(e.stonedUntil&&e.stonedUntil<=S.t)e.stonedUntil=0;
@@ -212,9 +216,15 @@
  function incoming(ctx,e,taken,options={}){
   const S=ctx.state,wall=S.effects.safetyWall;
   if(options.melee!==false&&wall?.expires>S.t&&wall.charges>0&&dist(ctx.player,wall)<=36){wall.charges--;return 0;}
-  if(S.effects.energyCoat?.expires>S.t&&S.sp>0){const cost=Math.max(1,Math.ceil(S.spMax*.01));if(ctx.useSp(cost))taken*=.7;else delete S.effects.energyCoat;}
+  if(S.effects.energyCoat?.expires>S.t){
+   if(S.sp<=0)delete S.effects.energyCoat;
+   else{const band=Math.min(5,Math.ceil(S.sp/S.spMax*5));taken*=1-.06*band;ctx.useSp(Math.min(S.sp,Math.max(1,Math.ceil(S.spMax*(.005+.005*band)))));if(S.sp<=0)delete S.effects.energyCoat;}
+  }
   const react=S.effects.poisonReact;
-  if(react?.expires>S.t&&react.charges>0){react.charges--;hurt(ctx,e,S.atk*(1+.3*react.level),'poison_react','poison');}
+  if(react?.expires>S.t&&react.charges>0){
+   if(options.element==='poison'){hurt(ctx,e,S.atk*(1+.3*react.level),'poison_react',S.effects.enchantPoison?.expires>S.t?'poison':'neutral');if(Math.random()<.5)poison(ctx,e,5);delete S.effects.poisonReact;}
+   else if(Math.random()<.5){react.charges--;hurt(ctx,e,S.atk+75,'poison_react','poison');if(Math.random()<.3)poison(ctx,e,5);if(!react.charges)delete S.effects.poisonReact;}
+  }
   return Math.max(1,Math.round(taken));
  }
  function draw(ctx,x,screen){

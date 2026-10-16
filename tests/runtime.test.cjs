@@ -125,7 +125,7 @@ test("kill is awarded once in integrated engine", () => {
 });
 test("skill uses DB cost and independent cooldown without mutating learned level", () => {
   const { dom, w, g } = boot();
-  Object.assign(g.state, { stage: "Swordman", bash: 1, sp: 50 });
+  Object.assign(g.state, { stage: "Swordman", bash: 1, sp: 50, debugInfiniteSp:false });
   g.spawn();
   const e = g.enemies()[0];
   e.x = 80;

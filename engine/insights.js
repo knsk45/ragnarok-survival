@@ -3,8 +3,8 @@
  const time=t=>Math.floor(t/60).toString().padStart(2,'0')+':'+Math.floor(t%60).toString().padStart(2,'0');
  function statuses(S){
   const rows=[];
-  for(const [id,label]of [['hiding','Скрытность'],['cloaking','Cloaking'],['energyCoat','Energy Coat'],['enchantPoison','Яд на оружии'],['poisonReact','Poison React'],['concentration','Concentration'],['sightBlaster','Sight Blaster']]){
-   const e=S.effects[id];if(e?.expires>S.t)rows.push(label+' · '+Math.ceil(e.expires-S.t)+' с');
+  for(const [id,label]of [['endure','Endure'],['quicken','Twohand Quicken'],['counter','Counter Attack'],['sight','Sight'],['playDead','Play Dead'],['hiding','Скрытность'],['cloaking','Cloaking'],['energyCoat','Energy Coat'],['enchantPoison','Яд на оружии'],['poisonReact','Poison React'],['concentration','Concentration'],['sightBlaster','Sight Blaster']]){
+   const e=S.effects[id];if(e?.expires>S.t)rows.push(label+' · '+(id==='cloaking'?(S.debugInfiniteSp?'∞ · до раскрытия':Math.ceil(S.sp*(e.interval||1))+' с SP'):Math.ceil(e.expires-S.t)+' с'));
   }
   const wall=S.effects.safetyWall;if(wall?.expires>S.t&&wall.charges>0)rows.push('Safety Wall · '+wall.charges+' блоков · '+Math.ceil(wall.expires-S.t)+' с');
   if(S.poisonedUntil>S.t)rows.push('Отравление · '+Math.ceil(S.poisonedUntil-S.t)+' с');
@@ -17,7 +17,7 @@
   if(d.id==='double_attack')result+=' · '+5*next+'% двойного удара';
   if(d.id==='improve_dodge')result+=' · +'+next*(S.stage==='Assassin'?4:3)+' FLEE';
   if(d.id==='sonic_blow')result+=' · '+(300+50*next)+'% ATK';
-  if(d.id==='safety_wall')result+=' · '+(2+next)+' блоков';
+  if(d.id==='safety_wall')result+=' · '+(1+next)+' блоков';
   if(d.id==='owls_eye')result+=' · +'+next+' DEX';
   if(cast)result+=' · базовый каст '+cast.toFixed(2)+' с до DEX';
   return result;

@@ -8,7 +8,7 @@ const sourceRegistry = window.RS_SOURCES || {
 
 window.RS_DATABASE = {
   schemaVersion: "1.0.0",
-  contentVersion: 43,
+  contentVersion: 44,
   gameVersion: window.RS_VERSION,
   experience: window.RS_EXPERIENCE,
   equipment: window.RS_EQUIPMENT,
@@ -26,7 +26,7 @@ window.RS_DATABASE = {
     infiniteSp: false,
     maxEnemies: 60,
     debugInfiniteHp: false,
-    debugInfiniteSp: false,
+    debugInfiniteSp: true,
   },
   stats: window.RS_STATS,
   jobs: window.RS_JOBS,
