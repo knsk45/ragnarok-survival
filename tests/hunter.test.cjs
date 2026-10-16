@@ -91,7 +91,7 @@ test('Ankle Snare roots bosses without disabling their attacks; freeze cannot fr
  const{g,w,dom}=hunter();g.state.stage='Hunter';g.state.job=50;g.recalc();disableSkills(g,w);
  g.state.ankle_snare=5;g.state.skillEnabled.ankle_snare=true;g.state.sp=100;
  g.state.lvl=99;g.spawn('toad',false,true);const e=g.enemies()[0];e.x=55;e.y=0;e.speed=0;
- assert(g.special());g.start();g.state.attack=100;g.state.spawn=1e9;g.update(.5);
+ assert(g.special());g.start();g.state.attack=100;g.state.spawn=1e9;w.RSAwakening.sync(g.state);g.showAwakening();while(g.state.choose)w.document.querySelector('#cards button').click();g.update(.5);
  assert.equal(e.rootedUntil,4.5);assert(!e.stunnedUntil);
  g.state.skillEnabled.ankle_snare=false;g.state.freezing_trap=5;g.state.skillEnabled.freezing_trap=true;
  g.state.hunterCastReady=0;g.state.sp=100;
@@ -120,11 +120,11 @@ test('Hunter male sprites use cropped source frames, not the female half',()=>{
 test('Hunter survives a 20-minute engine simulation without branch leakage or invalid numbers',()=>{
  const{g,w,dom}=hunter();g.start();g.state.debugInfiniteHp=true;g.state.debugInfiniteSp=true;
  let seed=9876;w.Math.random=()=>((seed=(seed*1664525+1013904223)>>>0)/4294967296);
- for(let n=0;n<=w.RS_DATABASE.settings.runDuration*10;n++){
+ for(let n=0;n<20000&&!g.state.end;n++){
   if(n===200){g.state.stage='Archer';g.state.job=20;g.state.lvl=20;g.recalc();}
   if(n===1000){g.state.stage='Hunter';g.state.job=50;g.state.lvl=90;g.recalc();}
   for(const d of w.RS_DATABASE.skills)if(['novice','archer','hunter'].includes(d.jobId)&&d.implemented)g.state[d.stateKey]=d.maxLevel;
-  g.state.skillPoints=0;g.state.pause=false;g.update(.1);
+  g.state.skillPoints=0;while(g.state.choose)w.document.querySelector('#cards button').click();g.state.pause=false;g.update(.1);
   if(n%100===0){g.draw();for(const k of['hp','sp','atkMin','atkMax','t'])assert(Number.isFinite(g.state[k]),k);}
  }
  assert(g.state.end);assert(!g.state.metrics.casts.bash);assert(!g.state.metrics.casts.bowling_bash);

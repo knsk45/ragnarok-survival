@@ -439,6 +439,10 @@
     if(S.stage==='Assassin')S.move*=1+.01*(S.improve_dodge||0);
     S.mag = 60 + Math.floor(q.luk / 2) + S.peco * 12;
     S.attackRange=combatProfile().range+(combatProfile().kind==='bow'?(S.vultures_eye||0)*14:0);
+    const awakened=RSAwakening.factors(S);
+    S.max=Math.min(1e12,Math.round(S.max*awakened.health));
+    const interval=S.rate*awakened.attack;S.basicOverflow=Math.max(1,.06/interval);S.rate=Math.max(.06,interval);
+    S.mag*=Math.min(4,Math.sqrt(awakened.area));
     if (full) {
       S.hp = S.max;
       S.sp = S.spMax;
@@ -584,6 +588,7 @@
       metrics: { damage: {}, casts: {}, spSpent: 0, taken: 0 },
     });
     for(const d of SKILL_DEFS) S[d.stateKey]=0;
+    S.awakening=RSAwakening.fresh();
     S.traps=[];S.falconFlights=[];S.pendingHunterCast=null;S.pendingHunterCasts=[];S.enemyTraps=[];
     S.classFields=[];S.classVisuals=[];S.venomBombs=[];S.pendingClassCast=null;S.pendingClassCasts=[];S.weaponStyle='katar';S.poisonedUntil=0;
     S.weaponStyle=weaponStyle;S.buildPreset=buildPreset||Object.keys(RS_PRESETS).find(id=>RS_PRESETS[id].characterId===characterId);
@@ -702,6 +707,8 @@
   }
   function xp(n, jobAmount = 0) {
     const rates = DB.settings.experienceRates;
+    RSAwakening.sync(S);
+    if(RSAwakening.eligible(S)&&S.awakening.active){RSAwakening.award(S,n*rates.base+jobAmount*rates.job);showAwakening();hud();return;}
     awardJobXp(jobAmount * rates.job);
     if (S.lvl >= 99) return;
     S.xp += Math.max(0, n || 0) * rates.base;
@@ -718,7 +725,19 @@
       S.xp = S.need;
     }
     evolveByProgression();
+    RSAwakening.sync(S);showAwakening();
     updateXpText();
+  }
+  function showAwakening(){
+    const a=RSAwakening.state(S);if(!S.run||S.end||S.choose||!a.pending||S.pause)return;
+    S.pause=true;S.choose=true;stopJoystick();keys={};
+    $('levelUp').classList.remove('hide');$('levelUp').querySelector('h2').textContent='ПРОБУЖДЕНИЕ '+(a.level+1);
+    $('levelHint').textContent='Выбери усиление · ожидает: '+a.pending+((a.level+1)%5===0?' · новое усиление класса!':'');
+    const box=$('cards');box.replaceChildren();
+    for(const d of RSAwakening.offer(S)){const b=document.createElement('button');b.type='button';b.className='card';b.dataset.awakening=d.id;
+      const name=document.createElement('strong'),desc=document.createElement('small');name.textContent=d.name+' · '+(a.stacks[d.id]||0)+' → '+((a.stacks[d.id]||0)+1);desc.textContent=d.description;b.append(name,desc);
+      b.onclick=()=>{if(!RSAwakening.choose(S,d.id))return;const rank=RSAwakening.tier(S);recalc();if(a.level%5===0)say('Пробуждение класса '+rank+': '+RSAwakening.classes[S.stage]);S.choose=false;S.pause=false;$('levelUp').classList.add('hide');saveRun();hud();showAwakening();};box.append(b);
+    }saveRun();
   }
   function jobCapReached() {
     let p = progression();
@@ -747,7 +766,7 @@
       );
   }
   function openPause(force = false) {
-    if (!S.run || S.end) return;
+    if (!S.run || S.end || S.choose) return;
     stopJoystick();
     keys = {};
     S.pause = true;
@@ -817,8 +836,8 @@
   }
   function spawn(force = null, elite = false, boss = false) {
     if (boss && (activeBoss() || !types[force]?.[8]?.isBoss)) return false;
-    if (!boss && (en.length >= MAX_ENEMIES ||
-      (activeBoss() && en.filter((e) => !e.boss && !e.dead).length >= DB.bosses.maxRegular)))
+    if (!boss && (en.length >= RSAwakening.wave(S).cap ||
+      (activeBoss() && en.filter((e) => !e.boss && !e.dead).length >= RSAwakening.wave(S).regular)))
       return false;
     let pos = RSCore.spawnPoint(P, W, H),
       t = boss ? force : pickMonster(force),
@@ -854,7 +873,7 @@
       // The surrounding wave retreats without rewards, leaving the nearest three.
       const keep = new Set(en.filter((e) => !e.boss && !e.dead)
         .sort((a, b) => Math.hypot(a.x-P.x, a.y-P.y)-Math.hypot(b.x-P.x, b.y-P.y))
-        .slice(0, DB.bosses.maxRegular));
+        .slice(0, RSAwakening.wave(S).regular));
       en = en.filter((e) => e.boss || keep.has(e));
     }
     return true;
@@ -891,7 +910,7 @@
       const ctx=hunterContext(),q=totalStats();
       if(stageAllows('hunter')&&S.falconry_mastery&&Math.random()<q.luk/300)RSHunter.falcon(ctx,target,false);
       const crit=Math.random()<S.crit;
-      RSHunter.arrow(ctx,target,rnd(S.atkMin,S.atkMax)*(crit?2:1),{crit,splash:42,speed:combatProfile().projectileSpeed,miss:Math.random()>RSCore.chance(S.hit,types[target.type][8].stats.flee)});
+      RSHunter.arrow(ctx,target,rnd(S.atkMin,S.atkMax)*(crit?2:1),{crit,splash:42*RSAwakening.area(S),speed:combatProfile().projectileSpeed,miss:Math.random()>RSCore.chance(S.hit,types[target.type][8].stats.flee)});
       return;
     }
     let e = nearest(MELEE_RANGE);
@@ -907,7 +926,7 @@
       near = [
         e,
         ...en.filter(
-          (q) => q !== e && Math.hypot(q.x - e.x, q.y - e.y) <= MELEE_SPLASH,
+          (q) => q !== e && Math.hypot(q.x - e.x, q.y - e.y) <= MELEE_SPLASH*RSAwakening.area(S),
         ),
       ];
     hit(e, dmg, cr);
@@ -916,7 +935,7 @@
       x: e.x,
       y: e.y,
       r: 8,
-      max: MELEE_SPLASH,
+      max: MELEE_SPLASH*RSAwakening.area(S),
       life: 0.2,
       m: 0.2,
       kind: "melee",
@@ -931,6 +950,7 @@
     return 70 + ((l - 1) * 70) / 9;
   }
   function skillCast(name) {
+    if(skillTexts.length>=24)skillTexts.shift();
     skillTexts.push({ x: P.x, y: P.y - (S.stage === "Knight" && S.peco > 0 ? 100 : 74), text: name, life: 0.72, m: 0.72 });
   }
   function special() {
@@ -971,6 +991,7 @@
     taken=RSAdventurers.incoming(hunterContext(),e,taken,{melee});
     if(!taken)return;
     if(S.debugInfiniteHp){S.metrics.assisted=true;return;}
+    taken=Math.max(1,Math.round(taken*RSAwakening.factors(S).defense));
     S.hp-=taken;S.metrics.taken+=taken;S.metrics.lastHit={name:types[e.type]?.[0]||e.type,amount:taken,attack,time:S.t};
     damageNumber(P.x,P.y,taken,false);S.inv=.65;burst(P.x,P.y,'#ff536c',7);
     if(S.hp<=0)finish(false);
@@ -979,6 +1000,10 @@
     if (!e || e.dead || en.indexOf(e) < 0 || !Number.isFinite(d) || d <= 0)
       return;
     if(expireBoss(e))return;
+    const rawDamage=d,aw=RSAwakening.factors(S),basic=['basic','double_attack','arcane_spark'].includes(skillId);
+    d*=aw.damage*RSAwakening.areaOverflow(S)*(basic?(S.basicOverflow||1):1);
+    if(S.awakening?.active&&!basic&&SKILL_BY_ID[skillId]){const def=SKILL_BY_ID[skillId],baseDelay=def.runtime.delay==='aspd'?S.rate:Math.max(.1,def.cooldown);d*=Math.max(1,.08/Math.max(1e-9,baseDelay*aw.cooldown));}
+    d=Math.min(1e15,d);
     if(options.element){
       const classification=RSAdventurers.classification(hunterContext(),e);
       const multiplier=RSCore.elementMultiplier(options.element,classification,DB.elements);
@@ -994,7 +1019,8 @@
     S.metrics.damage[skillId] = (S.metrics.damage[skillId] || 0) + d;
     damageNumber(e.x, e.y, d, crit);
     burst(e.x, e.y, crit ? "#ffe36b" : "#ffe4a1", crit ? 5 : 2);
-    if (RSCore.removeDead(en, e)) {
+    const killed=RSCore.removeDead(en,e);
+    if (killed) {
       S.kills++;
       if (e.boss) {
         if (!S.bossesDefeated.includes(e.type)) S.bossesDefeated.push(e.type);
@@ -1031,6 +1057,7 @@
         });
       burst(e.x, e.y, e.elite ? "#ff536c" : "#e8f5ff", e.elite ? 18 : 7);
     }
+    RSAwakening.afterHit(hunterContext(),e,rawDamage,crit,skillId,options,killed);
   }
   function damageNumber(x, y, d, crit = false) {
     dnums.push({
@@ -1094,6 +1121,8 @@
   }
   function update(dt) {
     if (!S.run || S.pause) return;
+    RSAwakening.sync(S);showAwakening();if(S.pause)return;
+    RSAwakening.update(hunterContext());
     dt *= S.spd;
     S.t += dt;
     if(S.autoSkills&&S.skillPoints>0){allocateSkills();evolveByProgression();}
@@ -1148,9 +1177,8 @@
     spawnBoss();
     S.spawn -= dt;
     if (S.spawn <= 0) {
-      spawn();
-      if (S.t > 900) spawn();
-      S.spawn = Math.max(0.16, 0.78 - S.t / 1450);
+      const wave=RSAwakening.wave(S);for(let i=0;i<wave.batch;i++)spawn();
+      S.spawn=wave.interval;
     }
     for (let e of [...en]) {
       if (e.dead || e.stunnedUntil > S.t) continue;
@@ -1190,9 +1218,10 @@
         if(!S.run)return;
       }
     }
+    if(shots.length>300){const ratio=shots.length/300;shots=shots.slice(-300);for(const p of shots)p.dmg*=ratio;}
     for (let p of [...shots]) {
       if(p.delay>0){p.delay-=dt;continue;}
-      if(p.hunterArrow){const target=en.find(e=>e.id===p.targetId);if(target){const a=Math.atan2(target.y-p.y,target.x-p.x);p.vx=Math.cos(a)*p.speed;p.vy=Math.sin(a)*p.speed;}}
+      if(p.hunterArrow&&p.homing!==false&&!p.fanSpread){const target=en.find(e=>e.id===p.targetId);if(target){const a=Math.atan2(target.y-p.y,target.x-p.x);p.vx=Math.cos(a)*p.speed;p.vy=Math.sin(a)*p.speed;}}
       const previousX=p.x,previousY=p.y;
       p.x += p.vx * dt;
       p.y += p.vy * dt;
@@ -1204,8 +1233,8 @@
       for (let e of [...en])
         if (!p.hit.has(e.id) && RSCore.segmentHits(previousX,previousY,p.x,p.y,e.x,e.y,p.r+e.r)) {
           p.hit.add(e.id);
-          if(p.hunterArrow){RSHunter.impact(hunterContext(),p,e);p.life=0;break;}
-          if(p.classMagic){const victims=[e,...en.filter(q=>q!==e&&!q.dead&&Math.hypot(q.x-e.x,q.y-e.y)<=42)];for(const q of victims)hit(q,p.dmg*(q===e?1:.55),false,p.skillId,{magical:true,element:p.element});p.life=0;break;}
+          if(p.hunterArrow){RSHunter.impact(hunterContext(),p,e);p.pierce=(p.pierce||1)-1;p.homing=false;if(p.pierce<=0){p.life=0;break;}continue;}
+          if(p.classMagic){const victims=[e,...en.filter(q=>q!==e&&!q.dead&&Math.hypot(q.x-e.x,q.y-e.y)<=42*RSAwakening.area(S))];for(const q of victims)hit(q,p.dmg*(q===e?1:.55),false,p.skillId,{magical:true,element:p.element});p.life=0;break;}
           hit(e, p.dmg, p.crit, p.skillId);
           p.life -= 0.08;
         }
@@ -1246,6 +1275,8 @@
       }
       if (g.life <= 0 && gems.includes(g)) gems.splice(gems.indexOf(g), 1);
     }
+    gems=RSAwakening.compact(gems);
+    if(parts.length>600)parts.splice(0,parts.length-600);if(dnums.length>200)dnums.splice(0,dnums.length-200);
     for (let q of parts) {
       q.x += q.vx * dt;
       q.y += q.vy * dt;
@@ -1293,6 +1324,7 @@
     let X = W / 2,
       Y = H / 2,
       flip = Math.cos(P.dir) < -0.05 ? -1 : 1;
+    if(S.awakening?.active){x.save();x.strokeStyle='#e4b8ff';x.globalAlpha=.5+.2*Math.sin(S.t*4);x.lineWidth=2;const radius=28+Math.min(8,RSAwakening.tier(S))*4;x.beginPath();x.ellipse(X,Y+15,radius,radius*.4,0,0,TAU);x.stroke();x.restore();}
     x.fillStyle = "#0006";
     x.beginPath();
     x.ellipse(X, Y + 18, 23, 8, 0, 0, TAU);
@@ -1786,13 +1818,13 @@
   }
 
   function pause() {
-    if (!S.run || S.end) return;
+    if (!S.run || S.end || S.choose) return;
     if (S.pause) {
       evolveByProgression();
       S.pause = false;
       stopJoystick();
       $("pause").classList.add("hide");
-      hud();
+      showAwakening();hud();
     } else openPause(false);
   }
   async function fullscreen() {
@@ -2000,9 +2032,11 @@
     reset(saved.state.characterId || 'knight_male');
     S.mapId=saved.state.mapId==='pay_fild08'?'pay_fild08':'arena';
     terrain.activate(S.mapId==='pay_fild08');
-    Object.assign(S, saved.state, {characterId:saved.state.characterId||'knight_male',run: false, pause: false, end: false });
+    Object.assign(S, saved.state, {characterId:saved.state.characterId||'knight_male',run: false, pause: false, choose:false,end: false });
     S.cooldowns = S.cooldowns || {};
     S.effects = S.effects || {};
+    S.awakening={...RSAwakening.fresh(),...saved.state.awakening};
+    S.awakening.reactions=S.awakening.reactions||[];
     S.autoSkills=!!saved.state.autoSkills;
     S.pendingClassCasts=saved.state.pendingClassCasts|| (S.pendingClassCast?[S.pendingClassCast]:[]);
     S.pendingHunterCasts=saved.state.pendingHunterCasts|| (S.pendingHunterCast?[S.pendingHunterCast]:[]);
@@ -2020,7 +2054,7 @@
           Number.isFinite(e.x) &&
           Number.isFinite(e.y),
       )
-      .slice(0, MAX_ENEMIES);
+      .slice(0, 200);
     // Legacy saves have no spawn timestamp; grant their current boss one full encounter.
     for(const e of en)if(e.boss&&!Number.isFinite(e.bossExpiresAt))e.bossExpiresAt=S.t+DB.bosses.encounterDuration;
     gems = (saved.gems || []).filter(
@@ -2035,7 +2069,7 @@
     syncDebugControls();
     start();
     if(S.t>=DB.settings.runDuration){S.t=DB.settings.runDuration;hud();finish(true);return;}
-    openPause(false);
+    if(S.awakening.pending){showAwakening();}else openPause(false);
   }
   function setupSaveButton() {
     let saved;
@@ -2243,10 +2277,11 @@
   }
   function updateXpText() {
     let j = jobExpDisplay();
-    $("xpText").textContent =
+    if(S.awakening?.active){$('xpText').textContent='Пробуждение '+S.awakening.level+' · '+Math.floor(S.awakening.xp)+'/'+RSAwakening.need(S);$('xp').style.width=Math.min(100,S.awakening.xp/RSAwakening.need(S)*100)+'%';}
+    else {$("xpText").textContent =
       S.lvl >= 99 ? "MAX" : Math.floor(S.xp) + "/" + S.need;
     $("xp").style.width =
-      (S.lvl >= 99 ? 100 : cl(S.xp / S.need, 0, 1) * 100) + "%";
+      (S.lvl >= 99 ? 100 : cl(S.xp / S.need, 0, 1) * 100) + "%";}
     $("jobXpText").textContent = jobCapReached() ? "MAX" : j.xp + "/" + j.need;
     $("jobXp").style.width =
       (jobCapReached() ? 100 : cl(j.xp / j.need, 0, 1) * 100) + "%";
@@ -2289,6 +2324,7 @@
       selectWeaponStyle,
       selectPreset,
       recommendSkills,
+      showAwakening,
       finish,
       attack,
       totalStats,

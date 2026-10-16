@@ -25,8 +25,8 @@
  }
  function hurt(ctx,e,damage,id,element,magical=false){ctx.hit(e,damage,false,id,{element,magical});}
  function targets(ctx,p,r){return ctx.enemies().filter(e=>!e.dead&&dist(e,p)<=r+e.r);}
- function field(ctx,id,pos,l,element){
-  const S=ctx.state,matk=S.matk;
+ function field(ctx,id,pos,l,element,power=ctx.state.matk){
+  const S=ctx.state,matk=power;
   const config={
    fire_wall:[62,4,.45,matk*.5],thunderstorm:[82,Math.max(1,l*.25),.25,matk*.8],
    storm_gust:[130,4.5,.45,matk*(1+.4*l)],meteor_storm:[130,4,.65,matk*(1+.22*l)],
@@ -34,13 +34,13 @@
    fire_pillar:[50,5,.3,matk*(.4+.1*l)],venom_dust:[70,5*l,.8,0],ice_wall:[65,2+l,.2,0],
   }[id];
   const[r,duration,interval,damage]=config;
-  S.classFields.push({id,x:pos.x,y:pos.y,r,l,element,expires:S.t+duration,next:S.t,interval,damage});
+  S.classFields.push({id,x:pos.x,y:pos.y,r:r*root.RSAwakening.area(S),l,element,expires:S.t+duration,next:S.t,interval,damage});
   if(S.classFields.length>18)S.classFields.shift();
  }
  function resolve(ctx,c){
   const S=ctx.state,P=ctx.player,d=ctx.byId[c.id],l=c.level,id=d.id;
   const target=ctx.enemies().find(e=>e.id===c.targetId&&!e.dead),pos=target||{x:c.x,y:c.y};
-  if(d.runtime.action==='field'){field(ctx,id,{x:c.x,y:c.y},l,d.element);return;}
+  if(d.runtime.action==='field'){field(ctx,id,{x:c.x,y:c.y},l,d.element,c.power);return;}
   if(d.runtime.action!=='spell')return;
   let mult=1,r=0,knock=0,freeze=0;
   if(['fire_bolt','cold_bolt','lightning_bolt'].includes(id))mult=l;
@@ -53,6 +53,7 @@
   else if(id==='jupitel_thunder'){mult=2+l;knock=35+5*l;}
   else if(id==='frost_nova'){mult=.66+.044*l;r=130;freeze=.33+.05*l;}
   else if(id==='sightrasher'){mult=1+.2*l;r=150;knock=70;}
+  r*=root.RSAwakening.area(S);
   const origin=['frost_nova','sightrasher'].includes(id)?P:pos;
   const victims=r?targets(ctx,origin,r):target?[target]:[];
   for(const e of victims){
@@ -80,7 +81,7 @@
  }
  function cast(ctx,d){
   const S=ctx.state,P=ctx.player,l=S[d.stateKey],a=d.runtime.action,id=d.id;
-  if(S.pendingClassCasts?.some(c=>c.id===id))return false;
+  if(S.pendingClassCasts?.some(c=>c.id===id&&!c.echo))return false;
   const list=ctx.enemies().filter(e=>!e.dead&&(!ctx.lineOfSight||ctx.lineOfSight(P,e))&&dist(e,P)<=(d.runtime.range||320)+e.r&&(!d.element||root.RSCore.elementMultiplier(d.element,classification(ctx,e))>0));
   list.sort((a,b)=>(S.tactics?.focusBoss?Number(b.boss)-Number(a.boss):0)||dist(a,P)-dist(b,P));const target=list[0];if(!target&&!['coat','enchant','react','wall','sightBlast','sight','detox'].includes(a))return false;
   if(a==='waterBall'||a==='stoneSupply')return false;
@@ -99,12 +100,16 @@
   if(['field','dust','ice'].includes(a)&&S.classFields.some(f=>f.id===id&&f.expires>S.t))return false;
   if(a==='splasher'&&S.venomBombs.some(b=>b.targetId===target.id))return false;
   if(!ctx.useSp(cost(d,l)))return false;
-  S.cooldowns[id]=S.t+Math.max(.3,d.cooldown);S.metrics.casts[id]=(S.metrics.casts[id]||0)+1;ctx.skillCast(d.name);
+  S.cooldowns[id]=S.t+root.RSAwakening.delay(S,Math.max(.3,d.cooldown));S.metrics.casts[id]=(S.metrics.casts[id]||0)+1;ctx.skillCast(d.name);
   if(a==='spell'||a==='field'){
-   const wait=castTime(d,l,ctx.stats().dex);
+   const wait=castTime(d,l,ctx.stats().dex)*root.RSAwakening.factors(S).cooldown;
    const pending={id,level:l,targetId:target.id,x:target.x,y:target.y,power:S.matk,startedAt:S.t,finishesAt:S.t+wait};
    S.cooldowns[id]+=wait;
    if(!wait)resolve(ctx,pending);else (S.pendingClassCasts??=[]).push(pending);
+   if(S.awakening?.active&&S.stage==='Wizard'){
+    const repeats=root.RSAwakening.tier(S)+root.RSAwakening.factors(S).fury,count=Math.min(3,repeats);
+    for(let i=0;i<count;i++){const echo={...pending,power:S.matk*.5*(repeats/count),finishesAt:S.t+wait+.2*(i+1),echo:true},old=S.pendingClassCasts.find(c=>c.id===id&&c.echo);if(S.pendingClassCasts.length>=160&&old)old.power+=echo.power;else S.pendingClassCasts.push(echo);}
+   }
    S.pendingClassCast=S.pendingClassCasts?.[0]||null;
   }else if(a==='wall')S.effects.safetyWall={expires:S.t+5*l,x:P.x,y:P.y,charges:1+l};
   else if(a==='sightBlast')S.effects.sightBlaster={expires:S.t+120};
@@ -168,7 +173,7 @@
   P.dir=Math.atan2(target.y-P.y,target.x-P.x);
   const damage=atk*(main*(double?2:1)+off);
   ctx.hit(target,damage,crit,double?'double_attack':'basic',{element,ignoreDef:crit});
-  for(const e of targets(ctx,target,42))if(e!==target)hurt(ctx,e,damage*.35,'basic',element);
+  for(const e of targets(ctx,target,42*root.RSAwakening.area(S)))if(e!==target)hurt(ctx,e,damage*.35,'basic',element);
   if(S.effects.enchantPoison?.expires>S.t&&Math.random()<(.025+.005*S.effects.enchantPoison.level))poison(ctx,target,S.effects.enchantPoison.level);
   visual(ctx,'slash',target,40,element);return true;
  }

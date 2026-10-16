@@ -9,10 +9,15 @@
   }
   function arrow(ctx,target,damage,options={}){
     const {state:S,player:P,shots}=ctx,speed=options.speed||680;
-    const a=Math.atan2(target.y-P.y,target.x-P.x);
+    const rank=root.RSAwakening.tier(S),fury=root.RSAwakening.factors(S).fury;
+    if(S.awakening?.active&&!options.fan){
+      const wanted=1+2*rank+fury,count=Math.min(7,wanted);
+      for(let i=0;i<count;i++)arrow(ctx,target,damage*(wanted/count),{...options,fan:true,angle:(i-(count-1)/2)*.12,pierce:1+Math.min(5,rank+fury)});return;
+    }
+    const a=Math.atan2(target.y-P.y,target.x-P.x)+(options.angle||0);
     shots.push({x:P.x,y:P.y,vx:Math.cos(a)*speed,vy:Math.sin(a)*speed,speed,
       r:3,life:1.5,hit:new Set(),dmg:damage,crit:!!options.crit,col:'#ffe3a2',
-      skillId:options.skillId||'basic',hunterArrow:true,targetId:target.id,
+      skillId:options.skillId||'basic',pierce:options.pierce||1,fanSpread:Math.abs(options.angle||0)>.001,hunterArrow:true,targetId:target.id,
       splash:options.splash||0,knockback:options.knockback||0,miss:!!options.miss,
       delay:options.delay||0,element:options.element||bestElement(ctx,target)});
   }
@@ -20,8 +25,8 @@
     const {state:S,player:P,enemies,stats,hit}=ctx;
     if(!S.falconry_mastery||!S.blitz_beat||!target||target.dead)return;
     const q=stats(),hits=manual?S.blitz_beat:Math.min(S.blitz_beat,1+Math.floor(S.job/10));
-    const victims=enemies().filter(e=>!e.dead&&distance(e,target)<=55+e.r);
-    const damage=(80+6*(S.steel_crow||0)+2*Math.floor(q.int/2)+2*Math.floor(q.dex/10))*hits/(manual?1:Math.max(1,victims.length));
+    const victims=enemies().filter(e=>!e.dead&&distance(e,target)<=(55+20*root.RSAwakening.tier(S))*root.RSAwakening.area(S)+e.r);
+    const damage=(80+6*(S.steel_crow||0)+2*Math.floor(q.int/2)+2*Math.floor(q.dex/10))*hits/(manual||root.RSAwakening.tier(S)>0?1:Math.max(1,victims.length));
     for(const e of victims)hit(e,damage,false,'blitz_beat',{ignoreDef:true,element:'neutral'});
     S.falconFlights.push({x:P.x,y:P.y-40,tx:target.x,ty:target.y,life:.55,max:.55});
   }
@@ -29,7 +34,7 @@
     if(p.miss)return;
     const victims=p.splash?ctx.enemies().filter(e=>!e.dead&&distance(e,target)<=p.splash+e.r):[target];
     for(const e of victims){
-      ctx.hit(e,p.dmg*(p.skillId==='basic'&&e!==target?.55:1),p.crit,p.skillId,{element:p.element});
+      ctx.hit(e,p.dmg*(p.skillId==='basic'&&e!==target?.55:1),p.crit,p.skillId,{element:p.element,awakeningProjectile:true});
       if(p.skillId==='basic'&&['brute','insect'].includes(ctx.types[e.type][8].classification.race)&&ctx.state.beast_bane)
         ctx.hit(e,4*ctx.state.beast_bane,false,'beast_bane',{ignoreDef:true});
       if(p.knockback&&!e.boss&&!e.dead){const a=Math.atan2(e.y-ctx.player.y,e.x-ctx.player.x);move(ctx,e,Math.cos(a)*p.knockback,Math.sin(a)*p.knockback);}
@@ -41,7 +46,7 @@
     if(action!=='concentration'&&(!target||target.dead))return;
     const atk=(S.atkMin+S.atkMax)/2;
     if(action==='double')for(let i=0;i<2;i++)arrow(ctx,target,atk*(.9+.1*l),{skillId:d.id,delay:i*.08});
-    else if(action==='shower')arrow(ctx,target,atk*(.75+.05*l),{skillId:d.id,splash:72,knockback:30});
+    else if(action==='shower')arrow(ctx,target,atk*(.75+.05*l),{skillId:d.id,splash:72*root.RSAwakening.area(S),knockback:30});
     else if(action==='repel'||action==='phantasmic')arrow(ctx,target,atk*1.5,{skillId:d.id,knockback:action==='repel'?96:48});
     else if(action==='falcon')falcon(ctx,target,true);
     else if(action==='concentration'){
@@ -75,8 +80,8 @@
     if(action==='craft'||action==='linked')return false;
     const cost=d.spCosts?.[l-1]??d.spCost;
     if(!ctx.useSp(cost))return false;
-    const castTime=action==='falcon'||action==='repel'?1.5:0;
-    S.cooldowns[d.id]=S.t+(d.runtime.delay==='aspd'?S.rate:d.cooldown)+castTime;
+    const castTime=(action==='falcon'||action==='repel'?1.5:0)*root.RSAwakening.factors(S).cooldown;
+    S.cooldowns[d.id]=S.t+root.RSAwakening.delay(S,(d.runtime.delay==='aspd'?S.rate:d.cooldown))+castTime;
     S.metrics.casts[d.id]=(S.metrics.casts[d.id]||0)+1;
     ctx.skillCast(d.name);
     if(castTime){(S.pendingHunterCasts??=[]).push({skillId:d.id,targetId:target.id,finishesAt:S.t+castTime});S.pendingHunterCast=S.pendingHunterCasts[0];}
@@ -94,7 +99,7 @@
       const target=ctx.enemies().find(e=>!e.dead&&distance(e,t)<=25+e.r);if(!target)continue;
       S.traps.splice(S.traps.indexOf(t),1);
       const q=stats(),l=t.level,id=t.skillId;
-      const radius=['claymore_trap','sandman','flasher'].includes(id)?80:48;
+      const radius=(['claymore_trap','sandman','flasher'].includes(id)?80:48)*root.RSAwakening.area(S);
       const victims=id==='land_mine'||id==='ankle_snare'||id==='skid_trap'?[target]:ctx.enemies().filter(e=>!e.dead&&distance(e,t)<=radius+e.r);
       for(const e of victims){
         if(id==='land_mine'||id==='blast_mine'||id==='claymore_trap'){

@@ -243,7 +243,7 @@ test("late bosses can be defeated with basic attacks without spending SP", () =>
     const boss=g.enemies().find(e=>e.boss);
     boss.x=g.player.x+35;boss.y=g.player.y;boss.speed=0;
     let elapsed=0;
-    while(!boss.dead&&elapsed<limit){g.update(.1);elapsed+=.1}
+    while(!boss.dead&&elapsed<limit){while(g.state.choose)w.document.querySelector('#cards button').click();g.update(.1);elapsed+=.1}
     assert(boss.dead,key+' within '+limit+' seconds of continuous melee');
     assert.equal(g.state.metrics.spSpent,0);
     dom.window.close();
@@ -338,7 +338,7 @@ test("20-minute deterministic-time simulation with all classes and learned skill
   g.start();
   g.state.debugInfiniteHp = true;
   g.state.debugInfiniteSp = true;
-  for (let n = 0; n <= w.RS_DATABASE.settings.runDuration*10; n++) {
+  for (let n = 0; n < 20000 && !g.state.end; n++) {
     if (n === 1000) {
       g.state.stage = "Swordman";
       g.state.lvl = 40;
@@ -350,6 +350,7 @@ test("20-minute deterministic-time simulation with all classes and learned skill
     for (const d of w.RS_DATABASE.skills)
       if (d.implemented) g.state[d.stateKey] = d.maxLevel;
     g.state.skillPoints = 0;
+    while(g.state.choose)w.document.querySelector('#cards button').click();
     g.state.pause = false;
     g.update(0.1);
     if (n % 200 === 0) {

@@ -23,13 +23,14 @@
   return result;
  }
  function summary(S,defs){
-  const names=Object.fromEntries(defs.map(d=>[d.id,d.name]));names.arcane_spark='Магическая искра';names.poison_tick='Периодический яд';names.basic='Обычная атака';
-  return {time:time(S.t),character:S.stage,level:S.lvl,kills:S.kills,bosses:[...S.bossesDefeated],evolution:S.metrics.evolution||[],cause:S.metrics.lastHit||null,debug:!!(S.metrics.assisted||S.debugInfiniteHp||S.debugInfiniteSp),damage:Object.entries(S.metrics.damage).sort((a,b)=>b[1]-a[1]).map(([id,value])=>({name:names[id]||id,value:Math.round(value)}))};
+  const names=Object.fromEntries(defs.map(d=>[d.id,d.name]));names.arcane_spark='Магическая искра';names.poison_tick='Периодический яд';names.basic='Обычная атака';Object.assign(names,{awakening_wave:'Волны меча',awakening_blast:'Цепные взрывы',awakening_poison:'Ядовитые взрывы',awakening_execute:'Добивания',awakening_repeat:'Неистовство'});
+  return {awakening:S.awakening?.active?{level:S.awakening.level,tier:root.RSAwakening.tier(S),stacks:{...S.awakening.stacks},damage:root.RSAwakening.factors(S).damage}:null,time:time(S.t),character:S.stage,level:S.lvl,kills:S.kills,bosses:[...S.bossesDefeated],evolution:S.metrics.evolution||[],cause:S.metrics.lastHit||null,debug:!!(S.metrics.assisted||S.debugInfiniteHp||S.debugInfiniteSp),damage:Object.entries(S.metrics.damage).sort((a,b)=>b[1]-a[1]).map(([id,value])=>({name:names[id]||id,value:Math.round(value)}))};
  }
  function renderEnd(box,report,db){
   box.replaceChildren();const doc=box.ownerDocument;
   const add=(tag,text)=>{const e=doc.createElement(tag);e.textContent=text;box.append(e);return e;};
   add('p','Время '+report.time+' · '+report.character+' B'+report.level+' · Побед '+report.kills);
+  if(report.awakening)add('p','Пробуждение '+report.awakening.level+' · усиление класса '+report.awakening.tier+' · урон ×'+report.awakening.damage.toFixed(1));
   if(report.debug)add('p','Тренировочный забег: использованы отладочные настройки');
   add('p','Побеждённые боссы: '+(report.bosses.map(k=>db.monsters[k]?.name||k).join(', ')||'нет'));
   if(report.cause)add('p','Последний удар: '+report.cause.name+' · '+report.cause.amount+' HP · '+(report.cause.attack||'контактная атака'));

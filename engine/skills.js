@@ -49,6 +49,7 @@
         if (!["heal", "playDead", "buff"].includes(r.kind) && !target) continue;
         if (r.kind === "buff" && S.effects[r.buff]?.expires > S.t) continue;
         if (r.kind === "debuff" && target.provokedUntil > S.t) continue;
+        const scale=root.RSAwakening.area(S);
         const radius =
           r.radiusMin == null
             ? null
@@ -57,11 +58,11 @@
                 Math.max(1, d.maxLevel - 1);
         if (
           radius != null &&
-          Math.hypot(target.x - P.x, target.y - P.y) > radius + target.r
+          Math.hypot(target.x - P.x, target.y - P.y) > radius*scale + target.r
         )
           continue;
         if (!useSp(root.RSCombatPolicy.cost(d,l))) continue;
-        S.cooldowns[d.id] = S.t + Math.max(0.1, d.cooldown);
+        S.cooldowns[d.id] = S.t + root.RSAwakening.delay(S,d.cooldown);
         S.metrics.casts[d.id] = (S.metrics.casts[d.id] || 0) + 1;
         skillCast(d.name);
         used = true;
@@ -118,9 +119,9 @@
           fx.push({
             x: r.kind === "bowling" ? target.x : P.x,
             y: r.kind === "bowling" ? target.y : P.y,
-            r: radius || r.range,
-            max: radius || r.range,
-            width: r.width || 32,
+            r: (radius || r.range)*scale,
+            max: (radius || r.range)*scale,
+            width: (r.width || 32)*scale,
             a,
             life: 0.35,
             m: 0.35,

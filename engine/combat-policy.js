@@ -13,7 +13,7 @@
   if(a==='waterBall')return 'Нужен водоём';
   if(a==='stoneSupply')return 'Расходники отключены';
   if((S.cooldowns[d.id]||0)>S.t)return Math.ceil(S.cooldowns[d.id]-S.t)+' сек.';
-  if(S.pendingClassCasts?.some(c=>c.id===d.id)||S.pendingHunterCasts?.some(c=>c.skillId===d.id)||S.pendingClassCast?.id===d.id||S.pendingHunterCast?.skillId===d.id)return 'Применяется';
+  if(S.pendingClassCasts?.some(c=>c.id===d.id&&!c.echo)||S.pendingHunterCasts?.some(c=>c.skillId===d.id)||(S.pendingClassCast?.id===d.id&&!S.pendingClassCast.echo)||S.pendingHunterCast?.skillId===d.id)return 'Применяется';
   if(!S.debugInfiniteSp&&S.sp<cost(d,l))return 'Нет SP';
   if(!S.debugInfiniteSp&&!defensive(d)){
    const reserve=S.spMax*(S.tactics?.reserve||0);

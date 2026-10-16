@@ -1,6 +1,6 @@
 {
   "name": "ragnarok-survival",
-  "version": "0.16.2",
+  "version": "0.17.0",
   "private": true,
   "scripts": {
     "test": "node --test --test-force-exit tests/*.test.cjs",

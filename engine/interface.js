@@ -249,6 +249,8 @@
     if($("buffs").innerHTML!==buffMarkup)$("buffs").innerHTML=buffMarkup;
     let tray=$('statusTray');if(!tray){tray=document.createElement('div');tray.id='statusTray';tray.className='status-tray';$('buffs').before(tray);tray.append($('buffs'));}
     let states=$('classStatus');if(!states){states=document.createElement('div');states.id='classStatus';states.className='class-status';states.setAttribute('aria-label','Состояния персонажа');tray.append(states);}
+    const a=RSAwakening.state(S);let mastery=$('awakeningHud');if(!mastery){mastery=document.createElement('div');mastery.id='awakeningHud';tray.prepend(mastery);}
+    mastery.hidden=!a.active;if(a.active){const f=RSAwakening.factors(S);mastery.textContent='✦ Пробуждение '+a.level+' · Класс '+RSAwakening.tier(S)+'\nУрон ×'+f.damage.toFixed(1)+' · HP ×'+f.health.toFixed(1)+'\nОпыт '+Math.floor(a.xp).toLocaleString('ru-RU')+' / '+RSAwakening.need(S).toLocaleString('ru-RU')+(RSAwakening.tier(S)>0?'\n'+RSAwakening.classes[S.stage]:'');}
     const rows=RSInsights.statuses(S),stateText=rows.join('|');if(states.dataset.rows!==stateText){states.replaceChildren(...rows.map(text=>{const row=document.createElement('div');row.textContent=text;return row;}));states.dataset.rows=stateText;}
     updateSkillIndicator();
   }

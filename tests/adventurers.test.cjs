@@ -101,10 +101,10 @@ test('Sight Blaster triggers once against an approaching enemy',()=>{
 for(const [id,first,last]of [['wizard','Mage','Wizard'],['assassin','Thief','Assassin']])test(id+' 20-minute deterministic engine simulation stays finite and branch-isolated',()=>{
  const {g,w,dom}=setup(id,first);g.start();g.state.debugInfiniteHp=true;g.state.debugInfiniteSp=true;
  let seed=1253;w.Math.random=()=>((seed=(seed*1664525+1013904223)>>>0)/4294967296);
- for(let n=0;n<=w.RS_DATABASE.settings.runDuration*10;n++){
+ for(let n=0;n<20000&&!g.state.end;n++){
   if(n===300){g.state.stage=last;g.recalc();}
   for(const d of w.RS_DATABASE.skills)if(['novice',first.toLowerCase(),last.toLowerCase()].includes(d.jobId)&&d.implemented)g.state[d.stateKey]=d.maxLevel;
-  g.state.skillPoints=0;g.state.pause=false;g.update(.1);
+  g.state.skillPoints=0;while(g.state.choose)w.document.querySelector('#cards button').click();g.state.pause=false;g.update(.1);
   if(n%100===0){g.draw();for(const key of ['hp','sp','matk','atk','t'])assert(Number.isFinite(g.state[key]),key);assert(g.state.classFields.length<=18);assert(g.state.classVisuals.length<=60);}
  }
  assert(g.state.end);assert(!g.state.metrics.casts.bash);assert(!g.state.metrics.casts.double_strafe);assert(!g.state.metrics.casts[id==='wizard'?'sonic_blow':'fire_bolt']);dom.window.close();

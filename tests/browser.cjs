@@ -48,6 +48,21 @@ async function suite(engine,name){
  assert(await skillsPage.locator('#classStatus').textContent().then(s=>s.includes('Energy Coat')));
  assert(await skillsPage.evaluate(()=>document.querySelector('#statusTray').getBoundingClientRect().top>=document.querySelector('.top-hud').getBoundingClientRect().bottom));
  await skillsPage.screenshot({path:path.join(root,'test-results',name+'-buff-timers.png')});await skillsPage.close();
+ // Awakening cards are reachable on small screens, choices freeze time and survive reload.
+ const aw=await browser.newPage({viewport:{width:320,height:480}}),awErrors=[];aw.on('pageerror',e=>awErrors.push(e.message));
+ await aw.goto('http://127.0.0.1:'+server.address().port+'/?test=1');await aw.waitForFunction(()=>window.RS_TEST);
+ await aw.evaluate(()=>{const g=window.RS_TEST;g.selectCharacter('knight_male');Object.assign(g.state,{stage:'Knight',lvl:99,job:50,debugInfiniteHp:false});g.recalc(true);g.start();g.xp(0);});
+ await aw.locator('#levelUp').waitFor({state:'visible'});assert.equal(await aw.locator('#cards button').count(),3);
+ const frozen=await aw.evaluate(()=>window.RS_TEST.state.t);await aw.waitForTimeout(160);assert.equal(await aw.evaluate(()=>window.RS_TEST.state.t),frozen);
+ await aw.screenshot({path:path.join(root,'test-results',name+'-awakening-choice.png')});
+ await aw.reload();await aw.waitForFunction(()=>window.RS_TEST);await aw.locator('#restoreRun').click();await aw.locator('#levelUp').waitFor({state:'visible'});await aw.locator('#cards button').first().click();await aw.waitForFunction(()=>window.RS_TEST.state.awakening.level===1&&!window.RS_TEST.state.pause);
+ await aw.setViewportSize({width:390,height:660});
+ for(const [hero,stage]of [['knight','Knight'],['hunter','Hunter'],['wizard','Wizard'],['assassin','Assassin']]){
+  await aw.evaluate(({hero,stage})=>{const g=window.RS_TEST;g.reset(hero+'_male');g.selectMap('arena');Object.assign(g.state,{stage,lvl:99,job:50,t:1050,debugInfiniteHp:false});g.state.awakening={...window.RSAwakening.fresh(),active:true,level:25,earned:40,stacks:{damage:15,health:15,defense:20,attack:20,cooldown:10,area:10,fury:8}};for(const d of window.RS_SKILLS){g.state.skillEnabled[d.id]=false;if(d.implemented&&g.skillAvailable(d.id)){g.state[d.stateKey]=Math.min(5,d.maxLevel);g.state.skillEnabled[d.id]=!d.utility;}}g.recalc(true);g.state.lvl=3;for(let i=0;i<120;i++){g.spawn('lunatic');const e=g.enemies().at(-1),angle=i*2.399963;e.x=g.player.x+Math.cos(angle)*(65+i);e.y=g.player.y+Math.sin(angle)*(65+i);e.speed=0;}g.state.lvl=99;g.start();g.state.spawn=g.state.nextBoss=1e9;}, {hero,stage});
+  await aw.waitForFunction(()=>window.RS_TEST.state.t>1052);assert(await aw.evaluate(()=>window.RS_TEST.state.kills>10&&!window.RS_TEST.state.end&&window.RS_TEST.state.hp>0));
+  await aw.screenshot({path:path.join(root,'test-results',name+'-awakening-'+hero+'.png')});
+ }
+ assert.deepEqual(awErrors,[]);await aw.close();
  // Real browser decoding for every monster, including iOS/WebKit-compatible fallbacks.
  for(const failure of ['network','decode']){
   const page=await browser.newPage({viewport:{width:390,height:660}}),errors=[];

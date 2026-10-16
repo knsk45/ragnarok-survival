@@ -676,3 +676,9 @@ button:disabled {
     max-width: 360px;
   }
 }
+#awakeningHud {white-space:pre-line;color:#ffe28b;background:#302243e8;padding:7px;border:1px solid #aa79d2;border-radius:6px;font-size:11px;line-height:1.45;}
+#awakeningHud[hidden] {display:none;}
+#levelUp .box {max-height:calc(100dvh - 24px);overflow-y:auto;touch-action:pan-y;}
+#levelUp .card {min-height:90px;text-align:left;}
+#levelUp .card small {display:block;margin-top:8px;line-height:1.4;}
+@media(max-height:500px){#levelUp .box{padding:10px;}#levelUp .cards{grid-template-columns:repeat(3,minmax(0,1fr));}#levelUp .card{padding:8px;font-size:12px;min-height:80px;}#levelUp h2{font-size:18px;margin:3px;}}
