@@ -3,6 +3,7 @@ window.RS_BOSSES = {
   "sourceFilter": "https://db.irowiki.org/db/monster-search/?search&boss=1&category=1&hp=3,100000,0&level=3,100,&ltype=1&sort=1,1&header=10",
   "firstSpawnAt": 120,
   "cooldown": 90,
+  "encounterDuration": 120,
   "maxRegular": 3,
   "roster": [
     "toad",

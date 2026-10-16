@@ -202,7 +202,7 @@
     const boss = activeBoss();
     $("bossHud").classList.toggle("hide", !boss);
     if (boss) {
-      $("bossName").textContent = types[boss.type][0];
+      $("bossName").textContent = types[boss.type][0]+" · "+time(Math.ceil(Math.max(0,boss.bossExpiresAt-S.t)));
       $("bossHpText").textContent = Math.ceil(Math.max(0, boss.hp)) + "/" + boss.max;
       $("bossHp").style.width = cl(boss.hp / boss.max, 0, 1) * 100 + "%";
     }

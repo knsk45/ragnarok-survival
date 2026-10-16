@@ -787,6 +787,18 @@
   function activeBoss() {
     return en.find((e) => e.boss && !e.dead && e.hp > 0);
   }
+  function expireBoss(e) {
+    if(!e.boss||e.dead||!Number.isFinite(e.bossExpiresAt)||S.t<e.bossExpiresAt)return false;
+    const index=en.indexOf(e);if(index<0)return false;
+    e.dead=true;en.splice(index,1);
+    S.nextBoss=S.t+DB.bosses.cooldown;
+    const owned=o=>o.source?.boss&&o.source.type===e.type;
+    S.hostileProjectiles=S.hostileProjectiles.filter(o=>!owned(o));
+    S.dangerAreas=S.dangerAreas.filter(o=>!owned(o));
+    S.venomBombs=S.venomBombs.filter(o=>o.targetId!==e.id);
+    say('Босс ушёл: '+types[e.type][0]+' · время истекло');
+    return true;
+  }
   function spawnBoss() {
     if (activeBoss() || S.t < S.nextBoss) return false;
     const key = DB.bosses.roster.find((key) =>
@@ -828,6 +840,7 @@
       r: q[7],
       elite,
       boss,
+      ...(boss?{bossExpiresAt:S.t+DB.bosses.encounterDuration}:{}),
     });
     if (boss) {
       // The surrounding wave retreats without rewards, leaving the nearest three.
@@ -957,6 +970,7 @@
   function hit(e, d, crit = false, skillId = "basic", options = {}) {
     if (!e || e.dead || en.indexOf(e) < 0 || !Number.isFinite(d) || d <= 0)
       return;
+    if(expireBoss(e))return;
     if(options.element){
       const classification=RSAdventurers.classification(hunterContext(),e);
       const multiplier=RSCore.elementMultiplier(options.element,classification,DB.elements);
@@ -1074,6 +1088,7 @@
     if (!S.run || S.pause) return;
     dt *= S.spd;
     S.t += dt;
+    for(const e of [...en])expireBoss(e);
     RSHunter.update(hunterContext(),dt);
     RSAdventurers.update(hunterContext(),dt);
     RSMonsterAI.update({moveEntity,lineOfSight:(a,b)=>terrain.line(a,b,0,true),state:S,player:P,enemies:()=>en,sees:e=>RSAdventurers.seesPlayer(hunterContext(),e),hurt:damagePlayer},dt);
@@ -1991,6 +2006,8 @@
           Number.isFinite(e.y),
       )
       .slice(0, MAX_ENEMIES);
+    // Legacy saves have no spawn timestamp; grant their current boss one full encounter.
+    for(const e of en)if(e.boss&&!Number.isFinite(e.bossExpiresAt))e.bossExpiresAt=S.t+DB.bosses.encounterDuration;
     gems = (saved.gems || []).filter(
       (g) => Number.isFinite(g.x) && Number.isFinite(g.y),
     );

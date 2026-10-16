@@ -287,18 +287,18 @@ test("boss queue respects time, unlocks, one living boss and regular cap of thre
   g.hit(regular,1e9);
   assert.equal(g.spawn(),true);
   assert.equal(g.spawn(),false);
-  g.state.t=800;
+  g.state.t=239;
   assert.equal(g.spawnBoss(),false); // No overlapping encounter even if overdue.
   const gifts=g.gems().filter(x=>x.kind==='gift').length;
   g.hit(boss,1e9);
   assert.equal(g.gems().filter(x=>x.kind==='gift').length,gifts+1);
-  assert.equal(g.state.nextBoss,890);
+  assert.equal(g.state.nextBoss,329);
   g.hit(boss,1e9);
   assert.equal(g.gems().filter(x=>x.kind==='gift').length,gifts+1);
   assert.equal(g.spawn(),true);
-  g.state.t=889;g.state.lvl=99;
+  g.state.t=328;g.state.lvl=99;
   assert.equal(g.spawnBoss(),false);
-  g.state.t=890;
+  g.state.t=329;
   assert.equal(g.spawnBoss(),true);
   assert.equal(g.enemies().find(e=>e.boss).type,'eclipse');
   dom.window.close();
