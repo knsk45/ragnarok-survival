@@ -53,6 +53,8 @@ async function suite(engine,name){
  await aw.goto('http://127.0.0.1:'+server.address().port+'/?test=1');await aw.waitForFunction(()=>window.RS_TEST);
  await aw.evaluate(()=>{const g=window.RS_TEST;g.selectCharacter('knight_male');Object.assign(g.state,{stage:'Knight',lvl:99,job:50,debugInfiniteHp:false});g.recalc(true);g.start();g.xp(0);});
  await aw.locator('#levelUp').waitFor({state:'visible'});assert.equal(await aw.locator('#cards button').count(),3);
+ assert(await aw.locator('#cards button').evaluateAll(cards=>cards.every(c=>c.scrollWidth<=c.clientWidth+1)));
+ await aw.locator('#cards button').last().scrollIntoViewIfNeeded();const lastCard=await aw.locator('#cards button').last().boundingBox();assert(lastCard.y>=0&&lastCard.y+lastCard.height<=480);
  const frozen=await aw.evaluate(()=>window.RS_TEST.state.t);await aw.waitForTimeout(160);assert.equal(await aw.evaluate(()=>window.RS_TEST.state.t),frozen);
  await aw.screenshot({path:path.join(root,'test-results',name+'-awakening-choice.png')});
  await aw.reload();await aw.waitForFunction(()=>window.RS_TEST);await aw.locator('#restoreRun').click();await aw.locator('#levelUp').waitFor({state:'visible'});await aw.locator('#cards button').first().click();await aw.waitForFunction(()=>window.RS_TEST.state.awakening.level===1&&!window.RS_TEST.state.pause);

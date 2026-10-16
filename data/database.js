@@ -8,7 +8,7 @@ const sourceRegistry = window.RS_SOURCES || {
 
 window.RS_DATABASE = {
   schemaVersion: "1.0.0",
-  contentVersion: 47,
+  contentVersion: 48,
   gameVersion: window.RS_VERSION,
   experience: window.RS_EXPERIENCE,
   equipment: window.RS_EQUIPMENT,
