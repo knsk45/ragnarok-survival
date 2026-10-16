@@ -83,19 +83,29 @@
    }return null;
   }
   const noise=(cx,cy)=>{let a=Math.imul(cx+19,374761393)^Math.imul(cy+41,668265263);a=Math.imul(a^(a>>>13),1274126177);return (a>>>0)/4294967295;};
+  function decoration(cx,cy){
+   if(!inside(cx,cy))return 'void';
+   const v=tile(cx,cy);if(v&1)return 'ground';if(v&8)return 'cliff';
+   return dirs.reduce((n,[dx,dy])=>n+(walk(cx+dx,cy+dy)?1:0),0)>=2?'boulder':'forest';
+  }
   function draw(x,P,W,H){
    if(!enabled)return false;
    const a=coord(P.x-W/2-t*3,P.y-H/2-t*3),b=coord(P.x+W/2+t*3,P.y+H/2+t*3);
    x.fillStyle='#243d33';x.fillRect(0,0,W,H);
    for(let cy=Math.max(0,a.y);cy<=Math.min(h-1,b.y);cy++)for(let cx=Math.max(0,a.x);cx<=Math.min(w-1,b.x);cx++){
-    const px=(cx-ox)*t-P.x+W/2,py=(cy-oy)*t-P.y+H/2,v=tile(cx,cy),q=noise(cx,cy);
-    x.fillStyle=v&1?(q>.66?'#80945a':q>.25?'#788e53':'#71884e'):v&8?'#5b6353':'#304d38';x.fillRect(px,py,t+1,t+1);
+    const px=(cx-ox)*t-P.x+W/2,py=(cy-oy)*t-P.y+H/2,v=tile(cx,cy),q=noise(cx,cy),kind=decoration(cx,cy);
+    x.fillStyle=(v&1)||kind==='boulder'?(q>.66?'#80945a':q>.25?'#788e53':'#71884e'):v&8?'#6c7160':'#304d38';x.fillRect(px,py,t+1,t+1);
     if(v&1){
      if(!walk(cx,cy+1)){x.fillStyle='#344c35';x.fillRect(px,py+t-3,t,3);}
      x.fillStyle=q>.5?'#a1ac72':'#617c47';x.fillRect(px+q*17+2,py+7,2,3);x.fillRect(px+12,py+18,4,1);
      if(q>.985){x.fillStyle='#ddc98b';x.fillRect(px+8,py+13,3,2);}
+    }else if(kind==='boulder'){
+     x.fillStyle='#38432d88';x.beginPath();x.ellipse(px+13,py+20,11,4,0,0,Math.PI*2);x.fill();
+     x.fillStyle='#8e927b';x.strokeStyle='#4d5847';x.lineWidth=1.5;x.beginPath();x.moveTo(px+3,py+17);x.lineTo(px+7,py+6);x.lineTo(px+17,py+4);x.lineTo(px+22,py+14);x.lineTo(px+18,py+21);x.lineTo(px+6,py+22);x.closePath();x.fill();x.stroke();
+     x.strokeStyle='#bcc1a1';x.beginPath();x.moveTo(px+7,py+7);x.lineTo(px+16,py+6);x.lineTo(px+13,py+13);x.stroke();
     }else if(v&8){
-     x.fillStyle='#838777';x.fillRect(px+3,py+2,17,3);x.fillStyle='#3e493d';x.fillRect(px+4,py+11,15,8);
+     x.fillStyle='#91947e';x.beginPath();x.moveTo(px,py+2);x.lineTo(px+11,py+5);x.lineTo(px+24,py+1);x.lineTo(px+20,py+12);x.lineTo(px+6,py+16);x.closePath();x.fill();
+     x.strokeStyle='#4b5545';x.lineWidth=2;x.beginPath();x.moveTo(px+7,py+8);x.lineTo(px+11,py+18);x.lineTo(px+22,py+22);x.stroke();
     }else if(cx%2===0&&cy%2===0){
      // Deterministic crowns sit entirely in blocked terrain; no fake solid trees on paths.
      const center=px+12,base=py+22;
@@ -113,7 +123,7 @@
    const c=coord(P.x,P.y);x.strokeStyle='#ffffff70';x.lineWidth=1;x.strokeRect(left+(c.x-W/t/2)*scale,top+(c.y-H/t/2)*scale,W/t*scale,H/t*scale);
    x.fillStyle='#ffe08b';x.beginPath();x.arc(left+c.x*scale,top+c.y*scale,3,0,Math.PI*2);x.fill();x.font='10px Arial';x.textAlign='left';x.fillStyle='#f6edcc';x.fillText('PAY_FILD08',left,top-8);x.restore();
   }
-  return {activate,free,line,move,safe,direction,spawnPoint,draw,minimap,point,coord,walk,tile,spawn,enabled:()=>enabled,width:w,height:h,tileSize:t,component};
+  return {activate,free,line,move,safe,direction,spawnPoint,draw,minimap,point,coord,walk,tile,decoration,spawn,enabled:()=>enabled,width:w,height:h,tileSize:t,component};
  }
  root.RSWorld={create};if(typeof module!=='undefined')module.exports=root.RSWorld;
 })(typeof window!=='undefined'?window:globalThis);

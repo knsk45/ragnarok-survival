@@ -39,6 +39,19 @@ async function suite(engine,name){
   assert(await page.evaluate(()=>{const g=window.RS_TEST;return g.terrain.free(g.player.x,g.player.y)&&g.enemies().every(e=>g.terrain.free(e.x,e.y));}));
   await page.screenshot({path:path.join(root,'test-results',name+'-'+width+'x'+height+'.png')});
   assert.deepEqual(errors,[]);await page.close();console.log(name+' '+width+'×'+height+' passed');
- }}finally{await browser.close();}
+ }
+ // Real browser decoding for every monster, including iOS/WebKit-compatible fallbacks.
+ for(const failure of ['network','decode']){
+  const page=await browser.newPage({viewport:{width:390,height:660}}),errors=[];
+  page.on('pageerror',e=>errors.push(e.message));
+  await page.route('**/assets/irowiki/monsters/1010.png*',route=>failure==='network'?route.abort():route.fulfill({status:200,contentType:'image/png',body:'invalid image bytes'}));
+  await page.goto('http://127.0.0.1:'+server.address().port+'/?test=1&scene=1');
+  await page.waitForFunction(()=>window.RS_TEST&&Object.keys(window.RS_DATABASE.monsters).every(k=>window.RS_TEST.spriteImage(k)));
+  assert(await page.evaluate(()=>window.RS_TEST.spriteImage('willow').src.startsWith('data:image/png;base64,')));
+  await page.evaluate(()=>{const g=window.RS_TEST;g.selectMap('pay_fild08');g.spawn('willow');const e=g.enemies()[0];e.x=g.player.x+65;e.y=g.player.y+80;g.start();g.state.pause=true;g.draw();});
+  await page.screenshot({path:path.join(root,'test-results',name+'-willow-'+failure+'.png')});
+  assert.deepEqual(errors,[]);await page.close();console.log(name+' Willow '+failure+' recovery and all 65 sprites decoded');
+ }
+ }finally{await browser.close();}
 }
 (async()=>{fs.mkdirSync(path.join(root,'test-results'),{recursive:true});await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));try{await suite(chromium,'chromium');if(process.env.BROWSER_ALL==='1')await suite(webkit,'webkit');}finally{server.close();}})().catch(e=>{console.error(e);process.exitCode=1;server.close();});

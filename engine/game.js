@@ -273,15 +273,10 @@
     monsterSprites = {};
   Object.values(DB.monsters).forEach((m) => {
     if (!m.visual?.spriteUrl) return;
-    let sprite = new Image();
-    sprite.src = m.visual.spriteUrl;
-    monsterSprites[m.key] = sprite;
-    sprite.onload = () => {
-      if (typeof draw === "function") draw();
-    };
-    sprite.onerror = () => {
-      monsterSprites[m.key] = null;
-    };
+    monsterSprites[m.key]=RSSprites.load({
+      url:m.visual.spriteUrl,fallback:RS_SPRITE_FALLBACKS[m.visual.spriteUrl],version:RS_VERSION,
+      ready:()=>{if(window.RS_BOOTED)draw();}
+    });
   });
   const SKILL_DEFS = DB.skills,
     SKILL_BY_ID = Object.fromEntries(SKILL_DEFS.map((s) => [s.id, s]));
@@ -1453,7 +1448,7 @@
     x.restore();
   }
   function drawMonsterSprite(e, q, r) {
-    let sprite = monsterSprites[e.type];
+    let sprite = monsterSprites[e.type]?.current();
     if (!sprite?.complete || !sprite.naturalWidth) return false;
     let h = q[8].visual.renderHeight || Math.max(8, r * 2.75),
       scale = h / sprite.naturalHeight,
@@ -1463,8 +1458,8 @@
     return true;
   }
   function drawMissingMonster(q, r) {
-    x.fillStyle = q[1];
-    x.fillRect(-r * 0.7, -r, r * 1.4, r * 1.7);
+    x.strokeStyle='#d8dfca';x.lineWidth=2;
+    x.beginPath();x.ellipse(0,-r*.2,r*.65,r*.85,0,0,TAU);x.stroke();
     x.font = "9px Arial";
     x.fillStyle = "#fff";
     x.textAlign = "center";
@@ -2259,6 +2254,7 @@
       gems: () => gems,
       hit,
       spawn,
+      spriteImage:key=>monsterSprites[key]?.current(),
       selectMap,
       terrain,
       moveEntity,
