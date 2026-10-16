@@ -98,10 +98,10 @@ test('a lost cast target is safe, ground spells finish at their saved position a
 test('Sight Blaster triggers once against an approaching enemy',()=>{
  const b=setup('wizard','Wizard'),{g,dom}=b;enable(b,'sight_blaster',1);g.state.sp=100;const e=enemy(b,'poring',50);assert(g.special());assert(g.state.effects.sightBlaster);run(g);g.update(.1);assert(g.state.metrics.damage.sight_blaster>0);assert(!g.state.effects.sightBlaster);dom.window.close();
 });
-for(const [id,first,last]of [['wizard','Mage','Wizard'],['assassin','Thief','Assassin']])test(id+' 30-minute deterministic engine simulation stays finite and branch-isolated',()=>{
+for(const [id,first,last]of [['wizard','Mage','Wizard'],['assassin','Thief','Assassin']])test(id+' 20-minute deterministic engine simulation stays finite and branch-isolated',()=>{
  const {g,w,dom}=setup(id,first);g.start();g.state.debugInfiniteHp=true;g.state.debugInfiniteSp=true;
  let seed=1253;w.Math.random=()=>((seed=(seed*1664525+1013904223)>>>0)/4294967296);
- for(let n=0;n<18001;n++){
+ for(let n=0;n<=w.RS_DATABASE.settings.runDuration*10;n++){
   if(n===300){g.state.stage=last;g.recalc();}
   for(const d of w.RS_DATABASE.skills)if(['novice',first.toLowerCase(),last.toLowerCase()].includes(d.jobId)&&d.implemented)g.state[d.stateKey]=d.maxLevel;
   g.state.skillPoints=0;g.state.pause=false;g.update(.1);

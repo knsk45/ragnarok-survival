@@ -117,10 +117,10 @@ test('Hunter male sprites use cropped source frames, not the female half',()=>{
  }
  dom.window.close();
 });
-test('Hunter survives a 30-minute engine simulation without branch leakage or invalid numbers',()=>{
+test('Hunter survives a 20-minute engine simulation without branch leakage or invalid numbers',()=>{
  const{g,w,dom}=hunter();g.start();g.state.debugInfiniteHp=true;g.state.debugInfiniteSp=true;
  let seed=9876;w.Math.random=()=>((seed=(seed*1664525+1013904223)>>>0)/4294967296);
- for(let n=0;n<18001;n++){
+ for(let n=0;n<=w.RS_DATABASE.settings.runDuration*10;n++){
   if(n===200){g.state.stage='Archer';g.state.job=20;g.state.lvl=20;g.recalc();}
   if(n===1000){g.state.stage='Hunter';g.state.job=50;g.state.lvl=90;g.recalc();}
   for(const d of w.RS_DATABASE.skills)if(['novice','archer','hunter'].includes(d.jobId)&&d.implemented)g.state[d.stateKey]=d.maxLevel;

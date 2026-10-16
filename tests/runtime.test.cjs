@@ -333,12 +333,12 @@ test("boss encounter progress survives save and restore without duplication", ()
   assert.equal(g.spawnBoss(),false);
   dom.window.close();
 });
-test("30-minute deterministic-time simulation with all classes and learned skills does not crash", () => {
+test("20-minute deterministic-time simulation with all classes and learned skills does not crash", () => {
   const { dom, w, g } = boot();
   g.start();
   g.state.debugInfiniteHp = true;
   g.state.debugInfiniteSp = true;
-  for (let n = 0; n < 18001; n++) {
+  for (let n = 0; n <= w.RS_DATABASE.settings.runDuration*10; n++) {
     if (n === 1000) {
       g.state.stage = "Swordman";
       g.state.lvl = 40;

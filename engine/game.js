@@ -662,8 +662,8 @@
       button.append(details);button.onclick=()=>selectCharacter(entry.characterId);box.append(button);
     }
     $('selectedPath').textContent=character().jobPath.map(id=>DB.jobs[id].name).join(' → ');
-    $('characterHint').textContent=(S.characterId==='hunter_male'?'Лук, сокол и ловушки · авто-билд DEX/AGI':'Мечи, копья и Peco Peco · авто-билд Hybrid')+' · 30 минут';
-    if(character().hint)$('characterHint').textContent=character().hint+' · 30 минут';
+    $('characterHint').textContent=(S.characterId==='hunter_male'?'Лук, сокол и ловушки · авто-билд DEX/AGI':'Мечи, копья и Peco Peco · авто-билд Hybrid')+' · '+DB.settings.runDuration/60+' минут';
+    if(character().hint)$('characterHint').textContent=character().hint+' · '+DB.settings.runDuration/60+' минут';
     let weaponBox=$('weaponStyle');
     if(!weaponBox){weaponBox=document.createElement('div');weaponBox.id='weaponStyle';$('characterHint').after(weaponBox);}
     weaponBox.innerHTML='';weaponBox.hidden=S.characterId!=='assassin_male';
@@ -1259,7 +1259,7 @@
       n.lift += (n.crit ? 42 : 34) * dt;
     }
     dnums = dnums.filter((n) => n.life > 0);
-    if (S.t >= 1800) return finish(true);
+    if (S.t >= DB.settings.runDuration){S.t=DB.settings.runDuration;hud();return finish(true);}
     hud();
   }
   /* Passive HP recovery: VIT slightly improves the rate and speed controls scale with game time. */
@@ -1972,7 +1972,7 @@
       !DB.characters[saved.state.characterId || 'knight_male']?.playable ||
       !DB.characters[saved.state.characterId || 'knight_male'].jobPath.includes(STAGE_JOB_IDS[saved.state.stage]) ||
       !Number.isFinite(saved.state.t) ||
-      saved.state.t >= 1800 ||
+      saved.state.t < 0 ||
       !saved.state.stats ||
       !Array.isArray(saved.enemies) ||
       !Array.isArray(saved.gems) ||
@@ -2034,6 +2034,7 @@
     recalc();
     syncDebugControls();
     start();
+    if(S.t>=DB.settings.runDuration){S.t=DB.settings.runDuration;hud();finish(true);return;}
     openPause(false);
   }
   function setupSaveButton() {
